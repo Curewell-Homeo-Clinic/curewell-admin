@@ -6,7 +6,7 @@ const Home: NextPage = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  return <div>{world}</div>;
+  return <div className="bg-red-800 text-red-100 text-xl">{world}</div>;
 };
 
 export default Home;
