@@ -21,7 +21,6 @@ model Patient {
     phone        String
     address      String
     occupation   String
-    ailment      String
     appointments Appointment[]
     invoices     Invoice[]
     ailments     AilmentOnPatients[]
