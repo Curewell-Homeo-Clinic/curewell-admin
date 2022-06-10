@@ -11,11 +11,17 @@ export const patientRouter = trpc
   })
   .query("get_patient_by_id", {
     input: z.object({
-      id: z.string(),
+      id: z.string().cuid(),
     }),
     resolve({ input }) {
       return prisma.patient.findUnique({ where: { id: input.id } });
     },
+  })
+  .mutation("delete_patient", {
+    input: z.object({
+      id: z.string().cuid(),
+    }),
+    resolve() {},
   })
   .mutation("create_patient", {
     input: z.object({
@@ -23,12 +29,19 @@ export const patientRouter = trpc
       firstName: z.string(),
       lastName: z.string(),
       dob: z.date(),
-      email: z.string(),
-      phone: z.string(),
+      email: z.string().email(),
+      phone: z
+        .string()
+        .length(10, {
+          message: "Phone number should be 10 characters",
+        })
+        .refine((val) => parseInt(val), {
+          message: "Invalid Phone number!",
+        }),
       address: z.string(),
       occupation: z.string(),
       // pass id for already created ailment and name for new ones
-      ailments: z.array(z.object({ id: z.string(), name: z.string() })),
+      ailments: z.object({ id: z.string(), name: z.string() }).array(),
     }),
     async resolve({ input: patient }) {
       return await prisma.patient.create({
