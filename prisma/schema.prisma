@@ -11,9 +11,9 @@ datasource db {
 }
 
 model Patient {
-    id           String              @id @default(cuid())
-    createdAt    DateTime            @default(now())
-    admittedAt   DateTime            @default(now())
+    id           String        @id @default(cuid())
+    createdAt    DateTime      @default(now())
+    admittedAt   DateTime      @default(now())
     firstName    String
     lastName     String
     dob          DateTime
@@ -23,24 +23,13 @@ model Patient {
     occupation   String
     appointments Appointment[]
     invoices     Invoice[]
-    ailments     AilmentOnPatients[]
+    ailments     Ailment[]
 }
 
 model Ailment {
-    id                String              @id @default(cuid())
-    name              String
-    AilmentOnPatients AilmentOnPatients[]
-}
-
-model AilmentOnPatients {
-    patient    Patient  @relation(fields: [patientId], references: [id])
-    patientId  String
-    ailment    Ailment  @relation(fields: [ailmentId], references: [id])
-    ailmentId  String
-    assignedAt DateTime @default(now())
-    assignedBy String
-
-    @@id([patientId, ailmentId])
+    id       String    @id @default(cuid())
+    name     String
+    patients Patient[]
 }
 
 model Doctor {
