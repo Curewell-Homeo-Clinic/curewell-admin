@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Patient {
+    id           String              @id @default(cuid())
+    createdAt    DateTime            @default(now())
+    admittedAt   DateTime            @default(now())
+    firstName    String
+    lastName     String
+    dob          DateTime
+    email        String
+    phone        String
+    address      String
+    occupation   String
+    ailment      String
+    appointments Appointment[]
+    invoices     Invoice[]
+    ailments     AilmentOnPatients[]
+    Ailment      Ailment?            @relation(fields: [ailmentId], references: [id])
+    ailmentId    String?
+}
+
+model Ailment {
+    id                String              @id @default(cuid())
+    name              String
+    patients          Patient[]
+    AilmentOnPatients AilmentOnPatients[]
+}
+
+model AilmentOnPatients {
+    patient    Patient  @relation(fields: [patientId], references: [id])
+    patientId  String
+    ailment    Ailment  @relation(fields: [ailmentId], references: [id])
+    ailmentId  String
+    assignedAt DateTime @default(now())
+    assignedBy String
+
+    @@id([patientId, ailmentId])
+}
+
+model Doctor {
+    id             String        @id @default(cuid())
+    createdAt      DateTime      @default(now())
+    firstName      String
+    lastName       String
+    email          String
+    phone          String
+    dob            DateTime
+    address        String
+    specialization String
+    appointments   Appointment[]
+    invoices       Invoice[]
+}
+
+model Appointment {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    patient   Patient  @relation(fields: [patientId], references: [id])
+    patientId String
+    doctor    Doctor   @relation(fields: [doctorId], references: [id])
+    doctorId  String
+}
+
+model Invoice {
+    id        String    @id @default(cuid())
+    number    Int       @default(autoincrement())
+    createdAt DateTime  @default(now())
+    timestamp DateTime  @default(now())
+    patient   Patient   @relation(fields: [patientId], references: [id])
+    patientId String
+    doctor    Doctor    @relation(fields: [doctorId], references: [id])
+    doctorId  String
+    amount    Int
+    products  Product[]
+}
+
+model Product {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    name      String
+    price     Int
+    quantity  Int
+    invoices  Invoice  @relation(fields: [invoiceId], references: [id])
+    invoiceId String
+}
