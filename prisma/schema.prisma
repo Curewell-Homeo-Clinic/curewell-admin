@@ -24,14 +24,11 @@ model Patient {
     appointments Appointment[]
     invoices     Invoice[]
     ailments     AilmentOnPatients[]
-    Ailment      Ailment?            @relation(fields: [ailmentId], references: [id])
-    ailmentId    String?
 }
 
 model Ailment {
     id                String              @id @default(cuid())
     name              String
-    patients          Patient[]
     AilmentOnPatients AilmentOnPatients[]
 }
 
