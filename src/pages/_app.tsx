@@ -2,9 +2,14 @@ import { withTRPC } from "@trpc/next";
 import type { AppProps } from "next/app";
 import { AppRouter } from "@/backend/router";
 import "@/styles/tailwind.css";
+import { Wrapper } from "@/components";
 
 function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <Wrapper>
+      <Component {...pageProps} />
+    </Wrapper>
+  );
 }
 
 function getBaseUrl() {

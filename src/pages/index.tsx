@@ -1,8 +1,12 @@
-import { Wrapper } from "@/components";
+import { Stats } from "@/components";
 import type { NextPage } from "next/types";
 
 const Home: NextPage = () => {
-  return <Wrapper>Home Page</Wrapper>;
+  return (
+    <div>
+      <Stats />
+    </div>
+  );
 };
 
 export default Home;
