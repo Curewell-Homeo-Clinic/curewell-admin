@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import UserButton from "./UserButton";
 
 export default function Navbar() {
   const [open, setOpen] = useState(true);
@@ -17,6 +18,7 @@ export default function Navbar() {
         open ? "w-72" : "w-20"
       } duration-300 bg-[#081A51] relative p-5 pt-8 text-white`}
     >
+      {/* Navbar Control */}
       {/*eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/icons/navbarControl.svg"
@@ -26,6 +28,8 @@ export default function Navbar() {
           !open && "rotate-180"
         }`}
       />
+
+      {/* Logo Section */}
       <div className="flex gap-x-4 items-center duration-300">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -43,6 +47,8 @@ export default function Navbar() {
           Curewell Homeo
         </h1>
       </div>
+
+      {/* Menu */}
       <ul className="pt-6">
         {Menus.map((menu, index) => (
           <li
@@ -64,6 +70,7 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+      <UserButton open={open} />
     </div>
   );
 }
