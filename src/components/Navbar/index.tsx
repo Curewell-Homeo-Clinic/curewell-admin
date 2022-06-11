@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import UserButton from "./UserButton";
 
@@ -42,7 +42,7 @@ export default function Navbar() {
         <h1
           className={`text-white text-xl font-medium origin-left ${
             !open && "scale-0"
-          }`}
+          } select-none`}
         >
           Curewell Homeo
         </h1>
@@ -64,7 +64,11 @@ export default function Navbar() {
               src={`/icons/${menu.src}.svg`}
               alt={menu.src}
             />
-            <span className={`${!open && "hidden"} origin-left duration-200`}>
+            <span
+              className={`${
+                !open && "hidden"
+              } origin-left duration-200 select-none`}
+            >
               {menu.title}
             </span>
           </li>

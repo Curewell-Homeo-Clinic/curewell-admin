@@ -18,7 +18,7 @@ export default function UserButton({ open }: UserButtonProps) {
   return (
     <div
       onClick={() => setOpenDropdown(!openDropdown)}
-      className={`gap-x-4 absolute bottom-0 mb-4 text-gray-300 text-sm flex items-center justify-between cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md mt-2 duration-300`}
+      className="gap-x-4 absolute bottom-0 mb-4 text-gray-300 text-sm flex items-center justify-between cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md mt-2 duration-300"
     >
       <Image
         width={30}
@@ -33,8 +33,8 @@ export default function UserButton({ open }: UserButtonProps) {
           !open && "hidden"
         } origin-left duration-200`}
       >
-        <span>{user.name}</span>
-        <span className="text-gray-400">{`${user.email.substring(
+        <span className="select-none">{user.name}</span>
+        <span className="text-gray-400 select-none">{`${user.email.substring(
           0,
           23
         )}...`}</span>
