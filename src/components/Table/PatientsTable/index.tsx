@@ -37,7 +37,7 @@ export default function PatientsTable() {
 
   const tds = patients.map((patient, index) => (
     <tr key={index}>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6 select-none">
         {index}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
@@ -53,7 +53,7 @@ export default function PatientsTable() {
         {patient.joined}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="bg-transparent hover:bg-gray-100 text-gray-800 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-400 hover:border-gray-500 rounded-lg">
+        <button className="bg-transparent hover:bg-gray-100 select-none text-gray-800 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-400 hover:border-gray-500 rounded-lg">
           View
         </button>
       </td>
@@ -69,37 +69,37 @@ export default function PatientsTable() {
               <tr>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   #
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Phone Number
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Ailments
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Joined At
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   <span className="sr-only">Details</span>
                 </th>
