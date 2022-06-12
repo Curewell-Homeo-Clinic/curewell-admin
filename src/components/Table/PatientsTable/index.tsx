@@ -2,9 +2,10 @@ import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
 export default function PatientsTable() {
-  const [patients] = useState([
+  const [search, setSearch] = useState("");
+  const [patients, setPatients] = useState([
     {
-      name: "John Doe",
+      name: "Hi Doe",
       phoneNumber: "123456789",
       joined: "2020-01-01",
       ailments: ["Fever", "Cough"],
@@ -53,16 +54,38 @@ export default function PatientsTable() {
         {patient.joined}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="bg-transparent hover:bg-gray-100 select-none text-gray-800 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-400 hover:border-gray-500 rounded-lg">
+        <button className="bg-transparent hover:bg-gray-100 select-none text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg">
           View
         </button>
       </td>
     </tr>
   ));
 
+  const searchPatients = () => {
+    const filteredPatients = patients.filter((patient) => {
+      return patient.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setPatients(filteredPatients);
+  };
+
   return (
     <div className="p-2 mt-8">
       <div className="inline-block min-w-full py-2 align-middle">
+        <div className="mb-6 flex items-center justify-end px-4">
+          <input
+            type="text"
+            className="mr-2 border-2 border-[#081A51] rounded-lg text-sm p-2 font-medium"
+            placeholder="First Name"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button
+            onClick={() => searchPatients()}
+            className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
+          >
+            Search
+          </button>
+        </div>
         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">
             <thead className="bg-[#081A51]">
