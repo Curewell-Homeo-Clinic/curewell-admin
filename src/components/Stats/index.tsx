@@ -1,3 +1,4 @@
+import { CalendarIcon, CashIcon, UsersIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import StatsCard from "./Card";
 
@@ -6,17 +7,17 @@ export default function Stats() {
     {
       title: "Patients",
       val: "49",
-      icon: "patients",
+      Icon: UsersIcon,
     },
     {
       title: "Appointments",
       val: "56",
-      icon: "appointments",
+      Icon: CalendarIcon,
     },
     {
       title: "Invoices",
       val: "34",
-      icon: "invoices",
+      Icon: CashIcon,
     },
   ]);
   return (

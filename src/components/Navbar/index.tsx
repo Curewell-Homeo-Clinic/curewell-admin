@@ -1,15 +1,26 @@
 import { useState } from "react";
-import Image from "next/image";
 import UserButton from "./UserButton";
+import {
+  ChevronLeftIcon,
+  CollectionIcon,
+  ChartBarIcon,
+  CalendarIcon,
+  CashIcon,
+  UsersIcon,
+} from "@heroicons/react/outline";
 
 export default function Navbar() {
   const [open, setOpen] = useState(true);
   const Menus = [
-    { title: "Dashboard", src: "dashboard", active: true },
-    { title: "Statistics", src: "statistics" },
-    { title: "Patients", src: "patients", gap: true },
-    { title: "Appointments", src: "appointments" },
-    { title: "Invoices", src: "invoices" },
+    {
+      title: "Dashboard",
+      active: true,
+      Icon: CollectionIcon,
+    },
+    { title: "Statistics", Icon: ChartBarIcon },
+    { title: "Patients", Icon: UsersIcon, gap: true },
+    { title: "Appointments", Icon: CalendarIcon },
+    { title: "Invoices", Icon: CashIcon },
   ];
 
   return (
@@ -19,14 +30,12 @@ export default function Navbar() {
       } duration-300 bg-[#081A51] relative p-5 pt-8 text-white`}
     >
       {/* Navbar Control */}
-      {/*eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/icons/navbarControl.svg"
-        alt="control"
+      <ChevronLeftIcon
         onClick={() => setOpen(!open)}
         className={`absolute w-6 cursor-pointer duration-300 rounded-full -right-2.5 top-20 border-2 border-[#081a51] bg-white ${
           !open && "rotate-180"
         }`}
+        color="#081a51"
       />
 
       {/* Logo Section */}
@@ -35,7 +44,7 @@ export default function Navbar() {
         <img
           src="/icons/logo.svg"
           alt="logo"
-          className={`cursor-pointer w-10 duration-500 bg-[#1541c5] rounded-lg p-1 select-none ${
+          className={`cursor-pointer inline-block w-10 duration-500 bg-[#1541c5] rounded-lg p-1 select-none ${
             open && "rotate-[360deg]"
           }`}
         />
@@ -50,26 +59,20 @@ export default function Navbar() {
 
       {/* Menu */}
       <ul className="pt-6">
-        {Menus.map((menu, index) => (
+        {Menus.map((Menu, index) => (
           <li
             key={index}
             className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md ${
-              menu.gap ? "mt-9" : "mt-2"
-            } duration-300 ${menu.active && "bg-[#ffffff2b]"}`}
+              Menu.gap ? "mt-9" : "mt-2"
+            } duration-300 ${Menu.active && "bg-[#ffffff2b]"}`}
           >
-            <Image
-              width={20}
-              height={20}
-              layout="fixed"
-              src={`/icons/${menu.src}.svg`}
-              alt={menu.src}
-            />
+            <Menu.Icon className="w-5" />
             <span
               className={`${
                 !open && "hidden"
               } origin-left duration-200 select-none`}
             >
-              {menu.title}
+              {Menu.title}
             </span>
           </li>
         ))}
