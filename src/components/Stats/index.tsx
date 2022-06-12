@@ -20,7 +20,7 @@ export default function Stats() {
     },
   ]);
   return (
-    <div className="flex p-2 gap-x-6">
+    <div className="flex p-2 gap-x-10">
       {stats.map((stat) => (
         <StatsCard key={stat.title} stats={stat} />
       ))}
