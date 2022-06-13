@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/outline";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const Menus = [
     {
       title: "Dashboard",
