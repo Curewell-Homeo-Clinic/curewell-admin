@@ -9,6 +9,31 @@ export const patientRouter = trpc
       return await prisma.patient.findMany({});
     },
   })
+  .query("get_patients_limit_and_offset", {
+    input: z.object({
+      limit: z.number().default(10),
+      offset: z.number().default(0),
+    }),
+    async resolve({ input }) {
+      const { limit, offset } = input;
+      return await prisma.patient.findMany({
+        skip: offset,
+        take: limit,
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          admittedAt: true,
+          address: true,
+          occupation: true,
+          dob: true,
+          email: true,
+          phone: true,
+          ailments: true,
+        },
+      });
+    },
+  })
   .query("get_patient_by_id", {
     input: z.object({
       id: z.string().cuid(),

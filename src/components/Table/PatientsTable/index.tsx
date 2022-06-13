@@ -1,57 +1,32 @@
+import { trpc } from "@/utils/trpc";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
 export default function PatientsTable() {
   const [search, setSearch] = useState("");
-  const [patients, setPatients] = useState([
-    {
-      name: "Hi Doe",
-      phoneNumber: "123456789",
-      joined: "2020-01-01",
-      ailments: ["Fever", "Cough"],
-    },
-    {
-      name: "John Doe",
-      phoneNumber: "123456789",
-      joined: "2020-01-01",
-      ailments: ["Fever", "Cough"],
-    },
-    {
-      name: "John Doe",
-      phoneNumber: "123456789",
-      joined: "2020-01-01",
-      ailments: ["Fever", "Cough"],
-    },
-    {
-      name: "John Doe",
-      phoneNumber: "123456789",
-      joined: "2020-01-01",
-      ailments: ["Fever", "Cough"],
-    },
-    {
-      name: "John Doe",
-      phoneNumber: "123456789",
-      joined: "2020-01-01",
-      ailments: ["Fever", "Cough"],
-    },
+  const { isLoading, data: patients } = trpc.useQuery([
+    "get_patients_limit_and_offset",
+    { limit: 10, offset: 0 },
   ]);
 
-  const tds = patients.map((patient, index) => (
-    <tr key={index}>
+  if (isLoading) return <div>Loading...</div>;
+
+  const tds = patients!.map((patient, index) => (
+    <tr key={patient.id}>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6 select-none">
-        {index}
+        {index + 1}
+      </td>
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6 capitalize">
+        {`${patient.firstName} ${patient.lastName}`}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {patient.name}
+        {`+91-${patient.phone}`}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {patient.phoneNumber}
+        {patient.ailments.map((ailment) => ailment.name).join(", ")}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {patient.ailments.join(", ")}
-      </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {patient.joined}
+        {new Date(patient.admittedAt).toLocaleDateString()}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button className="bg-transparent hover:bg-gray-100 select-none text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg">
@@ -60,13 +35,6 @@ export default function PatientsTable() {
       </td>
     </tr>
   ));
-
-  const searchPatients = () => {
-    const filteredPatients = patients.filter((patient) => {
-      return patient.name.toLowerCase().includes(search.toLowerCase());
-    });
-    setPatients(filteredPatients);
-  };
 
   return (
     <div className="p-2 mt-8">
@@ -79,10 +47,7 @@ export default function PatientsTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button
-            onClick={() => searchPatients()}
-            className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
-          >
+          <button className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg">
             Search
           </button>
         </div>
