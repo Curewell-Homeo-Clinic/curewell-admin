@@ -56,16 +56,17 @@ model Appointment {
 }
 
 model Invoice {
-    id        String    @id @default(cuid())
-    number    Int       @default(autoincrement())
-    createdAt DateTime  @default(now())
-    timestamp DateTime  @default(now())
-    patient   Patient   @relation(fields: [patientId], references: [id])
-    patientId String
-    doctor    Doctor    @relation(fields: [doctorId], references: [id])
-    doctorId  String
-    ammount   Int
-    products  Product[]
+    id              String    @id @default(cuid())
+    number          Int       @default(autoincrement())
+    createdAt       DateTime  @default(now())
+    timestamp       DateTime  @default(now())
+    patient         Patient   @relation(fields: [patientId], references: [id])
+    patientId       String
+    doctor          Doctor    @relation(fields: [doctorId], references: [id])
+    doctorId        String
+    consultationFee Int
+    medicalFee      Int
+    products        Product[]
 }
 
 model Product {
