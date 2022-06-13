@@ -64,7 +64,7 @@ model Invoice {
     patientId String
     doctor    Doctor    @relation(fields: [doctorId], references: [id])
     doctorId  String
-    amount    Int
+    ammount   Int
     products  Product[]
 }
 
