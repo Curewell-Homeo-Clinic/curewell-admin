@@ -58,15 +58,14 @@ export default function Navbar({ active }: NavbarProps) {
     <div
       className={`h-screen ${
         open ? "w-72" : "w-20"
-      } duration-300 bg-[#081A51] relative p-5 pt-8 text-white`}
+      } duration-300 bg-primary relative p-5 pt-8 text-white`}
     >
       {/* Navbar Control */}
       <ChevronLeftIcon
         onClick={() => setOpen(!open)}
-        className={`absolute w-6 cursor-pointer duration-300 rounded-full -right-2.5 top-20 border-2 border-[#081a51] bg-white ${
+        className={`absolute w-6 cursor-pointer duration-300 rounded-full -right-2.5 top-20 border-2 border-primary bg-white ${
           !open && "rotate-180"
-        }`}
-        color="#081a51"
+        } text-primary`}
       />
 
       {/* Logo Section */}
@@ -75,7 +74,7 @@ export default function Navbar({ active }: NavbarProps) {
         <img
           src="/icons/logo.svg"
           alt="logo"
-          className={`cursor-pointer inline-block w-10 duration-500 bg-[#1541c5] rounded-lg p-1 select-none ${
+          className={`cursor-pointer inline-block w-10 duration-500 bg-logo rounded-lg p-1 select-none ${
             open && "rotate-[360deg]"
           }`}
         />

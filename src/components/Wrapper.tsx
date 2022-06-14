@@ -30,7 +30,9 @@ export default function Wrapper({
     <div className="flex">
       {/* @ts-ignore */}
       <Navbar active={getActiveMenu()} />
-      <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto">{children}</div>
+      <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto text-primary">
+        {children}
+      </div>
     </div>
   );
 }

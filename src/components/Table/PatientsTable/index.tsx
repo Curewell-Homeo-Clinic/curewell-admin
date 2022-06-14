@@ -43,26 +43,15 @@ export default function PatientsTable({
 
   const tds = patients!.map((patient, index) => (
     <tr key={patient.id}>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6 select-none">
-        {index + 1}
-      </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6 capitalize">
+      <td className="select-none">{index + 1}</td>
+      <td className="capitalize">
         {`${patient.firstName} ${patient.lastName}`}
       </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {`+91-${patient.phone}`}
-      </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {patient.ailments.map((ailment) => ailment.name).join(", ")}
-      </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-[#081A51] sm:pl-6">
-        {new Date(patient.admittedAt).toLocaleDateString()}
-      </td>
+      <td className="">{`+91-${patient.phone}`}</td>
+      <td>{patient.ailments.map((ailment) => ailment.name).join(", ")}</td>
+      <td>{new Date(patient.admittedAt).toLocaleDateString()}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button
-          className="bg-transparent hover:bg-gray-100 select-none text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
-          onClick={() => handleViewPatient(patient.id)}
-        >
+        <button className="btn" onClick={() => handleViewPatient(patient.id)}>
           View
         </button>
       </td>
@@ -77,23 +66,20 @@ export default function PatientsTable({
             <input
               type="text"
               className={`mr-2 border-2 ${
-                noSearchResult ? "border-red-600" : "border-[#081A51]"
+                noSearchResult ? "border-red-600" : "border-primary"
               } rounded-lg text-sm p-2 font-medium focus-visible:outline-0 focus-visible:outline-none`}
               placeholder="First Name"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <button
-              type="submit"
-              className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
-            >
+            <button type="submit" className="btn">
               Search
             </button>
           </form>
         </div>
-        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">
-            <thead className="bg-[#081A51]">
+            <thead className="bg-primary">
               <tr>
                 <th
                   scope="col"
