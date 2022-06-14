@@ -7,6 +7,7 @@ import {
   CalendarIcon,
   CashIcon,
   UsersIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/outline";
 
 export default function Navbar() {
@@ -20,7 +21,7 @@ export default function Navbar() {
     { title: "Statistics", Icon: ChartBarIcon },
     { title: "Patients", Icon: UsersIcon, gap: true },
     { title: "Appointments", Icon: CalendarIcon },
-    { title: "Invoices", Icon: CashIcon },
+    { title: "Invoices", Icon: DocumentTextIcon },
   ];
 
   return (

@@ -1,5 +1,10 @@
 import { trpc } from "@/utils/trpc";
-import { CalendarIcon, CashIcon, UsersIcon } from "@heroicons/react/outline";
+import {
+  CalendarIcon,
+  CashIcon,
+  DocumentTextIcon,
+  UsersIcon,
+} from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import StatsCard from "./Card";
 
@@ -15,6 +20,14 @@ interface StatsProps {
 export default function Stats({ overallStats }: StatsProps) {
   const [stats] = useState([
     {
+      title: "Sales",
+      val: `₹ ${new String(overallStats.sales).replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        ","
+      )}`,
+      Icon: CashIcon,
+    },
+    {
       title: "Patients",
       val: new String(overallStats.patients).toString(),
       Icon: UsersIcon,
@@ -27,7 +40,7 @@ export default function Stats({ overallStats }: StatsProps) {
     {
       title: "Invoices",
       val: new String(overallStats.invoices).toString(),
-      Icon: CashIcon,
+      Icon: DocumentTextIcon,
     },
   ]);
   return (
