@@ -1,7 +1,7 @@
 import { trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
-  CashIcon,
+  CreditCardIcon,
   DocumentTextIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
@@ -25,7 +25,7 @@ export default function Stats({ overallStats }: StatsProps) {
         /\B(?=(\d{3})+(?!\d))/g,
         ","
       )}`,
-      Icon: CashIcon,
+      Icon: CreditCardIcon,
     },
     {
       title: "Patients",
