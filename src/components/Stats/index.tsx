@@ -1,22 +1,32 @@
+import { trpc } from "@/utils/trpc";
 import { CalendarIcon, CashIcon, UsersIcon } from "@heroicons/react/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatsCard from "./Card";
 
-export default function Stats() {
+interface StatsProps {
+  overallStats: {
+    patients: number;
+    invoices: number;
+    appointments: number;
+    sales: number;
+  };
+}
+
+export default function Stats({ overallStats }: StatsProps) {
   const [stats] = useState([
     {
       title: "Patients",
-      val: "49",
+      val: new String(overallStats.patients).toString(),
       Icon: UsersIcon,
     },
     {
       title: "Appointments",
-      val: "56",
+      val: new String(overallStats.appointments).toString(),
       Icon: CalendarIcon,
     },
     {
       title: "Invoices",
-      val: "34",
+      val: new String(overallStats.invoices).toString(),
       Icon: CashIcon,
     },
   ]);
