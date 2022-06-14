@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type Patient = {
@@ -16,6 +17,7 @@ interface PatientsTableProps {
 export default function PatientsTable({
   patients: originalPatients,
 }: PatientsTableProps) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [patients, setPatients] = useState<Patient[]>(originalPatients);
   const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
@@ -33,6 +35,10 @@ export default function PatientsTable({
       result.length === 0 && setNoSearchResult(true);
       setPatients(result);
     } else setPatients(originalPatients);
+  };
+
+  const handleViewPatient = (id: string) => {
+    router.push(`/patients/${id}`);
   };
 
   const tds = patients!.map((patient, index) => (
@@ -53,7 +59,10 @@ export default function PatientsTable({
         {new Date(patient.admittedAt).toLocaleDateString()}
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="bg-transparent hover:bg-gray-100 select-none text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg">
+        <button
+          className="bg-transparent hover:bg-gray-100 select-none text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
+          onClick={() => handleViewPatient(patient.id)}
+        >
           View
         </button>
       </td>

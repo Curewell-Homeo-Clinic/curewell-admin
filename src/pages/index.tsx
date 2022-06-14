@@ -2,9 +2,8 @@ import { Stats } from "@/components";
 import { Loader } from "@/components/shared";
 import { PatientsTable } from "@/components/Table";
 import { trpc } from "@/utils/trpc";
-import type { NextPage } from "next/types";
 
-const Home: NextPage = () => {
+export default function Home() {
   const { isLoading: isStatsLoading, data: overallStats } = trpc.useQuery([
     "get_overall_stats",
   ]);
@@ -23,6 +22,4 @@ const Home: NextPage = () => {
       <PatientsTable patients={patients} />
     </div>
   );
-};
-
-export default Home;
+}
