@@ -1,4 +1,5 @@
 import * as trpc from "@trpc/server";
+import { resolve } from "path";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 
@@ -6,7 +7,16 @@ export const patientRouter = trpc
   .router()
   .query("get_all_patients", {
     async resolve() {
-      return await prisma.patient.findMany({});
+      return await prisma.patient.findMany({
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          admittedAt: true,
+          phone: true,
+          ailments: true,
+        },
+      });
     },
   })
   .query("get_patients_limit_and_offset", {
@@ -24,13 +34,33 @@ export const patientRouter = trpc
           firstName: true,
           lastName: true,
           admittedAt: true,
-          address: true,
-          occupation: true,
-          dob: true,
-          email: true,
           phone: true,
           ailments: true,
         },
+      });
+    },
+  })
+  .query("get_patients_by_name", {
+    input: z.object({
+      name: z.string(),
+    }),
+    async resolve({ input }) {
+      return await prisma.patient.findMany({
+        where: {
+          OR: [
+            { firstName: { contains: input.name } },
+            { lastName: { contains: input.name } },
+          ],
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          admittedAt: true,
+          phone: true,
+          ailments: true,
+        },
+        take: 10,
       });
     },
   })

@@ -9,12 +9,18 @@ const Home: NextPage = () => {
     "get_overall_stats",
   ]);
 
-  if (isStatsLoading) return <Loader />;
+  const { isLoading: isPatientsLoading, data: patients } = trpc.useQuery([
+    "get_patients_limit_and_offset",
+    { limit: 10 },
+  ]);
+
+  if (isStatsLoading || !overallStats || isPatientsLoading || !patients)
+    return <Loader />;
 
   return (
     <div>
-      {overallStats && <Stats overallStats={overallStats} />}
-      <PatientsTable />
+      <Stats overallStats={overallStats} />
+      <PatientsTable patients={patients} />
     </div>
   );
 };

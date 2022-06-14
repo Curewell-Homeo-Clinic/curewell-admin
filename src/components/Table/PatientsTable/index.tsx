@@ -1,15 +1,39 @@
-import { trpc } from "@/utils/trpc";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
-export default function PatientsTable() {
-  const [search, setSearch] = useState("");
-  const { isLoading, data: patients } = trpc.useQuery([
-    "get_patients_limit_and_offset",
-    { limit: 10, offset: 0 },
-  ]);
+type Patient = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  admittedAt: Date;
+  phone: string;
+  ailments: { name: string }[];
+};
 
-  if (isLoading) return <div>Loading...</div>;
+interface PatientsTableProps {
+  patients: Patient[];
+}
+
+export default function PatientsTable({
+  patients: originalPatients,
+}: PatientsTableProps) {
+  const [search, setSearch] = useState("");
+  const [patients, setPatients] = useState<Patient[]>(originalPatients);
+  const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNoSearchResult(false);
+
+    if (search !== "") {
+      const result = originalPatients.filter(
+        (patient) =>
+          patient.firstName.includes(search) ||
+          patient.lastName.includes(search)
+      );
+      result.length === 0 && setNoSearchResult(true);
+      setPatients(result);
+    } else setPatients(originalPatients);
+  };
 
   const tds = patients!.map((patient, index) => (
     <tr key={patient.id}>
@@ -40,16 +64,23 @@ export default function PatientsTable() {
     <div className="p-2 mt-8">
       <div className="inline-block min-w-full py-2 align-middle">
         <div className="mb-6 flex items-center justify-end px-4">
-          <input
-            type="text"
-            className="mr-2 border-2 border-[#081A51] rounded-lg text-sm p-2 font-medium"
-            placeholder="First Name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg">
-            Search
-          </button>
+          <form onSubmit={(e) => handleSearch(e)}>
+            <input
+              type="text"
+              className={`mr-2 border-2 ${
+                noSearchResult ? "border-red-600" : "border-[#081A51]"
+              } rounded-lg text-sm p-2 font-medium focus-visible:outline-0 focus-visible:outline-none`}
+              placeholder="First Name"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-transparent hover:bg-gray-100 select-none text-sm text-[#081A51] font-semibold  py-2 px-4 border border-[#081A51] rounded-lg"
+            >
+              Search
+            </button>
+          </form>
         </div>
         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">
