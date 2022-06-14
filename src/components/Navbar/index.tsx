@@ -8,6 +8,7 @@ import {
   UsersIcon,
   DocumentTextIcon,
 } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 
 interface NavbarProps {
   active: "dashboard" | "stats" | "patients" | "appointments" | "invoices";
@@ -18,24 +19,38 @@ const getMenu = (active: NavbarProps["active"]) => [
     title: "Dashboard",
     active: active === "dashboard",
     Icon: CollectionIcon,
+    url: "/",
   },
-  { title: "Statistics", Icon: ChartBarIcon, active: active === "stats" },
+  {
+    title: "Statistics",
+    Icon: ChartBarIcon,
+    active: active === "stats",
+    url: "/stats",
+  },
   {
     title: "Patients",
     Icon: UsersIcon,
     gap: true,
     active: active === "patients",
+    url: "/patients",
   },
   {
     title: "Appointments",
     Icon: CalendarIcon,
     active: active === "appointments",
+    url: "/appointments",
   },
-  { title: "Invoices", Icon: DocumentTextIcon, active: active === "invoices" },
+  {
+    title: "Invoices",
+    Icon: DocumentTextIcon,
+    active: active === "invoices",
+    url: "/invoices",
+  },
 ];
 
 export default function Navbar({ active }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const Menus = getMenu(active);
 
@@ -81,6 +96,9 @@ export default function Navbar({ active }: NavbarProps) {
             className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md ${
               Menu.gap ? "mt-9" : "mt-2"
             } duration-300 ${Menu.active && "bg-[#ffffff2b]"}`}
+            onClick={() => {
+              router.push(Menu.url);
+            }}
           >
             <Menu.Icon className="w-5" />
             <span
