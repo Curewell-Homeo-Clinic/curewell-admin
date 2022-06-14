@@ -5,24 +5,39 @@ import {
   CollectionIcon,
   ChartBarIcon,
   CalendarIcon,
-  CashIcon,
   UsersIcon,
   DocumentTextIcon,
 } from "@heroicons/react/outline";
 
-export default function Navbar() {
+interface NavbarProps {
+  active: "dashboard" | "stats" | "patients" | "appointments" | "invoices";
+}
+
+const getMenu = (active: NavbarProps["active"]) => [
+  {
+    title: "Dashboard",
+    active: active === "dashboard",
+    Icon: CollectionIcon,
+  },
+  { title: "Statistics", Icon: ChartBarIcon, active: active === "stats" },
+  {
+    title: "Patients",
+    Icon: UsersIcon,
+    gap: true,
+    active: active === "patients",
+  },
+  {
+    title: "Appointments",
+    Icon: CalendarIcon,
+    active: active === "appointments",
+  },
+  { title: "Invoices", Icon: DocumentTextIcon, active: active === "invoices" },
+];
+
+export default function Navbar({ active }: NavbarProps) {
   const [open, setOpen] = useState(false);
-  const Menus = [
-    {
-      title: "Dashboard",
-      active: true,
-      Icon: CollectionIcon,
-    },
-    { title: "Statistics", Icon: ChartBarIcon },
-    { title: "Patients", Icon: UsersIcon, gap: true },
-    { title: "Appointments", Icon: CalendarIcon },
-    { title: "Invoices", Icon: DocumentTextIcon },
-  ];
+
+  const Menus = getMenu(active);
 
   return (
     <div
