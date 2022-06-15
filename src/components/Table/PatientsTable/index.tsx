@@ -1,3 +1,4 @@
+import { SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -20,11 +21,11 @@ export default function PatientsTable({
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [patients, setPatients] = useState<Patient[]>(originalPatients);
-  const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("search", search);
+
     e.preventDefault();
-    setNoSearchResult(false);
 
     if (search !== "") {
       const result = originalPatients.filter(
@@ -32,7 +33,6 @@ export default function PatientsTable({
           patient.firstName.includes(search) ||
           patient.lastName.includes(search)
       );
-      result.length === 0 && setNoSearchResult(true);
       setPatients(result);
     } else setPatients(originalPatients);
   };
@@ -61,20 +61,26 @@ export default function PatientsTable({
   return (
     <div className="p-2 mt-8">
       <div className="inline-block min-w-full py-2 align-middle">
-        <div className="mb-6 flex items-center justify-end px-4">
-          <form onSubmit={(e) => handleSearch(e)}>
-            <input
-              type="text"
-              className={`mr-2 border-2 ${
-                noSearchResult ? "border-red-600" : "border-primary"
-              } rounded-lg text-sm p-2 font-medium focus-visible:outline-0 focus-visible:outline-none`}
-              placeholder="First Name"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button type="submit" className="btn">
+        <div className="mb-6 flex items-center">
+          <form className="flex items-center" onSubmit={(e) => handleSearch(e)}>
+            <label htmlFor="simple-search" className="sr-only">
               Search
-            </button>
+            </label>
+            <div className="relative w-full">
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <SearchIcon className="w-5 h-5 text-secondary" />
+              </div>
+              <input
+                type="text"
+                id="simple-search"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+                placeholder="Search"
+                spellCheck={false}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button className="sr-only" type="submit" />
+            </div>
           </form>
         </div>
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
