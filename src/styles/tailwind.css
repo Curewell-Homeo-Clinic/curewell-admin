@@ -9,3 +9,11 @@
 td {
   @apply whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold sm:pl-6;
 }
+
+h1 {
+  @apply text-3xl capitalize font-semibold;
+}
+
+.secondaryText {
+  @apply text-sm font-light text-secondary select-none;
+}

@@ -14,9 +14,7 @@ export default function StatsCard({ stats }: StatsCardProps) {
       <stats.Icon className="w-16 p-2 mr-2" />
       <div className="flex flex-col justify-center items-start">
         <p className="text-2xl font-medium select-none">{stats.val}</p>
-        <p className="text-sm font-light text-secondary select-none">
-          {stats.title}
-        </p>
+        <p className="secondaryText">{stats.title}</p>
       </div>
     </div>
   );

@@ -9,7 +9,9 @@ export default function Patients() {
 
   return (
     <div>
-      <h1>Patients</h1>
+      <div className="p-2">
+        <h1>Patients</h1>
+      </div>
       <PatientsTable patients={patients} />
     </div>
   );
