@@ -1,4 +1,8 @@
-import { SearchIcon } from "@heroicons/react/outline";
+import {
+  ArrowNarrowRightIcon,
+  ChevronDoubleRightIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -51,8 +55,11 @@ export default function PatientsTable({
       <td>{patient.ailments.map((ailment) => ailment.name).join(", ")}</td>
       <td>{new Date(patient.admittedAt).toLocaleDateString()}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button className="btn" onClick={() => handleViewPatient(patient.id)}>
-          View
+        <button
+          type="button"
+          className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-secondary font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
+        >
+          <ChevronDoubleRightIcon className="w-5" />
         </button>
       </td>
     </tr>
