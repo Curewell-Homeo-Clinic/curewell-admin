@@ -1,3 +1,4 @@
+import { getMoney } from "@/utils";
 import { trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
@@ -21,10 +22,7 @@ export default function Stats({ overallStats }: StatsProps) {
   const [stats] = useState([
     {
       title: "Sales",
-      val: `₹ ${new String(overallStats.sales).replace(
-        /\B(?=(\d{3})+(?!\d))/g,
-        ","
-      )}`,
+      val: getMoney(overallStats.sales),
       Icon: CreditCardIcon,
     },
     {
@@ -44,7 +42,7 @@ export default function Stats({ overallStats }: StatsProps) {
     },
   ]);
   return (
-    <div className="flex p-2 gap-x-10">
+    <div className="flex flex-wrap p-2 gap-10">
       {stats.map((stat) => (
         <StatsCard key={stat.title} stats={stat} />
       ))}
