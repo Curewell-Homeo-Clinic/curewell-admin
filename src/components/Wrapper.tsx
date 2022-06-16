@@ -1,16 +1,23 @@
+import { capitalizeFirst } from "@/utils";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
-import Navbar from "./Navbar";
+import Navbar, { NavbarProps } from "./Navbar";
 
 export default function Wrapper({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  const getActiveMenu = () => {
+  const getActiveMenu = (): NavbarProps["active"] => {
     const path = router.asPath.slice(1);
 
     if (path === "" || path === "/") return "dashboard";
 
-    const menus = ["stats", "patients", "appointments", "invoices"];
+    const menus: Array<NavbarProps["active"]> = [
+      "stats",
+      "patients",
+      "appointments",
+      "invoices",
+    ];
 
     for (const menu of menus) {
       if (path.startsWith(menu)) {
@@ -22,12 +29,16 @@ export default function Wrapper({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex">
-      {/* @ts-ignore */}
-      <Navbar active={getActiveMenu()} />
-      <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto text-primary">
-        {children}
+    <>
+      <Head>
+        <title>{capitalizeFirst(getActiveMenu())} | Curewell Homeo</title>
+      </Head>
+      <div className="flex">
+        <Navbar active={getActiveMenu()} />
+        <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto text-primary">
+          {children}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

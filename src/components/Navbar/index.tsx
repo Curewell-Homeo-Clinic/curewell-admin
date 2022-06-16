@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 
-interface NavbarProps {
+export interface NavbarProps {
   active: "dashboard" | "stats" | "patients" | "appointments" | "invoices";
 }
 

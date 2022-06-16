@@ -3,12 +3,18 @@ import type { AppProps } from "next/app";
 import { AppRouter } from "@/backend/router";
 import "@/styles/tailwind.css";
 import { Wrapper } from "@/components";
+import Head from "next/head";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <Wrapper>
-      <Component {...pageProps} />
-    </Wrapper>
+    <>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
+      </Head>
+      <Wrapper>
+        <Component {...pageProps} />
+      </Wrapper>
+    </>
   );
 }
 
