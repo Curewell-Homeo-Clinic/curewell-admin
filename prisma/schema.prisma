@@ -53,8 +53,8 @@ model Appointment {
     patientId String
     doctor    Doctor   @relation(fields: [doctorId], references: [id])
     doctorId  String
-    timeStamp DateTime
-    visited   Boolean
+    timeStamp DateTime @default(now())
+    visited   Boolean  @default(false)
 }
 
 model Invoice {
