@@ -53,6 +53,8 @@ model Appointment {
     patientId String
     doctor    Doctor   @relation(fields: [doctorId], references: [id])
     doctorId  String
+    timeStamp DateTime
+    visited   Boolean
 }
 
 model Invoice {
@@ -70,11 +72,10 @@ model Invoice {
 }
 
 model Product {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
     name      String
     price     Int
     quantity  Int
-    invoices  Invoice  @relation(fields: [invoiceId], references: [id])
-    invoiceId String
+    invoices  Invoice[]
 }
