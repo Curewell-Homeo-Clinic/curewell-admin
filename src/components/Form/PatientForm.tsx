@@ -38,7 +38,7 @@ export default function PatientForm({ patient }: PatientFormProps) {
         onSubmit={(e) => e.preventDefault()}
       >
         <h1>Personal Details</h1>
-        <p className="secondaryText">Patient's Personal Information</p>
+        <p className="secondaryText">Patient&apos;s Personal Information</p>
 
         <div className="flex mb-6 mt-6 gap-x-4">
           {/* First Name */}
