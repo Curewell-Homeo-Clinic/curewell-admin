@@ -1,6 +1,9 @@
+import { PatientForm } from "@/components/Form";
 import { Loader } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
+import { ChevronDoubleLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function PatientPage() {
   const router = useRouter();
@@ -10,7 +13,26 @@ export default function PatientPage() {
     { id: id! as string },
   ]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading || !patient) return <Loader />;
 
-  return <div>{JSON.stringify(patient)}</div>;
+  return (
+    <div>
+      <div className="p-2">
+        <button className="btn flex items-center" onClick={() => router.back()}>
+          <ChevronDoubleLeftIcon className="w-5 mr-1" />
+          <span>Go Back</span>
+        </button>
+      </div>
+      <div className="mt-8 px-2">
+        <div className="flex flex-col gap-x-2">
+          <p className="secondaryText">Patient</p>
+          <h1>{`${patient.firstName} ${patient.lastName}`}</h1>
+          <p className="secondaryText">
+            Joined at {new Date(patient.admittedAt).toLocaleDateString()}
+          </p>
+        </div>
+        <PatientForm patient={patient} />
+      </div>
+    </div>
+  );
 }

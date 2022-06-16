@@ -40,6 +40,7 @@ export const patientRouter = trpc
       });
     },
   })
+  // unused
   .query("get_patients_by_name", {
     input: z.object({
       name: z.string(),
@@ -69,7 +70,20 @@ export const patientRouter = trpc
       id: z.string().cuid(),
     }),
     resolve({ input }) {
-      return prisma.patient.findUnique({ where: { id: input.id } });
+      return prisma.patient.findUnique({
+        where: { id: input.id },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          admittedAt: true,
+          phone: true,
+          email: true,
+          address: true,
+          occupation: true,
+          ailments: true,
+        },
+      });
     },
   })
   .mutation("delete_patient", {
