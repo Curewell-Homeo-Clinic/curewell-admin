@@ -7,7 +7,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        logo: "#1541c5",
         primary: "#081A51",
         secondary: "#081a51cb",
         lightWhite: "#ffffff2b",

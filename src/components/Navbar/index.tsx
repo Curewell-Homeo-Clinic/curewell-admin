@@ -72,9 +72,9 @@ export default function Navbar({ active }: NavbarProps) {
       <div className="flex gap-x-4 items-center duration-300">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/icons/logo.svg"
+          src="/favicon.svg"
           alt="logo"
-          className={`cursor-pointer inline-block w-10 duration-500 bg-logo rounded-lg p-1 select-none ${
+          className={`cursor-pointer inline-block w-10 duration-500 bg-lightWhite rounded-lg p-2 select-none ${
             open && "rotate-[360deg]"
           }`}
         />
