@@ -13,7 +13,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
     if (path === "" || path === "/") return "dashboard";
 
     const menus: Array<NavbarProps["active"]> = [
-      "stats",
+      "products",
       "patients",
       "appointments",
       "invoices",

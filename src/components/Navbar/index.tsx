@@ -3,15 +3,15 @@ import UserButton from "./UserButton";
 import {
   ChevronLeftIcon,
   CollectionIcon,
-  ChartBarIcon,
   CalendarIcon,
   UsersIcon,
   DocumentTextIcon,
+  ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 
 export interface NavbarProps {
-  active: "dashboard" | "stats" | "patients" | "appointments" | "invoices";
+  active: "dashboard" | "products" | "patients" | "appointments" | "invoices";
 }
 
 const getMenu = (active: NavbarProps["active"]) => [
@@ -22,15 +22,15 @@ const getMenu = (active: NavbarProps["active"]) => [
     url: "/",
   },
   {
-    title: "Statistics",
-    Icon: ChartBarIcon,
-    active: active === "stats",
+    title: "Products",
+    Icon: ShoppingBagIcon,
+    active: active === "products",
     url: "/stats",
+    gap: true,
   },
   {
     title: "Patients",
     Icon: UsersIcon,
-    gap: true,
     active: active === "patients",
     url: "/patients",
   },
