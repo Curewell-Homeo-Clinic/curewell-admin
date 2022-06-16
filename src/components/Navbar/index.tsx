@@ -25,7 +25,7 @@ const getMenu = (active: NavbarProps["active"]) => [
     title: "Products",
     Icon: ShoppingBagIcon,
     active: active === "products",
-    url: "/stats",
+    url: "/products",
     gap: true,
   },
   {
