@@ -2,12 +2,7 @@ import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 
-export default function Wrapper({
-  children,
-}: {
-  children: ReactNode;
-  activeMenu: string;
-}) {
+export default function Wrapper({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const getActiveMenu = () => {
