@@ -1,14 +1,19 @@
 import { getMoney } from "@/utils";
 import { Product } from "@prisma/client";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   return (
-    <div className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl hover:scale-110 duration-500 ease-out cursor-pointer">
+    <div
+      className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl hover:scale-110 duration-500 ease-out cursor-pointer"
+      onClick={() => router.push(`/products/${product.id}`)}
+    >
       <Image
         height={300}
         width={300}

@@ -1,7 +1,7 @@
 import { PatientForm } from "@/components/Form";
 import { Loader } from "@/components/shared";
+import { GoBackButton } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
-import { ChevronDoubleLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 
 export default function PatientPage() {
@@ -16,12 +16,7 @@ export default function PatientPage() {
 
   return (
     <div>
-      <div className="p-2">
-        <button className="btn flex items-center" onClick={() => router.back()}>
-          <ChevronDoubleLeftIcon className="w-5 mr-1" />
-          <span>Go Back</span>
-        </button>
-      </div>
+      <GoBackButton />
       <div className="mt-8 px-2">
         <div className="flex flex-col gap-x-2">
           <p className="secondaryText">Patient</p>
