@@ -34,7 +34,7 @@ export default function PatientFormCaseStudy({
       <div className="mt-6 mb-6">
         <label
           htmlFor="prescription"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+          className="block mb-2 text-sm font-medium"
         >
           Prescription
         </label>
@@ -43,15 +43,12 @@ export default function PatientFormCaseStudy({
           rows={4}
           value={prescriptionValue}
           onChange={(e) => setPrescriptionValue(e.target.value)}
-          className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary "
+          className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
           placeholder="Patient's Prescription"
         ></textarea>
       </div>
       <div className="mb-6">
-        <label
-          htmlFor="caseStudy"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-        >
+        <label htmlFor="caseStudy" className="block mb-2 text-sm font-medium">
           Case Study
         </label>
         <textarea
@@ -59,7 +56,7 @@ export default function PatientFormCaseStudy({
           rows={10}
           value={caseStudyValue}
           onChange={(e) => setCaseStudyValue(e.target.value)}
-          className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary "
+          className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
           placeholder="Patient's Case Study"
         ></textarea>
       </div>
