@@ -94,6 +94,34 @@ export const patientRouter = trpc
       return false;
     },
   })
+  .mutation("update_patient_personal_info", {
+    input: z.object({
+      id: z.string(),
+      firstName: z.string().optional(),
+      lastName: z.string().optional(),
+      phone: z.string().optional(),
+      email: z.string().optional(),
+      occupation: z.string().optional(),
+      address: z.string().optional(),
+      ailments: z.string().optional(),
+    }),
+    async resolve({ input }) {
+      return (await prisma.patient.update({
+        where: { id: input.id },
+        data: {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          phone: input.phone,
+          email: input.email,
+          occupation: input.occupation,
+          ailments: input.ailments,
+          address: input.address,
+        },
+      }))
+        ? true
+        : false;
+    },
+  })
   .mutation("delete_patient", {
     input: z.object({
       id: z.string().cuid(),

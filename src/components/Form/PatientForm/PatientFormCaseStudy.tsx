@@ -33,12 +33,11 @@ export default function PatientFormCaseStudy({
   };
 
   const handleSave = async () => {
-    await updateMutation.mutateAsync({
+    (await updateMutation.mutateAsync({
       id,
       caseStudy: caseStudyValue,
       prescription: prescriptionValue,
-    });
-    router.reload();
+    })) && router.reload();
   };
 
   useEffect(() => {

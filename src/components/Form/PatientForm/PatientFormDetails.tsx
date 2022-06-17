@@ -1,4 +1,4 @@
-import { InferQueryOutput } from "@/utils/trpc";
+import { InferQueryOutput, trpc } from "@/utils/trpc";
 import { useEffect, useState } from "react";
 
 import {
@@ -7,6 +7,7 @@ import {
   MailIcon,
   PhoneIcon,
 } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 
 export const PatientFormDetails: React.FC<{
   patient: InferQueryOutput<"get_patient_by_id">;
@@ -20,6 +21,23 @@ export const PatientFormDetails: React.FC<{
   const [ailments, setAilments] = useState(patient?.ailments);
 
   const [isEdit, setIsEdit] = useState(false);
+
+  const router = useRouter();
+
+  const updateMutation = trpc.useMutation(["update_patient_personal_info"]);
+
+  const handleSave = async () => {
+    (await updateMutation.mutateAsync({
+      id: patient?.id!,
+      firstName,
+      lastName,
+      phone: phoneNo,
+      email,
+      address,
+      occupation,
+      ailments,
+    })) && router.reload();
+  };
 
   const handleReset = () => {
     setFirstName(patient?.firstName);
@@ -206,6 +224,7 @@ export const PatientFormDetails: React.FC<{
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
           disabled={isEdit ? false : true}
+          onClick={handleSave}
         >
           Save
         </button>
