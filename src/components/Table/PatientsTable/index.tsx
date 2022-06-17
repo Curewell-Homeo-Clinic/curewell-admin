@@ -1,8 +1,4 @@
-import {
-  ArrowNarrowRightIcon,
-  ChevronDoubleRightIcon,
-  SearchIcon,
-} from "@heroicons/react/outline";
+import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -20,25 +16,23 @@ interface PatientsTableProps {
 }
 
 export default function PatientsTable({
-  patients: originalPatients,
+  patients: allPatients,
 }: PatientsTableProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [patients, setPatients] = useState<Patient[]>(originalPatients);
+  const [patients, setPatients] = useState<Patient[]>(allPatients);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("search", search);
-
     e.preventDefault();
 
     if (search !== "") {
-      const result = originalPatients.filter(
+      const result = allPatients.filter(
         (patient) =>
           patient.firstName.includes(search) ||
           patient.lastName.includes(search)
       );
       setPatients(result);
-    } else setPatients(originalPatients);
+    } else setPatients(allPatients);
   };
 
   const handleViewPatient = (id: string) => {
