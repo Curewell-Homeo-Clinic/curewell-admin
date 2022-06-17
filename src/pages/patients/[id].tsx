@@ -3,7 +3,6 @@ import { Loader } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 export default function PatientPage() {
   const router = useRouter();

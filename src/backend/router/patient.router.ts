@@ -80,6 +80,8 @@ export const patientRouter = trpc
           email: true,
           address: true,
           occupation: true,
+          caseStudy: true,
+          prescription: true,
           ailments: true,
         },
       });
