@@ -36,7 +36,7 @@ export const PatientFormDetails: React.FC<{
           <input
             type="text"
             id="firstName"
-            className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+            className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
             placeholder="reshu"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -51,7 +51,7 @@ export const PatientFormDetails: React.FC<{
           <input
             type="text"
             id="lastName"
-            className="bg-gray-50 border capitalize border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+            className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
             placeholder="sharma"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
