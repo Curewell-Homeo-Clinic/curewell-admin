@@ -8,6 +8,7 @@ import {
   PhoneIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { FormOptions } from "@/components/shared";
 
 export const PatientFormDetails: React.FC<{
   patient: InferQueryOutput<"get_patient_by_id">;
@@ -213,22 +214,11 @@ export const PatientFormDetails: React.FC<{
       </div>
 
       {/* Submit Button */}
-      <div className="flex gap-x-2 justify-end">
-        <button
-          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-          disabled={isEdit ? false : true}
-          onClick={handleReset}
-        >
-          Reset
-        </button>
-        <button
-          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-          disabled={isEdit ? false : true}
-          onClick={handleSave}
-        >
-          Save
-        </button>
-      </div>
+      <FormOptions
+        isEdit={isEdit}
+        handleReset={handleReset}
+        handleSave={handleSave}
+      />
     </form>
   );
 };

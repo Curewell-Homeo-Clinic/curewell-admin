@@ -44,7 +44,7 @@ export default function PatientsTable({
         <button
           type="button"
           onClick={() => handleViewPatient(patient.id)}
-          className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-secondary font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
+          className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-primaryLight font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
         >
           <ChevronDoubleRightIcon className="w-5" />
         </button>

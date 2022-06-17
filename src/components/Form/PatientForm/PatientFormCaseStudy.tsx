@@ -1,5 +1,6 @@
 // for case study of patient
 
+import { FormOptions } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -65,6 +66,7 @@ export default function PatientFormCaseStudy({
         <textarea
           id="prescription"
           rows={4}
+          spellCheck={false}
           value={prescriptionValue}
           onChange={(e) => setPrescriptionValue(e.target.value)}
           className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
@@ -78,28 +80,18 @@ export default function PatientFormCaseStudy({
         <textarea
           id="caseStudy"
           rows={10}
+          spellCheck={false}
           value={caseStudyValue}
           onChange={(e) => setCaseStudyValue(e.target.value)}
           className="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
           placeholder="Patient's Case Study"
         ></textarea>
       </div>
-      <div className="flex gap-x-2 justify-end">
-        <button
-          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-          disabled={isEdit ? false : true}
-          onClick={handleReset}
-        >
-          Reset
-        </button>
-        <button
-          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-          disabled={isEdit ? false : true}
-          onClick={handleSave}
-        >
-          Save
-        </button>
-      </div>
+      <FormOptions
+        isEdit={isEdit}
+        handleReset={handleReset}
+        handleSave={handleSave}
+      />
     </form>
   );
 }
