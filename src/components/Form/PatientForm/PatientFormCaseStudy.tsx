@@ -16,6 +16,12 @@ export default function PatientFormCaseStudy({
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const handleReset = () => {
+    setCaseStudyValue(caseStudy);
+    setPrescriptionValue(prescription);
+    setIsEdit(false);
+  };
+
   useEffect(() => {
     if (caseStudyValue !== caseStudy || prescriptionValue !== prescription) {
       setIsEdit(true);
@@ -60,7 +66,14 @@ export default function PatientFormCaseStudy({
           placeholder="Patient's Case Study"
         ></textarea>
       </div>
-      <div className="flex justify-end">
+      <div className="flex gap-x-2 justify-end">
+        <button
+          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
+          disabled={isEdit ? false : true}
+          onClick={handleReset}
+        >
+          Reset
+        </button>
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
           disabled={isEdit ? false : true}

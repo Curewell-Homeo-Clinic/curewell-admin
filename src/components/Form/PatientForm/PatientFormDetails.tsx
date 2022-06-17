@@ -21,6 +21,17 @@ export const PatientFormDetails: React.FC<{
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const handleReset = () => {
+    setFirstName(patient?.firstName);
+    setLastName(patient?.lastName);
+    setPhoneNo(patient?.phone);
+    setEmail(patient?.email);
+    setAddress(patient?.address);
+    setOccupation(patient?.occupation);
+    setAilments(patient?.ailments);
+    setIsEdit(false);
+  };
+
   useEffect(() => {
     if (
       firstName !== patient?.firstName ||
@@ -184,7 +195,14 @@ export const PatientFormDetails: React.FC<{
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-end">
+      <div className="flex gap-x-2 justify-end">
+        <button
+          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
+          disabled={isEdit ? false : true}
+          onClick={handleReset}
+        >
+          Reset
+        </button>
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
           disabled={isEdit ? false : true}
