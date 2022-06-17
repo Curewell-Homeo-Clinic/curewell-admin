@@ -1,8 +1,11 @@
 // for case study of patient
 
+import { trpc } from "@/utils/trpc";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 interface PatientFormCaseStudyProps {
+  id: string;
   caseStudy: string;
   prescription: string;
 }
@@ -10,16 +13,32 @@ interface PatientFormCaseStudyProps {
 export default function PatientFormCaseStudy({
   caseStudy,
   prescription,
+  id,
 }: PatientFormCaseStudyProps) {
   const [caseStudyValue, setCaseStudyValue] = useState(caseStudy);
   const [prescriptionValue, setPrescriptionValue] = useState(prescription);
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const router = useRouter();
+
+  const updateMutation = trpc.useMutation([
+    "update_case_study_and_prescription",
+  ]);
+
   const handleReset = () => {
     setCaseStudyValue(caseStudy);
     setPrescriptionValue(prescription);
     setIsEdit(false);
+  };
+
+  const handleSave = async () => {
+    await updateMutation.mutateAsync({
+      id,
+      caseStudy: caseStudyValue,
+      prescription: prescriptionValue,
+    });
+    router.reload();
   };
 
   useEffect(() => {
@@ -77,6 +96,7 @@ export default function PatientFormCaseStudy({
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
           disabled={isEdit ? false : true}
+          onClick={handleSave}
         >
           Save
         </button>

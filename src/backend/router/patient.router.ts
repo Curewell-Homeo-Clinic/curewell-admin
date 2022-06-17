@@ -74,6 +74,26 @@ export const patientRouter = trpc
       });
     },
   })
+  .mutation("update_case_study_and_prescription", {
+    input: z.object({
+      id: z.string(),
+      caseStudy: z.string().optional(),
+      prescription: z.string().optional(),
+    }),
+    async resolve({ input }) {
+      const res = await prisma.patient.update({
+        where: { id: input.id },
+        data: {
+          caseStudy: input.caseStudy,
+          prescription: input.prescription,
+        },
+      });
+
+      if (res) return true;
+
+      return false;
+    },
+  })
   .mutation("delete_patient", {
     input: z.object({
       id: z.string().cuid(),
