@@ -1,18 +1,10 @@
+import { InferQueryOutput } from "@/utils/trpc";
 import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-type Patient = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  admittedAt: Date;
-  phone: string;
-  ailments: { name: string }[];
-};
-
 interface PatientsTableProps {
-  patients: Patient[];
+  patients: InferQueryOutput<"get_all_patients">;
 }
 
 export default function PatientsTable({
@@ -20,7 +12,7 @@ export default function PatientsTable({
 }: PatientsTableProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [patients, setPatients] = useState<Patient[]>(allPatients);
+  const [patients, setPatients] = useState(allPatients);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +38,7 @@ export default function PatientsTable({
         {`${patient.firstName} ${patient.lastName}`}
       </td>
       <td className="">{`+91-${patient.phone}`}</td>
-      <td>{patient.ailments.map((ailment) => ailment.name).join(", ")}</td>
+      <td>{patient.ailments === "" ? "-" : patient.ailments}</td>
       <td>{new Date(patient.admittedAt).toLocaleDateString()}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button

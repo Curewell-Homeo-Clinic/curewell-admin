@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { z } from "zod";
+import { z, ZodString } from "zod";
 import { prisma } from "../utils/prisma";
 
 export const patientRouter = trpc
@@ -71,19 +71,6 @@ export const patientRouter = trpc
     resolve({ input }) {
       return prisma.patient.findUnique({
         where: { id: input.id },
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          admittedAt: true,
-          phone: true,
-          email: true,
-          address: true,
-          occupation: true,
-          caseStudy: true,
-          prescription: true,
-          ailments: true,
-        },
       });
     },
   })
@@ -95,7 +82,7 @@ export const patientRouter = trpc
   })
   .mutation("create_patient", {
     input: z.object({
-      admittedAt: z.optional(z.date()),
+      admittedAt: z.date().optional(),
       firstName: z.string(),
       lastName: z.string(),
       dob: z.date(),
@@ -111,7 +98,7 @@ export const patientRouter = trpc
       address: z.string(),
       occupation: z.string(),
       // pass id for already created ailment and name for new ones
-      ailments: z.object({ id: z.string(), name: z.string() }).array(),
+      ailments: z.string(),
     }),
     async resolve({ input: patient }) {
       return await prisma.patient.create({
@@ -124,14 +111,7 @@ export const patientRouter = trpc
           phone: patient.phone,
           address: patient.address,
           occupation: patient.occupation,
-          ailments: {
-            connect: patient.ailments
-              .filter((ailment) => ailment.id)
-              .map(({ id }) => ({ id })),
-            create: patient.ailments
-              .filter(({ name }) => name)
-              .map(({ name }) => ({ name })),
-          },
+          ailments: patient.ailments,
         },
         select: {
           id: true,

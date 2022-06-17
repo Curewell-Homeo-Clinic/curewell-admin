@@ -140,20 +140,20 @@ export const PatientFormDetails: React.FC<{
           />
         </div>
       </div>
+
+      {/* Ailments */}
       <div className="mb-6">
-        <label htmlFor="address" className="block mb-2 text-sm font-medium">
+        <label htmlFor="ailments" className="block mb-2 text-sm font-medium">
           Ailments
         </label>
-        <div className="flex items-center gap-x-2 px-2">
-          {ailments?.map((ailment) => (
-            <span
-              key={ailment.id}
-              className="bg-transparent border-2 border-secondary text-primary text-sm font-medium px-2.5 py-0.5 rounded-lg"
-            >
-              {ailment.name}
-            </span>
-          ))}
-        </div>
+        <input
+          type="text"
+          id="ailments"
+          className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+          placeholder="skin disease"
+          value={ailments}
+          onChange={(e) => setAilments(e.target.value)}
+        />
       </div>
     </form>
   );

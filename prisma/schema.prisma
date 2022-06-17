@@ -25,13 +25,7 @@ model Patient {
     prescription String        @default("") @db.VarChar(1000)
     appointments Appointment[]
     invoices     Invoice[]
-    ailments     Ailment[]
-}
-
-model Ailment {
-    id       String    @id @default(cuid())
-    name     String
-    patients Patient[]
+    ailments     String        @default("")
 }
 
 model Doctor {
