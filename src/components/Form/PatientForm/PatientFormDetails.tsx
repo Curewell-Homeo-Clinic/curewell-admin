@@ -1,5 +1,6 @@
 import { InferQueryOutput } from "@/utils/trpc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import {
   BriefcaseIcon,
   LocationMarkerIcon,
@@ -17,6 +18,31 @@ export const PatientFormDetails: React.FC<{
   const [address, setAddress] = useState(patient?.address);
   const [occupation, setOccupation] = useState(patient?.occupation);
   const [ailments, setAilments] = useState(patient?.ailments);
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    if (
+      firstName !== patient?.firstName ||
+      lastName !== patient?.lastName ||
+      phoneNo !== patient?.phone ||
+      email !== patient?.email ||
+      address !== patient?.address ||
+      occupation !== patient?.occupation ||
+      ailments !== patient?.ailments
+    ) {
+      setIsEdit(true);
+    } else setIsEdit(false);
+  }, [
+    firstName,
+    lastName,
+    phoneNo,
+    email,
+    address,
+    occupation,
+    ailments,
+    patient,
+  ]);
 
   return (
     <form
@@ -149,11 +175,22 @@ export const PatientFormDetails: React.FC<{
         <input
           type="text"
           id="ailments"
+          spellCheck={false}
           className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
           placeholder="skin disease"
           value={ailments}
           onChange={(e) => setAilments(e.target.value)}
         />
+      </div>
+
+      {/* Submit Button */}
+      <div className="flex justify-end">
+        <button
+          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
+          disabled={isEdit ? false : true}
+        >
+          Save
+        </button>
       </div>
     </form>
   );
