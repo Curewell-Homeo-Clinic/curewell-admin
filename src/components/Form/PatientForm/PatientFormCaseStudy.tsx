@@ -63,8 +63,13 @@ export default function PatientFormCaseStudy({
           placeholder="Patient's Case Study"
         ></textarea>
       </div>
-      <div className={`flex justify-end ${!isEdit && "scale-0"} duration-300`}>
-        <button className="btn">Save</button>
+      <div className="flex justify-end">
+        <button
+          className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
+          disabled={isEdit ? false : true}
+        >
+          Save
+        </button>
       </div>
     </form>
   );
