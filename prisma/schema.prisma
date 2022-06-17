@@ -21,6 +21,8 @@ model Patient {
     phone        String
     address      String
     occupation   String
+    caseStudy    String        @db.VarChar(10000)
+    prescription String        @db.VarChar(1000)
     appointments Appointment[]
     invoices     Invoice[]
     ailments     Ailment[]
