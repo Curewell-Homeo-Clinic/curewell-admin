@@ -1,4 +1,4 @@
-import { PatientForm } from "@/components/Form";
+import { PatientDeleteForm, PatientForm } from "@/components/Form";
 import { Loader } from "@/components/shared";
 import { GoBackButton } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
@@ -18,12 +18,15 @@ export default function PatientPage() {
     <div>
       <GoBackButton />
       <div className="mt-8 px-2">
-        <div className="flex flex-col gap-x-2">
-          <p className="secondaryText">Patient</p>
-          <h1>{`${patient.firstName} ${patient.lastName}`}</h1>
-          <p className="secondaryText">
-            Joined at {new Date(patient.admittedAt).toLocaleDateString()}
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-x-2">
+            <p className="secondaryText">Patient</p>
+            <h1>{`${patient.firstName} ${patient.lastName}`}</h1>
+            <p className="secondaryText">
+              Joined at {new Date(patient.admittedAt).toLocaleDateString()}
+            </p>
+          </div>
+          <PatientDeleteForm id={id! as string} />
         </div>
         <PatientForm patient={patient} />
       </div>

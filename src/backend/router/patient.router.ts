@@ -15,6 +15,7 @@ export const patientRouter = trpc
           phone: true,
           ailments: true,
         },
+        where: { isDeleted: false },
       });
     },
   })
@@ -28,6 +29,7 @@ export const patientRouter = trpc
       return await prisma.patient.findMany({
         skip: offset,
         take: limit,
+        where: { isDeleted: false },
         select: {
           id: true,
           firstName: true,
@@ -51,6 +53,7 @@ export const patientRouter = trpc
             { firstName: { contains: input.name } },
             { lastName: { contains: input.name } },
           ],
+          isDeleted: false,
         },
         select: {
           id: true,
@@ -126,7 +129,14 @@ export const patientRouter = trpc
     input: z.object({
       id: z.string().cuid(),
     }),
-    resolve() {},
+    async resolve({ input }) {
+      return (await prisma.patient.update({
+        where: { id: input.id },
+        data: { isDeleted: true },
+      }))
+        ? true
+        : false;
+    },
   })
   .mutation("create_patient", {
     input: z.object({
