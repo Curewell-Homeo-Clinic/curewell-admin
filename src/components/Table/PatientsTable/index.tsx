@@ -39,7 +39,8 @@ export default function PatientsTable({
       <td className="capitalize">
         {`${patient.firstName} ${patient.lastName}`}
       </td>
-      <td className="">{`+91-${patient.phone}`}</td>
+      <td>{`+91-${patient.phone}`}</td>
+      <td>{patient.age}</td>
       <td>{patient.ailments === "" ? "-" : patient.ailments}</td>
       <td>{new Date(patient.admittedAt).toLocaleDateString()}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
@@ -107,6 +108,12 @@ export default function PatientsTable({
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Phone Number
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Age
                 </th>
                 <th
                   scope="col"

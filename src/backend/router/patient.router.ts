@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { z, ZodString } from "zod";
+import { z } from "zod";
 import { prisma } from "../utils/prisma";
 
 export const patientRouter = trpc
@@ -14,6 +14,7 @@ export const patientRouter = trpc
           admittedAt: true,
           phone: true,
           ailments: true,
+          age: true,
         },
         where: { isDeleted: false },
       });
@@ -37,6 +38,7 @@ export const patientRouter = trpc
           admittedAt: true,
           phone: true,
           ailments: true,
+          age: true,
         },
       });
     },
