@@ -15,7 +15,7 @@ export default function AppointmentsPage() {
       <div className="p-2">
         <h1>Appointments</h1>
       </div>
-      <AppointmentsTable appointments={appointments} />
+      <AppointmentsTable allAppointments={appointments} />
     </div>
   );
 }
