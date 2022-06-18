@@ -76,6 +76,7 @@ export const PatientFormDetails: React.FC<{
     occupation,
     ailments,
     patient,
+    patient?.age,
   ]);
 
   return (
@@ -133,6 +134,7 @@ export const PatientFormDetails: React.FC<{
             id="phoneNo"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
             placeholder="9090230423"
+            maxLength={10}
             value={phoneNo}
             onChange={(e) => setPhoneNo(e.target.value)}
           />
