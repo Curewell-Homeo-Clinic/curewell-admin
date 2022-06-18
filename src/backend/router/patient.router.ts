@@ -107,18 +107,20 @@ export const patientRouter = trpc
       occupation: z.string().optional(),
       address: z.string().optional(),
       ailments: z.string().optional(),
+      age: z.number().optional(),
     }),
-    async resolve({ input }) {
+    async resolve({ input: patient }) {
       return (await prisma.patient.update({
-        where: { id: input.id },
+        where: { id: patient.id },
         data: {
-          firstName: input.firstName,
-          lastName: input.lastName,
-          phone: input.phone,
-          email: input.email,
-          occupation: input.occupation,
-          ailments: input.ailments,
-          address: input.address,
+          firstName: patient.firstName,
+          lastName: patient.lastName,
+          phone: patient.phone,
+          email: patient.email,
+          occupation: patient.occupation,
+          ailments: patient.ailments,
+          address: patient.address,
+          age: patient.age,
         },
       }))
         ? true
@@ -143,7 +145,7 @@ export const patientRouter = trpc
       admittedAt: z.date().optional(),
       firstName: z.string(),
       lastName: z.string(),
-      dob: z.date(),
+      age: z.number(),
       email: z.string().email(),
       phone: z
         .string()
@@ -164,8 +166,8 @@ export const patientRouter = trpc
           admittedAt: patient.admittedAt,
           firstName: patient.firstName,
           lastName: patient.lastName,
-          dob: patient.dob,
           email: patient.email,
+          age: patient.age,
           phone: patient.phone,
           address: patient.address,
           occupation: patient.occupation,

@@ -1,3 +1,4 @@
+import { PatientCreateForm } from "@/components/Form";
 import { InferQueryOutput } from "@/utils/trpc";
 import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
@@ -13,6 +14,7 @@ export default function PatientsTable({
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [patients, setPatients] = useState(allPatients);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,7 +57,7 @@ export default function PatientsTable({
   return (
     <div className="p-2 mt-8">
       <div className="inline-block min-w-full py-2 align-middle">
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex justify-between items-center">
           <form className="flex items-center" onSubmit={(e) => handleSearch(e)}>
             <label htmlFor="simple-search" className="sr-only">
               Search
@@ -76,6 +78,13 @@ export default function PatientsTable({
               <button className="sr-only" type="submit" />
             </div>
           </form>
+          <button className="btn" onClick={() => setShowCreateModal(true)}>
+            Add
+          </button>
+          <PatientCreateForm
+            show={showCreateModal}
+            setShow={setShowCreateModal}
+          />
         </div>
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">

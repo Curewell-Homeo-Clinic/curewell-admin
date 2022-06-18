@@ -1,6 +1,6 @@
 import { InferQueryOutput } from "@/utils/trpc";
-import PatientFormCaseStudy from "./PatientFormCaseStudy";
-import { PatientFormDetails } from "./PatientFormDetails";
+import PatientFormCaseStudy from "./PatientCaseStudyForm";
+import { PatientFormDetails } from "./PatientDetailsForm";
 
 interface PatientFormProps {
   patient: InferQueryOutput<"get_patient_by_id">;

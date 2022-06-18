@@ -16,7 +16,7 @@ model Patient {
     admittedAt   DateTime      @default(now())
     firstName    String
     lastName     String
-    dob          DateTime
+    age          Int           @default(0)
     email        String
     phone        String
     address      String

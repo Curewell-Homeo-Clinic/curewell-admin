@@ -20,6 +20,7 @@ export const PatientFormDetails: React.FC<{
   const [address, setAddress] = useState(patient?.address);
   const [occupation, setOccupation] = useState(patient?.occupation);
   const [ailments, setAilments] = useState(patient?.ailments);
+  const [age, setAge] = useState(patient?.age);
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -37,6 +38,7 @@ export const PatientFormDetails: React.FC<{
       address,
       occupation,
       ailments,
+      age,
     })) && router.reload();
   };
 
@@ -48,6 +50,7 @@ export const PatientFormDetails: React.FC<{
     setAddress(patient?.address);
     setOccupation(patient?.occupation);
     setAilments(patient?.ailments);
+    setAge(patient?.age);
     setIsEdit(false);
   };
 
@@ -59,6 +62,7 @@ export const PatientFormDetails: React.FC<{
       email !== patient?.email ||
       address !== patient?.address ||
       occupation !== patient?.occupation ||
+      age !== patient?.age ||
       ailments !== patient?.ailments
     ) {
       setIsEdit(true);
@@ -154,6 +158,22 @@ export const PatientFormDetails: React.FC<{
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+      </div>
+
+      {/* Age */}
+      <div className="mb-6">
+        <label htmlFor="age" className="block mb-2 text-sm font-medium">
+          Age
+        </label>
+        <input
+          type="number"
+          id="age"
+          spellCheck={false}
+          className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+          placeholder="skin disease"
+          value={age}
+          onChange={(e) => setAge(parseInt(e.target.value))}
+        />
       </div>
 
       {/* Occupation */}
