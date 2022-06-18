@@ -101,7 +101,7 @@ export const patientRouter = trpc
   })
   .mutation("update_patient_personal_info", {
     input: z.object({
-      id: z.string(),
+      id: z.string().cuid(),
       firstName: z.string().optional(),
       lastName: z.string().optional(),
       phone: z.string().optional(),
