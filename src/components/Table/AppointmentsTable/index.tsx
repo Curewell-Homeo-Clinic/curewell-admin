@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import { useState } from "react";
 
 const AppointmentsTable: React.FC<{
-  allAppointments: InferQueryOutput<"get_all_appointments">;
-}> = ({ allAppointments }) => {
+  appointments: InferQueryOutput<"get_all_appointments">;
+}> = ({ appointments: allAppointments }) => {
   const router = useRouter();
 
   const [appointments, setAppointments] = useState(allAppointments);

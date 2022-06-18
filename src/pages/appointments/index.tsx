@@ -1,5 +1,5 @@
 import { Loader } from "@/components/shared";
-import AppointmentsTable from "@/components/Table/AppointmentsTable";
+import { AppointmentsTable } from "@/components/Table";
 import { trpc } from "@/utils/trpc";
 
 export default function AppointmentsPage() {
@@ -15,7 +15,7 @@ export default function AppointmentsPage() {
       <div className="p-2">
         <h1>Appointments</h1>
       </div>
-      <AppointmentsTable allAppointments={appointments} />
+      <AppointmentsTable appointments={appointments} />
     </div>
   );
 }

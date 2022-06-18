@@ -1,6 +1,6 @@
 import { Stats } from "@/components";
 import { Loader } from "@/components/shared";
-import { PatientsTable } from "@/components/Table";
+import { PatientsTable, AppointmentsTable } from "@/components/Table";
 import { trpc } from "@/utils/trpc";
 
 export default function Home() {
@@ -13,13 +13,33 @@ export default function Home() {
     { limit: 10 },
   ]);
 
-  if (isStatsLoading || !overallStats || isPatientsLoading || !patients)
+  const { isLoading: isAppointmentsLoading, data: appointments } =
+    trpc.useQuery(["get_all_appointments", { limit: 10 }]);
+
+  if (
+    isStatsLoading ||
+    !overallStats ||
+    isPatientsLoading ||
+    !patients ||
+    isAppointmentsLoading ||
+    !appointments
+  )
     return <Loader />;
 
   return (
     <div>
       <Stats overallStats={overallStats} />
-      <PatientsTable patients={patients} />
+      <div className="flex flex-wrap gap-10 w-full items-start mt-10">
+        <div style={{ flex: 0.5 }}>
+          <h1 className="px-2">Patients</h1>
+          <PatientsTable patients={patients} />
+        </div>
+
+        <div style={{ flex: 0.5 }}>
+          <h1 className="px-2">Appointments</h1>
+          <AppointmentsTable appointments={appointments} />
+        </div>
+      </div>
     </div>
   );
 }
