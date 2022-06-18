@@ -29,7 +29,7 @@ const AppointmentsTable: React.FC<{
       <td className="capitalize cursor-pointer hover:underline">
         {`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}
       </td>
-      <td>{format(new Date(appointment.timeStamp), "dd/MM/yy")}</td>
+      <td>{format(new Date(appointment.timeStamp), "dd/MM/yy - hh:mm aaa")}</td>
       <td>
         <input
           type="checkbox"
