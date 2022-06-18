@@ -43,17 +43,18 @@ const AppointmentsTable: React.FC<{
       >
         {`${appointment.patient.firstName} ${appointment.patient.lastName}`}
       </td>
-      <td className="capitalize cursor-pointer hover:underline">
+      <td className="capitalize">
         {`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}
       </td>
       <td>{format(new Date(appointment.timeStamp), "dd/MM/yy - hh:mm aaa")}</td>
       <td>
-        <input
-          type="checkbox"
-          checked={appointment.visited}
-          value=""
-          className="ml-2 w-4 h-4 text-secondary bg-gray-100 rounded border-gray-300 focus:ring-2 focus:ring-primaryLight"
-        />
+        <span
+          className={`${appointment.visited ? "bg-green-100" : "bg-red-100"} ${
+            appointment.visited ? "text-green-600" : "text-red-600"
+          } text-xs font-semibold px-2.5 py-0.5 rounded select-none cursor-pointer`}
+        >
+          {appointment.visited ? "Visited" : "Not Visited"}
+        </span>
       </td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
