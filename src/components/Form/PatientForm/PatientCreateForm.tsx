@@ -177,7 +177,7 @@ const PatientCreateForm: React.FC<{
                   id="age"
                   spellCheck={false}
                   className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
-                  placeholder="skin disease"
+                  placeholder="23"
                   value={age}
                   onChange={(e) => setAge(parseInt(e.target.value))}
                 />
