@@ -54,7 +54,7 @@ const PatientCreateForm: React.FC<{
     ) {
       setIsEdit(true);
     } else setIsEdit(false);
-  }, [firstName, lastName, phoneNo, email, address, occupation, ailments]);
+  }, [firstName, lastName, phoneNo, email, address, occupation, ailments, age]);
 
   return (
     <div

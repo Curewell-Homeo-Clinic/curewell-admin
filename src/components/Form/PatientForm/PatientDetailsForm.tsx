@@ -75,6 +75,7 @@ export const PatientFormDetails: React.FC<{
     address,
     occupation,
     ailments,
+    age,
     patient,
     patient?.age,
   ]);

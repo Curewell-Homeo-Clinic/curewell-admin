@@ -52,7 +52,7 @@ const PatientDeleteForm: React.FC<{ id: string }> = ({ id }) => {
                 type="button"
                 className="text-white mr-2 bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
               >
-                Yes, I'm sure
+                Yes, I&apos;m sure
               </button>
               <button
                 onClick={() => setShowDeleteConfirmation(false)}

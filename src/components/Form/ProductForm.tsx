@@ -18,8 +18,6 @@ const ProductForm: React.FC<{
     ) {
       setIsEdit(true);
     } else setIsEdit(false);
-
-    console.log("useEffect", isEdit);
   }, [name, product.name, price, product.price, quantity, product.quantity]);
 
   if (!product) return null;
