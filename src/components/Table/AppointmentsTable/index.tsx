@@ -49,7 +49,8 @@ const AppointmentsTable: React.FC<{
       <td className="capitalize">
         {`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}
       </td>
-      <td>{format(new Date(appointment.timeStamp), "dd/MM/yy - hh:mm aaa")}</td>
+      <td>{format(new Date(appointment.timeStamp), "dd/MM/yy - EEE")}</td>
+      <td>{format(new Date(appointment.timeStamp), "hh:mm aaa")}</td>
       <td>
         <span
           className={`${appointment.visited ? "bg-green-100" : "bg-red-100"} ${
@@ -129,7 +130,13 @@ const AppointmentsTable: React.FC<{
                   scope="col"
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
-                  Date and Time
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Time
                 </th>
                 <th
                   scope="col"
