@@ -1,5 +1,5 @@
 import { FormOptions } from "@/components/shared";
-import { InferQueryOutput } from "@/utils/trpc";
+import { InferQueryOutput, trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
   ClockIcon,
@@ -25,6 +25,8 @@ const AppointmentsForm: React.FC<{
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  const updateMutation = trpc.useMutation(["update_appointment"]);
+
   const handleViewPatient = () => {
     router.push(patientDetailsUrl);
   };
@@ -37,7 +39,14 @@ const AppointmentsForm: React.FC<{
   };
 
   const handleSave = async () => {
-    setIsEdit(false);
+    console.log(date, time);
+
+    (await updateMutation.mutateAsync({
+      date: date.toISOString(),
+      time: time.toISOString(),
+      id: appointment?.id!,
+      visited: visited,
+    })) && router.reload();
   };
 
   useEffect(() => {
