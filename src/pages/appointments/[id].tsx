@@ -23,7 +23,18 @@ export default function AppointmentPage() {
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-x-2">
             <p className="secondaryText">Appointment</p>
-            <h1>{`${appointment.patient.firstName}'s Appointment`}</h1>
+            <div className="flex items-center gap-x-4">
+              <h1>{`${appointment.patient.firstName}'s Appointment`}</h1>
+              <span
+                className={`${
+                  appointment.visited ? "bg-green-100" : "bg-red-100"
+                } ${
+                  appointment.visited ? "text-green-600" : "text-red-600"
+                } text-xs font-semibold px-2.5 py-0.5 rounded select-none cursor-pointer`}
+              >
+                {appointment.visited ? "Visited" : "Not Visited"}
+              </span>
+            </div>
             <p className="secondaryText">
               On {format(new Date(appointment.timeStamp), "dd/MM/yy hh:mm aaa")}
             </p>
