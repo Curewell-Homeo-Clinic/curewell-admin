@@ -19,7 +19,7 @@ td {
 }
 
 h1 {
-  @apply text-3xl capitalize font-semibold select-none;
+  @apply text-3xl capitalize font-medium select-none;
 }
 
 .secondaryText {

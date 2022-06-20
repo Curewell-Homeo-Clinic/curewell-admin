@@ -3,6 +3,7 @@ import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
 import { useState } from "react";
+import { AppointmentCreateForm } from "@/components/Form";
 
 const AppointmentsTable: React.FC<{
   appointments: InferQueryOutput<"get_all_appointments">;
@@ -10,7 +11,9 @@ const AppointmentsTable: React.FC<{
   const router = useRouter();
 
   const [appointments, setAppointments] = useState(allAppointments);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
+
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,13 +95,13 @@ const AppointmentsTable: React.FC<{
               <button className="sr-only" type="submit" />
             </div>
           </form>
-          {/* <button className="btn" onClick={() => setShowCreateModal(true)}>
+          <button className="btn" onClick={() => setShowCreateModal(true)}>
             Add
           </button>
-          <PatientCreateForm
+          <AppointmentCreateForm
             show={showCreateModal}
             setShow={setShowCreateModal}
-          /> */}
+          />
         </div>
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">

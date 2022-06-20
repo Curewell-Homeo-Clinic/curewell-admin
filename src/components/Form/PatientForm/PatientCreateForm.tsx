@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/outline";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
+import { Modal } from "@/components/shared";
 
 const PatientCreateForm: React.FC<{
   show: boolean;
@@ -57,213 +58,176 @@ const PatientCreateForm: React.FC<{
   }, [firstName, lastName, phoneNo, email, address, occupation, ailments, age]);
 
   return (
-    <div
-      tabIndex={-1}
-      className={`${
-        !show && "hidden"
-      } overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 md:inset-0 h-modal md:h-full flex items-center justify-center`}
-      style={{
-        background: "rgba(8, 26, 81, 0.5)",
-      }}
-    >
-      <div className="relative p-4 w-full max-w-xl h-full md:h-auto">
-        <div className="relative bg-white rounded-lg shadow-lg">
-          <button
-            type="button"
-            onClick={() => setShow(false)}
-            className="absolute top-3 right-2.5 text-primary bg-transparent hover:bg-primaryLight hover:text-secondary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-          >
-            <XIcon className="w-5" />
-          </button>
-          <div className="p-6">
-            <h1>add new patient</h1>
-            <form
-              className="mt-4 min-w-full"
-              onSubmit={(e) => e.preventDefault()}
+    <Modal show={show} setShow={setShow} title="add new patient">
+      <form className="mt-4 min-w-full" onSubmit={(e) => e.preventDefault()}>
+        <div className="flex mb-6 mt-6 gap-x-4">
+          {/* First Name */}
+          <div>
+            <label
+              htmlFor="firstName"
+              className="block mb-2 text-sm font-medium"
             >
-              <div className="flex mb-6 mt-6 gap-x-4">
-                {/* First Name */}
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block mb-2 text-sm font-medium"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
-                    placeholder="reshu"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
+              First Name
+            </label>
+            <input
+              type="text"
+              id="firstName"
+              className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+              placeholder="reshu"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
 
-                {/* Last Name */}
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block mb-2 text-sm font-medium"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
-                    placeholder="sharma"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Phone No */}
-              <div className="mb-6">
-                <label
-                  htmlFor="phoneNo"
-                  className="block mb-2 text-sm font-medium"
-                >
-                  Phone Number
-                </label>
-                <div className="relative">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    <PhoneIcon className="w-5" />
-                  </div>
-                  <input
-                    type="tel"
-                    id="phoneNo"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
-                    placeholder="9090230423"
-                    value={phoneNo}
-                    onChange={(e) => setPhoneNo(e.target.value)}
-                    maxLength={10}
-                  />
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="mb-6">
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium"
-                >
-                  Email
-                </label>
-                <div className="relative">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    <MailIcon className="w-5" />
-                  </div>
-                  <input
-                    type="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
-                    placeholder="name@curewellhomeo.com"
-                    value={email}
-                    spellCheck={false}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Age */}
-              <div className="mb-6">
-                <label htmlFor="age" className="block mb-2 text-sm font-medium">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  id="age"
-                  spellCheck={false}
-                  className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
-                  placeholder="23"
-                  value={age}
-                  onChange={(e) => setAge(parseInt(e.target.value))}
-                />
-              </div>
-
-              {/* Occupation */}
-              <div className="mb-6">
-                <label
-                  htmlFor="occupation"
-                  className="block mb-2 text-sm font-medium"
-                >
-                  Occupation
-                </label>
-                <div className="relative">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    <BriefcaseIcon className="w-5" />
-                  </div>
-                  <input
-                    type="text"
-                    id="occupation"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 pl-10"
-                    placeholder="Doctor"
-                    value={occupation}
-                    spellCheck={false}
-                    onChange={(e) => setOccupation(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Address */}
-              <div className="mb-6">
-                <label
-                  htmlFor="address"
-                  className="block mb-2 text-sm font-medium"
-                >
-                  Address
-                </label>
-                <div className="relative">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                    <LocationMarkerIcon className="w-5" />
-                  </div>
-                  <input
-                    type="text"
-                    id="address"
-                    value={address}
-                    placeholder="1234 Main St"
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="block w-full pl-10 p-4 border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-secondary focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              {/* Ailments */}
-              <div className="mb-6">
-                <label
-                  htmlFor="ailments"
-                  className="block mb-2 text-sm font-medium"
-                >
-                  Ailments
-                </label>
-                <input
-                  type="text"
-                  id="ailments"
-                  spellCheck={false}
-                  className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
-                  placeholder="skin disease"
-                  value={ailments}
-                  onChange={(e) => setAilments(e.target.value)}
-                />
-              </div>
-
-              {/* Add Button */}
-              <div className="flex justify-end">
-                <button
-                  className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-                  disabled={isEdit ? false : true}
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+          {/* Last Name */}
+          <div>
+            <label
+              htmlFor="lastName"
+              className="block mb-2 text-sm font-medium"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+              placeholder="sharma"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </div>
         </div>
-      </div>
-    </div>
+
+        {/* Phone No */}
+        <div className="mb-6">
+          <label htmlFor="phoneNo" className="block mb-2 text-sm font-medium">
+            Phone Number
+          </label>
+          <div className="relative">
+            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <PhoneIcon className="w-5" />
+            </div>
+            <input
+              type="tel"
+              id="phoneNo"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
+              placeholder="9090230423"
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
+              maxLength={10}
+            />
+          </div>
+        </div>
+
+        {/* Email */}
+        <div className="mb-6">
+          <label htmlFor="email" className="block mb-2 text-sm font-medium">
+            Email
+          </label>
+          <div className="relative">
+            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <MailIcon className="w-5" />
+            </div>
+            <input
+              type="email"
+              id="email"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
+              placeholder="name@curewellhomeo.com"
+              value={email}
+              spellCheck={false}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Age */}
+        <div className="mb-6">
+          <label htmlFor="age" className="block mb-2 text-sm font-medium">
+            Age
+          </label>
+          <input
+            type="number"
+            id="age"
+            spellCheck={false}
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+            placeholder="23"
+            value={age}
+            onChange={(e) => setAge(parseInt(e.target.value))}
+          />
+        </div>
+
+        {/* Occupation */}
+        <div className="mb-6">
+          <label
+            htmlFor="occupation"
+            className="block mb-2 text-sm font-medium"
+          >
+            Occupation
+          </label>
+          <div className="relative">
+            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <BriefcaseIcon className="w-5" />
+            </div>
+            <input
+              type="text"
+              id="occupation"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 pl-10"
+              placeholder="Doctor"
+              value={occupation}
+              spellCheck={false}
+              onChange={(e) => setOccupation(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Address */}
+        <div className="mb-6">
+          <label htmlFor="address" className="block mb-2 text-sm font-medium">
+            Address
+          </label>
+          <div className="relative">
+            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <LocationMarkerIcon className="w-5" />
+            </div>
+            <input
+              type="text"
+              id="address"
+              value={address}
+              placeholder="1234 Main St"
+              onChange={(e) => setAddress(e.target.value)}
+              className="block w-full pl-10 p-4 border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-secondary focus:border-primary"
+            />
+          </div>
+        </div>
+
+        {/* Ailments */}
+        <div className="mb-6">
+          <label htmlFor="ailments" className="block mb-2 text-sm font-medium">
+            Ailments
+          </label>
+          <input
+            type="text"
+            id="ailments"
+            spellCheck={false}
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+            placeholder="skin disease"
+            value={ailments}
+            onChange={(e) => setAilments(e.target.value)}
+          />
+        </div>
+
+        {/* Add Button */}
+        <div className="flex justify-end">
+          <button
+            className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
+            disabled={isEdit ? false : true}
+            onClick={handleSave}
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 
