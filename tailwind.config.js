@@ -7,12 +7,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#081A51",
-        secondary: "#081a51cb",
-        primaryLight: "rgba(8, 26, 81, 0.1)",
+        primary: "#1A1B1E",
+        secondary: "#373A40",
+        primaryLight: "#C1C2C5",
         lightWhite: "#ffffff2b",
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
 };

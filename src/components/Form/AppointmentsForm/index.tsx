@@ -2,9 +2,13 @@ import { FormOptions } from "@/components/shared";
 import { InferQueryOutput } from "@/utils/trpc";
 import {
   CalendarIcon,
+  ClockIcon,
+  EyeIcon,
   UserCircleIcon,
   UserIcon,
 } from "@heroicons/react/outline";
+import { Checkbox } from "@mantine/core";
+import { DatePicker, TimeInput } from "@mantine/dates";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -15,6 +19,9 @@ const AppointmentsForm: React.FC<{
   const patientDetailsUrl = `/patients/${appointment?.patient.id}`;
 
   const [visited, setVisited] = useState<boolean>(appointment?.visited!);
+  const [timeStamp] = useState<Date>(new Date(appointment?.timeStamp!));
+  const [date, setDate] = useState<Date>(timeStamp);
+  const [time, setTime] = useState<Date>(timeStamp);
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
@@ -24,6 +31,8 @@ const AppointmentsForm: React.FC<{
 
   const handleReset = () => {
     setVisited(appointment?.visited!);
+    setDate(timeStamp);
+    setTime(timeStamp);
     setIsEdit(false);
   };
 
@@ -32,8 +41,14 @@ const AppointmentsForm: React.FC<{
   };
 
   useEffect(() => {
-    if (appointment?.visited !== visited) setIsEdit(true);
-  }, [visited, appointment?.visited]);
+    if (
+      appointment?.visited !== visited ||
+      timeStamp !== date ||
+      timeStamp !== time
+    )
+      setIsEdit(true);
+    else setIsEdit(false);
+  }, [visited, appointment?.visited, date, time, timeStamp]);
 
   useEffect(() => {
     router.prefetch(patientDetailsUrl);
@@ -90,47 +105,42 @@ const AppointmentsForm: React.FC<{
       </div>
 
       <div className="mb-6">
-        <label htmlFor="dateAndTime" className="block mb-2 text-sm font-medium">
-          Date and Time
-        </label>
-        <div className="relative">
-          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-            <CalendarIcon className="w-5" />
-          </div>
-          <input
-            type="tel"
-            id="dateAndTime"
-            className="cursor-pointer bg-gray-50 capitalize  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 "
-            placeholder="9090230423"
-            maxLength={10}
-            disabled
-            value={`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}
+        <div className="flex items-center gap-x-10">
+          <DatePicker
+            placeholder="Pick a date"
+            label="Appointment's Date"
+            radius="md"
+            variant="filled"
+            styles={{
+              label: { fontWeight: "inherit" },
+            }}
+            value={date}
+            onChange={(date) => date && setDate(date)}
+            icon={<CalendarIcon className="w-5" />}
+          />
+          <TimeInput
+            placeholder="Pick a time"
+            label="Appointments's Time"
+            variant="filled"
+            radius="md"
+            format="12"
+            clearable
+            styles={{
+              label: { fontWeight: "inherit" },
+            }}
+            value={time}
+            onChange={(time) => time && setTime(time)}
+            icon={<ClockIcon className="w-5" />}
           />
         </div>
       </div>
 
       <div className="mb-6">
-        <div className="flex gap-x-4">
-          <div className="text-sm">
-            <label htmlFor="visited" className="font-medium">
-              Visited
-            </label>
-            <p className="text-xs font-normal text-secondary">
-              Did the patient attended the appointment or not?
-            </p>
-          </div>
-          <div className="flex items-center h-5">
-            <input
-              id="visited"
-              aria-describedby="visited-description"
-              type="checkbox"
-              checked={visited}
-              onChange={() => setVisited(!visited)}
-              value=""
-              className="w-4 h-4 text-primary bg-gray-100 rounded border-gray-300 focus:ring-primaryLight"
-            />
-          </div>
-        </div>
+        <Checkbox
+          label="Visited"
+          checked={visited}
+          onChange={() => setVisited(!visited)}
+        />
       </div>
 
       <FormOptions

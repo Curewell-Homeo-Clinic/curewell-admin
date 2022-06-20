@@ -4,6 +4,7 @@ import { AppRouter } from "@/backend/router";
 import "@/styles/tailwind.css";
 import { Wrapper } from "@/components";
 import Head from "next/head";
+import { MantineProvider } from "@mantine/core";
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -11,9 +12,16 @@ function App({ Component, pageProps }: AppProps) {
       <Head>
         <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
-      <Wrapper>
-        <Component {...pageProps} />
-      </Wrapper>
+      <MantineProvider
+        theme={{
+          primaryColor: "dark",
+          focusRing: "always",
+        }}
+      >
+        <Wrapper>
+          <Component {...pageProps} />
+        </Wrapper>
+      </MantineProvider>
     </>
   );
 }

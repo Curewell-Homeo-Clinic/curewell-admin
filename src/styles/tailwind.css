@@ -25,3 +25,7 @@ h1 {
 .secondaryText {
   @apply text-sm font-light text-secondary select-none;
 }
+
+label {
+  @apply font-medium;
+}
