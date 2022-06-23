@@ -7,6 +7,7 @@ export const patientRouter = trpc
   .query("get_all_patients", {
     async resolve() {
       return await prisma.patient.findMany({
+        orderBy: { createdAt: "desc" },
         select: {
           id: true,
           firstName: true,
@@ -31,6 +32,7 @@ export const patientRouter = trpc
         skip: offset,
         take: limit,
         where: { isDeleted: false },
+        orderBy: { createdAt: "desc" },
         select: {
           id: true,
           firstName: true,

@@ -13,6 +13,9 @@ export const appointmentRouter = trpc
       return await prisma.appointment.findMany({
         skip: input.offset,
         take: input.limit,
+        orderBy: {
+          createdAt: "desc",
+        },
         select: {
           patient: {
             select: {
