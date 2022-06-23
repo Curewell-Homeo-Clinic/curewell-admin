@@ -1,5 +1,4 @@
 import { AdjustmentsIcon, TemplateIcon } from "@heroicons/react/outline";
-import { ReactNode, useState } from "react";
 
 export interface SettingsNavbarProps {
   active: "general" | "treatment_plans";
