@@ -11,22 +11,70 @@ datasource db {
 }
 
 model Patient {
-    id           String        @id @default(cuid())
-    createdAt    DateTime      @default(now())
-    admittedAt   DateTime      @default(now())
-    firstName    String
-    lastName     String
-    age          Int           @default(0)
-    email        String
-    phone        String
-    address      String
-    occupation   String
-    caseStudy    String        @default("") @db.VarChar(10000)
-    prescription String        @default("") @db.VarChar(1000)
-    appointments Appointment[]
-    invoices     Invoice[]
-    ailments     String        @default("")
-    isDeleted    Boolean       @default(false)
+    id               String                 @id @default(cuid())
+    createdAt        DateTime               @default(now())
+    admittedAt       DateTime               @default(now())
+    firstName        String
+    lastName         String
+    age              Int                    @default(0)
+    email            String
+    phone            String                 @db.VarChar(10)
+    address          String
+    occupation       String
+    caseStudy        String                 @default("") @db.VarChar(10000)
+    prescription     String                 @default("") @db.VarChar(1000)
+    appointments     Appointment[]
+    invoices         Invoice[]
+    treatmentPlans   PatientTreatmentPlan[]
+    totalAmmountPaid Float                  @default(0)
+    ailments         String                 @default("")
+    isDeleted        Boolean                @default(false)
+}
+
+model PatientTreatmentPlan {
+    id          String        @id @default(cuid())
+    plan        TreatmentPlan @relation(fields: [planId], references: [id])
+    planId      String
+    ammountPaid Float
+    patients    Patient[]
+}
+
+model TreatmentPlan {
+    id                   String                 @id @default(cuid())
+    createdAt            DateTime               @default(now())
+    name                 String
+    description          String
+    duration             Int                    @default(0) // in days
+    price                Float                  @default(0)
+    invoices             Invoice[]
+    PatientTreatmentPlan PatientTreatmentPlan[]
+}
+
+model Invoice {
+    id              String        @id @default(cuid())
+    number          Int           @default(autoincrement())
+    createdAt       DateTime      @default(now())
+    timestamp       DateTime      @default(now())
+    patient         Patient       @relation(fields: [patientId], references: [id])
+    patientId       String
+    doctor          Doctor        @relation(fields: [doctorId], references: [id])
+    doctorId        String
+    products        Product[]
+    consultationFee Float         @default(0)
+    plan            TreatmentPlan @relation(fields: [planId], references: [id])
+    planId          String
+    totalAmmount    Float         @default(0)
+}
+
+model Product {
+    id                 String    @id @default(cuid())
+    createdAt          DateTime  @default(now())
+    name               String
+    mRP                Float     @default(0)
+    discountPercentage Float     @default(0)
+    price              Float     @default(0)
+    quantity           Int       @default(0)
+    invoices           Invoice[]
 }
 
 model Doctor {
@@ -50,29 +98,7 @@ model Appointment {
     patientId String
     doctor    Doctor   @relation(fields: [doctorId], references: [id])
     doctorId  String
+    progress  String   @default("-") @db.VarChar(255)
     timeStamp DateTime @default(now())
     visited   Boolean  @default(false)
-}
-
-model Invoice {
-    id              String    @id @default(cuid())
-    number          Int       @default(autoincrement())
-    createdAt       DateTime  @default(now())
-    timestamp       DateTime  @default(now())
-    patient         Patient   @relation(fields: [patientId], references: [id])
-    patientId       String
-    doctor          Doctor    @relation(fields: [doctorId], references: [id])
-    doctorId        String
-    consultationFee Int
-    medicineFee     Int
-    products        Product[]
-}
-
-model Product {
-    id        String    @id @default(cuid())
-    createdAt DateTime  @default(now())
-    name      String
-    price     Int
-    quantity  Int
-    invoices  Invoice[]
 }
