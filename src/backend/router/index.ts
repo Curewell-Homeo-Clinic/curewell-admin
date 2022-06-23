@@ -4,6 +4,7 @@ import { appointmentRouter } from "./appointments.router";
 import { doctorRouter } from "./doctor.router";
 import { invoiceRouter } from "./invoice.router";
 import { patientRouter } from "./patient.router";
+import { plansRouter } from "./plans.router";
 import { productRouter } from "./product.router";
 
 export const appRouter = trpc
@@ -13,6 +14,7 @@ export const appRouter = trpc
   .merge(appointmentRouter)
   .merge(doctorRouter)
   .merge(invoiceRouter)
+  .merge(plansRouter)
   .query("get_overall_stats", {
     async resolve() {
       const { consultationFee } = (

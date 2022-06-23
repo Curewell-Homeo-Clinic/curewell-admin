@@ -1,5 +1,6 @@
 import { SettingsNavbar } from "@/components";
 import { SettingsNavbarProps } from "@/components/Navbar/SettingsNavbar";
+import { PlanSettings } from "@/components/Settings";
 import { useState } from "react";
 
 const useSubPage = (page: SettingsNavbarProps["active"]) => {
@@ -7,7 +8,7 @@ const useSubPage = (page: SettingsNavbarProps["active"]) => {
     case "general":
       return <div>general settings</div>;
     case "treatment_plans":
-      return <div>treatment plans section</div>;
+      return <PlanSettings />;
     default:
       return null;
   }
@@ -28,7 +29,7 @@ export default function SettingsPage() {
       <div className="p-2">
         <h1>Settings</h1>
       </div>
-      <div className="mt-8 flex justify-center items-stretch border-secondary">
+      <div className="mt-8 flex items-stretch border-secondary">
         <SettingsNavbar
           active={active}
           handleSettingsSubpageOpen={handleSettingsSubpageOpen}

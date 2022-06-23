@@ -62,6 +62,7 @@ const ProductForm: React.FC<{
             type="number"
             id="productPrice"
             value={price}
+            min="0"
             onChange={(e) => setPrice(parseInt(e.target.value))}
             className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
           />
@@ -77,6 +78,7 @@ const ProductForm: React.FC<{
           </label>
           <input
             type="number"
+            min="0"
             id="productQuantity"
             value={quantity}
             onChange={(e) => setQuantity(parseInt(e.target.value))}

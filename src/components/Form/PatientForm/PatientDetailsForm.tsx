@@ -170,6 +170,7 @@ export const PatientFormDetails: React.FC<{
         </label>
         <input
           type="number"
+          min="0"
           id="age"
           spellCheck={false}
           className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "

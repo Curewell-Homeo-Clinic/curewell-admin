@@ -22,7 +22,7 @@ const getMenu = (active: SettingsNavbarProps["active"]): Menu[] => [
     name: "general",
   },
   {
-    title: "Plans",
+    title: "Treatment Plans",
     active: active === "treatment_plans",
     Icon: TemplateIcon,
     gap: true,
@@ -37,7 +37,7 @@ const SettingsNavbar: React.FC<SettingsNavbarProps> = ({
   const Menus = getMenu(active);
 
   return (
-    <div className="h-full w-72 duration-300 bg-primary relative p-5 pt-8 text-white rounded-lg rounded-r-none">
+    <div className="w-72 duration-300 bg-primary relative p-5 pt-8 text-white rounded-lg rounded-r-none">
       {/* Menu */}
       <ul>
         {Menus.map((Menu, index) => (
