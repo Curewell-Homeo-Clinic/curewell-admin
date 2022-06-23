@@ -60,6 +60,7 @@ export const appointmentRouter = trpc
           id: true,
           timeStamp: true,
           visited: true,
+          progress: true,
         },
       });
     },
@@ -71,6 +72,7 @@ export const appointmentRouter = trpc
       // cannot accept date object as it's converted to string before sending to the server in the json request
       date: z.string(),
       time: z.string(),
+      progress: z.string(),
     }),
     async resolve({ input }) {
       const timeStamp = new Date(
@@ -86,6 +88,7 @@ export const appointmentRouter = trpc
         data: {
           visited: input.visited,
           timeStamp: timeStamp,
+          progress: input.progress,
         },
         select: {
           id: true,

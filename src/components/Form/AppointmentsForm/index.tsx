@@ -20,6 +20,7 @@ const AppointmentsForm: React.FC<{
 
   const [visited, setVisited] = useState<boolean>(appointment?.visited!);
   const [timeStamp] = useState<Date>(new Date(appointment?.timeStamp!));
+  const [progress, setProgress] = useState<string>(appointment?.progress!);
   const [date, setDate] = useState<Date>(timeStamp);
   const [time, setTime] = useState<Date>(timeStamp);
 
@@ -35,6 +36,7 @@ const AppointmentsForm: React.FC<{
     setVisited(appointment?.visited!);
     setDate(timeStamp);
     setTime(timeStamp);
+    setProgress(appointment?.progress!);
     setIsEdit(false);
   };
 
@@ -46,6 +48,7 @@ const AppointmentsForm: React.FC<{
       time: time.toISOString(),
       id: appointment?.id!,
       visited: visited,
+      progress,
     })) && router.reload();
   };
 
@@ -53,11 +56,20 @@ const AppointmentsForm: React.FC<{
     if (
       appointment?.visited !== visited ||
       timeStamp !== date ||
+      appointment.progress !== progress ||
       timeStamp !== time
     )
       setIsEdit(true);
     else setIsEdit(false);
-  }, [visited, appointment?.visited, date, time, timeStamp]);
+  }, [
+    visited,
+    appointment?.visited,
+    date,
+    time,
+    timeStamp,
+    progress,
+    appointment?.progress,
+  ]);
 
   useEffect(() => {
     router.prefetch(patientDetailsUrl);
@@ -111,6 +123,20 @@ const AppointmentsForm: React.FC<{
             value={`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}
           />
         </div>
+      </div>
+
+      <div className="mb-6">
+        <label htmlFor="progress" className="block mb-2 text-sm font-medium">
+          Patient's Progress
+        </label>
+        <input
+          type="text"
+          id="progress"
+          className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
+          placeholder="reshu"
+          value={progress}
+          onChange={(e) => setProgress(e.target.value)}
+        />
       </div>
 
       <div className="mb-6">

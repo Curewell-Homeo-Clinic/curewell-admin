@@ -76,6 +76,28 @@ export const patientRouter = trpc
     resolve({ input }) {
       return prisma.patient.findUnique({
         where: { id: input.id },
+        select: {
+          firstName: true,
+          lastName: true,
+          phone: true,
+          email: true,
+          address: true,
+          occupation: true,
+          ailments: true,
+          age: true,
+          id: true,
+          caseStudy: true,
+          prescription: true,
+          admittedAt: true,
+          appointments: {
+            select: {
+              timeStamp: true,
+              progress: true,
+              id: true,
+              visited: true,
+            },
+          },
+        },
       });
     },
   })
