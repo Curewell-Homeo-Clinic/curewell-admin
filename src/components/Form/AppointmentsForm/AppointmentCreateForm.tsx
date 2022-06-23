@@ -63,7 +63,7 @@ const AppointmentCreateForm: React.FC<{
     visited || (patientId !== "" && doctorId !== "")
       ? setIsEdit(true)
       : setIsEdit(false);
-  }, [visited, patientId || doctorId]);
+  }, [visited, patientId, doctorId]);
 
   if (isPatientLoading || !allPatients || isDoctorLoading || !allDoctors) {
     return (

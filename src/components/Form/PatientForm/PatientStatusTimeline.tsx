@@ -12,7 +12,9 @@ const PatientStatusTimeline: React.FC<{
 }> = ({ data }) => {
   return (
     <div className="mt-4 border-2 border-primary shadow-lg rounded-lg p-6 px-10 items-center">
-      <Timeline color="dark" active={0}>
+      <h1>Progress</h1>
+      <p className="secondaryText">Patient&apos;s Progress Timeline</p>
+      <Timeline className="mt-6" color="dark" active={0}>
         {data.map((d) => (
           <Timeline.Item
             key={d.appointmentId}

@@ -127,7 +127,7 @@ const AppointmentsForm: React.FC<{
 
       <div className="mb-6">
         <label htmlFor="progress" className="block mb-2 text-sm font-medium">
-          Patient's Progress
+          Patient&apos;s Progress
         </label>
         <input
           type="text"
