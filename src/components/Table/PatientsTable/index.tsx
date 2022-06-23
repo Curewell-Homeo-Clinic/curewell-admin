@@ -22,8 +22,9 @@ export default function PatientsTable({
     if (search !== "") {
       const result = allPatients.filter(
         (patient) =>
-          patient.firstName.includes(search) ||
-          patient.lastName.includes(search)
+          patient.firstName.toLowerCase().includes(search.toLowerCase()) ||
+          patient.lastName.toLowerCase().includes(search.toLowerCase()) ||
+          patient.phone.includes(search)
       );
       setPatients(result);
     } else setPatients(allPatients);
