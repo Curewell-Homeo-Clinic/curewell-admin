@@ -49,7 +49,7 @@ const getMenu = (active: NavbarProps["active"]) => [
 ];
 
 export default function Navbar({ active }: NavbarProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const router = useRouter();
 
   const Menus = getMenu(active);
