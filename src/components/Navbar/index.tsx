@@ -7,11 +7,18 @@ import {
   UsersIcon,
   DocumentTextIcon,
   ShoppingBagIcon,
+  CogIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 
 export interface NavbarProps {
-  active: "dashboard" | "products" | "patients" | "appointments" | "invoices";
+  active:
+    | "dashboard"
+    | "products"
+    | "patients"
+    | "appointments"
+    | "invoices"
+    | "settings";
 }
 
 const getMenu = (active: NavbarProps["active"]) => [
@@ -45,6 +52,13 @@ const getMenu = (active: NavbarProps["active"]) => [
     Icon: DocumentTextIcon,
     active: active === "invoices",
     url: "/invoices",
+  },
+  {
+    title: "Settings",
+    Icon: CogIcon,
+    active: active == "settings",
+    url: "/settings",
+    gap: true,
   },
 ];
 

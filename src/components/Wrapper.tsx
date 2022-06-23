@@ -17,6 +17,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
       "patients",
       "appointments",
       "invoices",
+      "settings",
     ];
 
     for (const menu of menus) {
