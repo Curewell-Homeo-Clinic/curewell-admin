@@ -1,8 +1,8 @@
+import { Loader } from "@/components/shared";
+import { PlansTable } from "@/components/Table";
 import { trpc } from "@/utils/trpc";
-import { Loader } from "../shared";
-import { PlansTable } from "../Table";
 
-export default function PlansSettings() {
+export default function PlansPage() {
   const { isLoading, data: treatmentPlans } = trpc.useQuery([
     "get_all_treatment_plans",
   ]);

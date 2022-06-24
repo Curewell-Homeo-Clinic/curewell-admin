@@ -1,6 +1,5 @@
 import { SettingsNavbar } from "@/components";
 import { SettingsNavbarProps } from "@/components/Navbar/SettingsNavbar";
-import { PlanSettings } from "@/components/Settings";
 import { ScrollArea } from "@mantine/core";
 import { useState } from "react";
 
@@ -9,7 +8,7 @@ const useSubPage = (page: SettingsNavbarProps["active"]) => {
     case "general":
       return <div>general settings</div>;
     case "treatment_plans":
-      return <PlanSettings />;
+      return "plan settings";
     default:
       return null;
   }
