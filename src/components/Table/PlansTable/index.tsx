@@ -3,6 +3,7 @@ import { getMoney } from "@/utils";
 import { InferQueryOutput } from "@/utils/trpc";
 import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { daysToWeeks, formatDuration } from "date-fns";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const PlansTable: React.FC<{
@@ -11,7 +12,13 @@ const PlansTable: React.FC<{
   const [plans, setPlans] = useState(allPlans);
   const [search, setSearch] = useState("");
 
+  const router = useRouter();
+
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleViewPlan = (id: string) => {
+    router.push(`/plans/${id}`);
+  };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +49,7 @@ const PlansTable: React.FC<{
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
           type="button"
-          onClick={() => {}}
+          onClick={() => handleViewPlan(plan.id)}
           className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-primaryLight font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
         >
           <ChevronDoubleRightIcon className="w-5" />

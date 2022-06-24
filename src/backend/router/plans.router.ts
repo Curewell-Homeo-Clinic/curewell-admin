@@ -24,6 +24,41 @@ export const plansRouter = trpc
       });
     },
   })
+  .query("get_plan_by_id", {
+    input: z.object({
+      id: z.string().cuid(),
+    }),
+    async resolve({ input }) {
+      return await prisma.treatmentPlan.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    },
+  })
+  .mutation("update_treatment_plan", {
+    input: z.object({
+      id: z.string().cuid(),
+      name: z.string(),
+      description: z.string(),
+      duration: z.number().positive(),
+      price: z.number().positive(),
+    }),
+    async resolve({ input }) {
+      return await prisma.treatmentPlan.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          description: input.description,
+          duration: input.duration,
+          price: input.price,
+        },
+        select: {
+          id: true,
+        },
+      });
+    },
+  })
   .mutation("create_treatment_plan", {
     input: z.object({
       name: z.string(),
