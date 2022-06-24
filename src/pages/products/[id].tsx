@@ -18,7 +18,7 @@ export default function ProductPage() {
     <div>
       <GoBackButton />
       <div className="mt-8 p-2">
-        <div className="flex flex-col gap-x-2">
+        <div className="flex flex-col">
           <p className="secondaryText">Product</p>
           <h1>{product.name}</h1>
           <p className="secondaryText">

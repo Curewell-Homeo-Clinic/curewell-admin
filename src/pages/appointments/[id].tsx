@@ -21,7 +21,7 @@ export default function AppointmentPage() {
       <GoBackButton />
       <div className="mt-8 px-2">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-x-2">
+          <div className="flex flex-col">
             <p className="secondaryText">Appointment</p>
             <div className="flex items-center gap-x-4">
               <h1>{`${appointment.patient.firstName}'s Appointment`}</h1>

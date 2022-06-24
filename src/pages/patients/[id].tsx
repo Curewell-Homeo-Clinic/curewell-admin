@@ -19,7 +19,7 @@ export default function PatientPage() {
       <GoBackButton />
       <div className="mt-8 px-2">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-x-2">
+          <div className="flex flex-col">
             <p className="secondaryText">Patient</p>
             <h1>{`${patient.firstName} ${patient.lastName}`}</h1>
             <p className="secondaryText">
