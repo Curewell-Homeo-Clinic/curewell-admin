@@ -15,7 +15,10 @@ export default function PlansPage() {
     );
 
   return (
-    <div className="p-2">
+    <div>
+      <div className="p-2">
+        <h1>Treatment Plans</h1>
+      </div>
       <PlansTable plans={treatmentPlans} />
     </div>
   );
