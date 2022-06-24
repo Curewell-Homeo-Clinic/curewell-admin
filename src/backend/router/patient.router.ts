@@ -91,6 +91,7 @@ export const patientRouter = trpc
           caseStudy: true,
           prescription: true,
           admittedAt: true,
+          treatmentPlans: true,
           appointments: {
             select: {
               timeStamp: true,

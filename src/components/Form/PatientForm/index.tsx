@@ -1,6 +1,7 @@
 import { InferQueryOutput } from "@/utils/trpc";
 import PatientFormCaseStudy from "./PatientCaseStudyForm";
 import { PatientFormDetails } from "./PatientDetailsForm";
+import PatientPlanForm from "./PatientPlanForm";
 import PatientStatusTimeline from "./PatientStatusTimeline";
 
 interface PatientFormProps {
@@ -19,14 +20,19 @@ export default function PatientForm({ patient }: PatientFormProps) {
     }));
 
   return (
-    <div className="flex flex-wrap md:sm:flex-col lg:flex-row gap-10 lg:items-start md:sm:items-stretch justify-between mt-6">
-      <PatientFormDetails patient={patient} />
-      <PatientFormCaseStudy
-        id={patient.id}
-        caseStudy={patient.caseStudy}
-        prescription={patient.prescription}
-      />
-      <PatientStatusTimeline data={timeLineData} />
+    <div className="flex flex-wrap md:sm:flex-col lg:flex-row gap-10 lg:items-start md:sm:items-stretch mt-6">
+      <div className="flex flex-col gap-6" style={{ flex: 0.5 }}>
+        <PatientFormDetails patient={patient} />
+        <PatientPlanForm plans={patient.treatmentPlans} />
+      </div>
+      <div className="flex flex-col gap-6" style={{ flex: 0.5 }}>
+        <PatientStatusTimeline data={timeLineData} />
+        <PatientFormCaseStudy
+          id={patient.id}
+          caseStudy={patient.caseStudy}
+          prescription={patient.prescription}
+        />
+      </div>
     </div>
   );
 }

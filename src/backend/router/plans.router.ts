@@ -15,6 +15,8 @@ export const plansRouter = trpc
           id: true,
           price: true,
           duration: true,
+          createdAt: true,
+          description: true,
           _count: {
             select: {
               invoices: true,
