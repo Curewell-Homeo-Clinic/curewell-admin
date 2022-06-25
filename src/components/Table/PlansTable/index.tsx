@@ -45,7 +45,6 @@ const PlansTable: React.FC<{
         )}
       </td>
       <td>{getMoney(plan.price)}</td>
-      <td>{plan._count.invoices || 0}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
           type="button"
@@ -115,12 +114,6 @@ const PlansTable: React.FC<{
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Price
-                </th>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
-                >
-                  No. of Invoices
                 </th>
                 <th
                   scope="col"
