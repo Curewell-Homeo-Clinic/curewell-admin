@@ -17,11 +17,6 @@ export const plansRouter = trpc
           duration: true,
           createdAt: true,
           description: true,
-          _count: {
-            select: {
-              invoices: true,
-            },
-          },
         },
       });
     },

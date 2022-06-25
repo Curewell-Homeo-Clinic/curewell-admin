@@ -37,6 +37,7 @@ model PatientTreatmentPlan {
     planId      String
     ammountPaid Float         @default(0)
     patients    Patient[]
+    invoices    Invoice[]
 }
 
 model TreatmentPlan {
@@ -46,24 +47,23 @@ model TreatmentPlan {
     description          String
     duration             Int                    @default(0) // in days
     price                Float                  @default(0)
-    invoices             Invoice[]
     PatientTreatmentPlan PatientTreatmentPlan[]
 }
 
 model Invoice {
-    id              String        @id @default(cuid())
-    number          Int           @default(autoincrement())
-    createdAt       DateTime      @default(now())
-    timestamp       DateTime      @default(now())
-    patient         Patient       @relation(fields: [patientId], references: [id])
+    id              String               @id @default(cuid())
+    number          Int                  @default(autoincrement())
+    createdAt       DateTime             @default(now())
+    timestamp       DateTime             @default(now())
+    patient         Patient              @relation(fields: [patientId], references: [id])
     patientId       String
-    doctor          Doctor        @relation(fields: [doctorId], references: [id])
+    doctor          Doctor               @relation(fields: [doctorId], references: [id])
     doctorId        String
     products        Product[]
-    consultationFee Float         @default(0)
-    plan            TreatmentPlan @relation(fields: [planId], references: [id])
+    consultationFee Float                @default(0)
+    plan            PatientTreatmentPlan @relation(fields: [planId], references: [id])
     planId          String
-    totalAmmount    Float         @default(0)
+    totalAmmount    Float                @default(0)
 }
 
 model Product {
