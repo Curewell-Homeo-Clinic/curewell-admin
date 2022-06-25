@@ -12,7 +12,11 @@ export default function PatientPage() {
     { id: id! as string },
   ]);
 
-  if (isLoading || !patient) return <Loader />;
+  const { isLoading: isPlansLoading, data: allPlans } = trpc.useQuery([
+    "get_all_treatment_plans",
+  ]);
+
+  if (isLoading || !patient || isPlansLoading || !allPlans) return <Loader />;
 
   return (
     <div>
@@ -28,7 +32,7 @@ export default function PatientPage() {
           </div>
           <PatientDeleteForm id={id! as string} />
         </div>
-        <PatientForm patient={patient} />
+        <PatientForm patient={patient} allPlans={allPlans} />
       </div>
     </div>
   );

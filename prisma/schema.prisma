@@ -35,7 +35,7 @@ model PatientTreatmentPlan {
     id          String        @id @default(cuid())
     plan        TreatmentPlan @relation(fields: [planId], references: [id])
     planId      String
-    ammountPaid Float
+    ammountPaid Float         @default(0)
     patients    Patient[]
 }
 

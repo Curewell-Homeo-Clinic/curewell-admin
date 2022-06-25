@@ -205,4 +205,26 @@ export const patientRouter = trpc
         },
       });
     },
+  })
+  .mutation("add_treatment_plan", {
+    input: z.object({
+      planId: z.string().cuid(),
+      patientId: z.string().cuid(),
+    }),
+    async resolve({ input }) {
+      return await prisma.patient.update({
+        where: { id: input.patientId },
+        data: {
+          treatmentPlans: {
+            create: {
+              plan: {
+                connect: {
+                  id: input.planId,
+                },
+              },
+            },
+          },
+        },
+      });
+    },
   });
