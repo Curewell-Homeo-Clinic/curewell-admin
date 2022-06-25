@@ -22,8 +22,8 @@ export default function PatientForm({ patient }: PatientFormProps) {
   return (
     <div className="flex flex-wrap md:sm:flex-col lg:flex-row gap-10 lg:items-start md:sm:items-stretch mt-6">
       <div className="flex flex-col gap-6" style={{ flex: 0.5 }}>
-        <PatientFormDetails patient={patient} />
         <PatientPlanForm plans={patient.treatmentPlans} />
+        <PatientFormDetails patient={patient} />
       </div>
       <div className="flex flex-col gap-6" style={{ flex: 0.5 }}>
         <PatientStatusTimeline data={timeLineData} />
