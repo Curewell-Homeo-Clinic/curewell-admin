@@ -5,6 +5,7 @@ import { PatientTreatmentPlan, TreatmentPlan } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AddPlanForm from "./AddPlanForm";
+import PatientPlanRemoveForm from "./PatientPlanRemoveForm";
 
 const PatientPlanForm: React.FC<{
   plans: PatientTreatmentPlan[];
@@ -17,6 +18,15 @@ const PatientPlanForm: React.FC<{
   const [notOptedPlans, setNotOptedPlans] = useState<TreatmentPlan[]>([]);
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] =
+    useState<boolean>(false);
+
+  const isDeleteDisabled = (plan: TreatmentPlan) => {
+    return (plans.find((patientPlan) => patientPlan.planId === plan.id)
+      ?.ammountPaid || 0) === 0
+      ? false
+      : true;
+  };
 
   const handleViewPlan = (id: string) => {
     router.push(`/plans/${id}`);
@@ -108,36 +118,52 @@ const PatientPlanForm: React.FC<{
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {optedPlans.map((plan, index) => (
-                  <tr key={plan.id}>
-                    <td className="select-none">{index + 1}</td>
-                    <td
-                      className="capitalize cursor-pointer hover:underline"
-                      onClick={() => handleViewPlan(plan.id)}
-                    >
-                      {plan.name}
-                    </td>
-                    <td>
-                      {getMoney(
+                  <>
+                    <tr key={plan.id}>
+                      <td className="select-none">{index + 1}</td>
+                      <td
+                        className="capitalize cursor-pointer hover:underline"
+                        onClick={() => handleViewPlan(plan.id)}
+                      >
+                        {plan.name}
+                      </td>
+                      <td>
+                        {getMoney(
+                          plans.find(
+                            (patientPlan) => patientPlan.planId === plan.id
+                          )?.ammountPaid || 0
+                        )}
+                      </td>
+                      <td>
+                        {getMoney(
+                          plan.price -
+                            (plans.find(
+                              (patientPlan) => patientPlan.planId === plan.id
+                            )?.ammountPaid || 0)
+                        )}
+                      </td>
+                      <td>{getMoney(plan.price)}</td>
+                      <td>
+                        <button
+                          onClick={() => setShowDeleteConfirmation(true)}
+                          disabled={isDeleteDisabled(plan)}
+                          className="hover:bg-red-50 text-secondary hover:text-red-600 disabled:hover:text-primaryLight disabled:cursor-not-allowed select-none focus:ring-2 focus:ring-red-100 rounded p-1 duration-300"
+                        >
+                          <TrashIcon className="w-5" />
+                        </button>
+                      </td>
+                    </tr>
+                    <PatientPlanRemoveForm
+                      showDeleteConfirmation={showDeleteConfirmation}
+                      setShowDeleteConfirmation={setShowDeleteConfirmation}
+                      patientId={patientId}
+                      patientPlanId={
                         plans.find(
                           (patientPlan) => patientPlan.planId === plan.id
-                        )?.ammountPaid || 0
-                      )}
-                    </td>
-                    <td>
-                      {getMoney(
-                        plan.price -
-                          (plans.find(
-                            (patientPlan) => patientPlan.planId === plan.id
-                          )?.ammountPaid || 0)
-                      )}
-                    </td>
-                    <td>{getMoney(plan.price)}</td>
-                    <td>
-                      <button className="hover:bg-red-50 text-slate-500 hover:text-red-600 select-none focus:ring-2 focus:ring-red-100 rounded p-1 duration-300">
-                        <TrashIcon className="w-5" />
-                      </button>
-                    </td>
-                  </tr>
+                        )?.id!
+                      }
+                    />
+                  </>
                 ))}
               </tbody>
             </table>

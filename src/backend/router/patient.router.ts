@@ -227,4 +227,22 @@ export const patientRouter = trpc
         },
       });
     },
+  })
+  .mutation("remove_treatment_plan", {
+    input: z.object({
+      patientPlanId: z.string().cuid(),
+      patientId: z.string().cuid(),
+    }),
+    async resolve({ input }) {
+      return await prisma.patient.update({
+        where: { id: input.patientId },
+        data: {
+          treatmentPlans: {
+            delete: {
+              id: input.patientPlanId,
+            },
+          },
+        },
+      });
+    },
   });

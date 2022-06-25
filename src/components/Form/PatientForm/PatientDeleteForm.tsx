@@ -45,7 +45,8 @@ const PatientDeleteForm: React.FC<{ id: string }> = ({ id }) => {
             <div className="p-6 text-center">
               <ExclamationCircleIcon className="mx-auto mb-4 w-14 h-14 text-secondary" />
               <h3 className="mb-5 text-lg font-normal text-secondary">
-                Are you sure you want to delete this product?
+                Are you sure you want to delete this patient? It might have
+                consequences.
               </h3>
               <button
                 onClick={handleDelete}
