@@ -11,6 +11,7 @@ import {
   TemplateIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { Tooltip } from "@mantine/core";
 
 export interface NavbarProps {
   active:
@@ -71,7 +72,7 @@ const getMenu = (active: NavbarProps["active"]) => [
 ];
 
 export default function Navbar({ active }: NavbarProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const Menus = getMenu(active);
@@ -121,7 +122,18 @@ export default function Navbar({ active }: NavbarProps) {
               router.push(Menu.url);
             }}
           >
-            <Menu.Icon className="w-5" />
+            <Tooltip
+              className="flex"
+              disabled={open}
+              gutter={26}
+              color="gray"
+              label={Menu.title}
+              position="right"
+              placement="center"
+              radius="md"
+            >
+              <Menu.Icon className="w-5" />
+            </Tooltip>
             <span
               className={`${
                 !open && "hidden"
