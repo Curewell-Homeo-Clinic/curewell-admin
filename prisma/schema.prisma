@@ -51,19 +51,20 @@ model TreatmentPlan {
 }
 
 model Invoice {
-    id              String               @id @default(cuid())
-    number          Int                  @default(autoincrement())
-    createdAt       DateTime             @default(now())
-    timestamp       DateTime             @default(now())
-    patient         Patient              @relation(fields: [patientId], references: [id])
-    patientId       String
-    doctor          Doctor               @relation(fields: [doctorId], references: [id])
-    doctorId        String
-    products        Product[]
-    consultationFee Float                @default(0)
-    plan            PatientTreatmentPlan @relation(fields: [planId], references: [id])
-    planId          String
-    totalAmmount    Float                @default(0)
+    id                String               @id @default(cuid())
+    number            Int                  @default(autoincrement())
+    createdAt         DateTime             @default(now())
+    timestamp         DateTime             @default(now())
+    patient           Patient              @relation(fields: [patientId], references: [id])
+    patientId         String
+    doctor            Doctor               @relation(fields: [doctorId], references: [id])
+    doctorId          String
+    products          Product[]
+    consultationFee   Float                @default(0)
+    plan              PatientTreatmentPlan @relation(fields: [planId], references: [id])
+    planId            String
+    planAmmountPaying Float                @default(0)
+    totalAmmount      Float                @default(0)
 }
 
 model Product {
