@@ -5,18 +5,21 @@ const ModalWrapper: React.FC<{
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   children: React.ReactNode;
-}> = ({ show, setShow, title, children }) => {
+  maxWidth?: "xl" | "2xl";
+}> = ({ show, setShow, title, children, maxWidth = "xl" }) => {
   return (
     <div
       tabIndex={-1}
       className={`${
         !show && "hidden"
       } overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 md:inset-0 h-modal md:h-full flex items-center justify-center`}
-      style={{
-        background: "rgba(8, 26, 81, 0.5)",
-      }}
+      style={{ background: "rgb(26 27 30 / 0.4)" }}
     >
-      <div className="relative p-4 w-full max-w-xl h-full md:h-auto">
+      <div
+        className={`relative p-4 w-full ${
+          maxWidth === "xl" ? "max-w-xl" : "max-w-2xl"
+        } h-full md:h-auto`}
+      >
         <div className="relative bg-white rounded-lg shadow-lg">
           <button
             type="button"
