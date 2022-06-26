@@ -7,8 +7,7 @@ import React, { useState } from "react";
 
 const InvoicesTable: React.FC<{
   invoices: InferQueryOutput<"get_all_invoices">;
-  allPlans: InferQueryOutput<"get_all_treatment_plans_skin">;
-}> = ({ invoices: allInvoices, allPlans }) => {
+}> = ({ invoices: allInvoices }) => {
   const router = useRouter();
 
   const handleViewDetail = (
@@ -48,14 +47,12 @@ const InvoicesTable: React.FC<{
       <td>{format(new Date(invoice.timestamp), "hh:mm aaa")}</td>
       <td
         className="capitalize cursor-pointer hover:underline"
-        onClick={() => {
-          const treatmentPlan = allPlans.find(
-            (plan) => plan.id === invoice.planId
-          );
-          treatmentPlan && handleViewDetail(treatmentPlan.id, "plans");
-        }}
+        onClick={() =>
+          invoice.plan.plan.id !== "" &&
+          handleViewDetail(invoice.plan.plan.id, "plans")
+        }
       >
-        {allPlans.find((plan) => plan.id === invoice.planId)?.name || "None"}
+        {invoice.plan?.plan?.name || "None"}
       </td>
       <td>{getMoney(invoice.totalAmmount || 0)}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
