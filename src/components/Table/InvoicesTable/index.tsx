@@ -7,10 +7,14 @@ import React, { useState } from "react";
 
 const InvoicesTable: React.FC<{
   invoices: InferQueryOutput<"get_all_invoices">;
-}> = ({ invoices: allInvoices }) => {
+  allPlans: InferQueryOutput<"get_all_treatment_plans_skin">;
+}> = ({ invoices: allInvoices, allPlans }) => {
   const router = useRouter();
 
-  const handleViewDetail = (id: string, entity: "invoices" | "patients") => {
+  const handleViewDetail = (
+    id: string,
+    entity: "invoices" | "patients" | "plans"
+  ) => {
     router.push(`/${entity}/${id}`);
   };
 
@@ -42,7 +46,18 @@ const InvoicesTable: React.FC<{
       </td>
       <td>{format(new Date(invoice.timestamp), "dd/MM/yy - EEE")}</td>
       <td>{format(new Date(invoice.timestamp), "hh:mm aaa")}</td>
-      <td>{getMoney(invoice.consultationFee)}</td>
+      <td
+        className="capitalize cursor-pointer hover:underline"
+        onClick={() => {
+          const treatmentPlan = allPlans.find(
+            (plan) => plan.id === invoice.planId
+          );
+          treatmentPlan && handleViewDetail(treatmentPlan.id, "plans");
+        }}
+      >
+        {allPlans.find((plan) => plan.id === invoice.planId)?.name || "None"}
+      </td>
+      <td>{getMoney(invoice.totalAmmount || 0)}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
           type="button"
@@ -119,7 +134,13 @@ const InvoicesTable: React.FC<{
                   scope="col"
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
-                  Consultation Fee
+                  Treatment Plan
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Total
                 </th>
                 <th
                   scope="col"

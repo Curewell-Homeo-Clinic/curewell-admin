@@ -21,6 +21,16 @@ export const plansRouter = trpc
       });
     },
   })
+  .query("get_all_treatment_plans_skin", {
+    async resolve() {
+      return await prisma.treatmentPlan.findMany({
+        select: {
+          id: true,
+          name: true,
+        },
+      });
+    },
+  })
   .query("get_plan_by_id", {
     input: z.object({
       id: z.string().cuid(),

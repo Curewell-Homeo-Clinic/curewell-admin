@@ -14,7 +14,8 @@ export const invoiceRouter = trpc.router().query("get_all_invoices", {
             lastName: true,
           },
         },
-        consultationFee: true,
+        planId: true,
+        totalAmmount: true,
       },
     });
   },
