@@ -23,6 +23,7 @@ export const patientRouter = trpc
                 select: {
                   id: true,
                   name: true,
+                  price: true,
                 },
               },
             },
