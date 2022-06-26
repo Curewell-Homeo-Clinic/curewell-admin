@@ -81,7 +81,7 @@ export default function Navbar({ active }: NavbarProps) {
     <div
       className={`h-screen ${
         open ? "w-72" : "w-20"
-      } duration-300 bg-primary relative p-5 pt-8 text-white`}
+      } duration-300 bg-gradient-to-b from-primary to-secondary relative p-5 pt-8 text-white`}
     >
       {/* Navbar Control */}
       <ChevronLeftIcon
