@@ -16,6 +16,17 @@ export const patientRouter = trpc
           phone: true,
           ailments: true,
           age: true,
+          treatmentPlans: {
+            select: {
+              id: true,
+              plan: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
         where: { isDeleted: false },
       });

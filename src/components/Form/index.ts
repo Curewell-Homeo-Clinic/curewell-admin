@@ -9,3 +9,5 @@ export { default as AppointmentCreateForm } from "./AppointmentsForm/Appointment
 
 export { default as PlanCreateForm } from "./PlanForm/PlanCreateForm";
 export { default as PlanForm } from "./PlanForm";
+
+export { default as InvoiceCreateForm } from "./InvoiceForm/InvoiceCreateForm";

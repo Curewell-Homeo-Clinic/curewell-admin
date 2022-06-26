@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { getMoney } from "@/utils";
 import React, { useState } from "react";
+import { InvoiceCreateForm } from "@/components/Form";
 
 const InvoicesTable: React.FC<{
   invoices: InferQueryOutput<"get_all_invoices">;
@@ -19,6 +20,8 @@ const InvoicesTable: React.FC<{
 
   const [invoices, setInvoices] = useState(allInvoices);
   const [search, setSearch] = useState<string>("");
+
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,13 +94,13 @@ const InvoicesTable: React.FC<{
               <button className="sr-only" type="submit" />
             </div>
           </form>
-          {/* <button className="btn" onClick={() => setShowCreateModal(true)}>
+          <button className="btn" onClick={() => setShowCreateModal(true)}>
             Add
           </button>
-          <PatientCreateForm
+          <InvoiceCreateForm
             show={showCreateModal}
             setShow={setShowCreateModal}
-          /> */}
+          />
         </div>
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">
