@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: "Work Sans", sans-serif;
+  }
+
+  h1 {
+    font-family: "DM Sans", sans-serif;
+  }
+}
+
 .btn {
   @apply bg-transparent hover:bg-gray-50 select-none text-primary font-semibold  py-2 px-4 border-2 border-primary focus:ring-opacity-40 focus:ring-4 focus:ring-primaryLight rounded-lg;
 }

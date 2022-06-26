@@ -16,6 +16,7 @@ function App({ Component, pageProps }: AppProps) {
         theme={{
           primaryColor: "dark",
           focusRing: "always",
+          fontFamily: "'Work Sans', sans-serif",
         }}
       >
         <Wrapper>
