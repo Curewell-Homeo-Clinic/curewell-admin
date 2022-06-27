@@ -1,4 +1,4 @@
-import { Loader, Modal } from "@/components/shared";
+import { Modal } from "@/components/shared";
 import { InferQueryOutput, trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
@@ -138,7 +138,7 @@ const InvoiceCreateForm: React.FC<{
     isProductsLoading ||
     !products
   )
-    return <Loader />;
+    return null;
 
   return (
     <Modal show={show} setShow={setShow} title="Create Invoice">
