@@ -57,7 +57,20 @@ const InvoicesTable: React.FC<{
       >
         {invoice.plan?.plan?.name || "None"}
       </td>
-      <td>{getMoney(invoice.totalAmmount || 0)}</td>
+      <td>{getMoney(invoice.consultationFee)}</td>
+      <td>{getMoney(invoice.planAmmountPaying)}</td>
+      <td>
+        {getMoney(
+          invoice.products
+            ?.map(
+              (product) =>
+                product.price -
+                (product.price * product.discountPercentage) / 100
+            )
+            .reduce((x, y) => x + y, 0) || 0
+        )}
+      </td>
+      <td>{getMoney(invoice.totalAmmount)}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
           type="button"
@@ -97,11 +110,11 @@ const InvoicesTable: React.FC<{
           <button className="btn" onClick={() => setShowCreateModal(true)}>
             Add
           </button>
-          <InvoiceCreateForm
-            show={showCreateModal}
-            setShow={setShowCreateModal}
-          />
         </div>
+        <InvoiceCreateForm
+          show={showCreateModal}
+          setShow={setShowCreateModal}
+        />
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300">
             <thead className="bg-primary">
@@ -135,6 +148,24 @@ const InvoicesTable: React.FC<{
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Treatment Plan
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Consultation Fee
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Plan Ammount Paid
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Product Price
                 </th>
                 <th
                   scope="col"

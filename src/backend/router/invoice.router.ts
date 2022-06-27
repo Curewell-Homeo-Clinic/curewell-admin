@@ -10,6 +10,14 @@ export const invoiceRouter = trpc
         select: {
           id: true,
           timestamp: true,
+          consultationFee: true,
+          products: {
+            select: {
+              discountPercentage: true,
+              price: true,
+            },
+          },
+          planAmmountPaying: true,
           patient: {
             select: {
               id: true,
