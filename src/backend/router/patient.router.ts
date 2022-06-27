@@ -5,8 +5,16 @@ import { prisma } from "../utils/prisma";
 export const patientRouter = trpc
   .router()
   .query("get_all_patients", {
-    async resolve() {
+    input: z
+      .object({
+        limit: z.number().optional(),
+        offset: z.number().optional().default(0),
+      })
+      .nullish(),
+    async resolve({ input }) {
       return await prisma.patient.findMany({
+        skip: input?.offset,
+        take: input?.limit,
         orderBy: { createdAt: "desc" },
         select: {
           id: true,
@@ -30,30 +38,6 @@ export const patientRouter = trpc
           },
         },
         where: { isDeleted: false },
-      });
-    },
-  })
-  .query("get_patients_limit_and_offset", {
-    input: z.object({
-      limit: z.number().default(10),
-      offset: z.number().default(0),
-    }),
-    async resolve({ input }) {
-      const { limit, offset } = input;
-      return await prisma.patient.findMany({
-        skip: offset,
-        take: limit,
-        where: { isDeleted: false },
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          admittedAt: true,
-          phone: true,
-          ailments: true,
-          age: true,
-        },
       });
     },
   })
