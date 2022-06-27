@@ -11,7 +11,6 @@ import {
 import { MultiSelect, Select, SelectItem } from "@mantine/core";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { useEffect, useState } from "react";
-import { z } from "zod";
 import InvoicePreview from "./InvoicePreview";
 
 const InvoiceCreateForm: React.FC<{
@@ -75,12 +74,12 @@ const InvoiceCreateForm: React.FC<{
     selectedPatientPlanId !== ""
       ? setIsEdit(true)
       : setIsEdit(false);
-  }, [selectedDoctorId, selectedPatientId, selectedPatientPlanId]);
+  }, [selectedDoctorId, selectedPatientId, selectedPatientPlanId]); // required fields only!
 
   // preview logic
   const [showPreview, setShowPreview] = useState(false);
 
-  // change the selected patient, doctor or patientPlan
+  // change the selected patient, doctor, patientPlan and products
   useEffect(() => {
     selectedPatientId !== "" &&
       setSelectedPatient(
@@ -110,6 +109,7 @@ const InvoiceCreateForm: React.FC<{
     selectedDoctorId,
     selectedPatientPlanId,
     selectedProductIds,
+    selectedProducts,
     doctors,
     patients,
     products,
@@ -299,7 +299,6 @@ const InvoiceCreateForm: React.FC<{
           nothingFound="Oops! nothing found."
         />
       </div>
-
       {/* Preview Button */}
       <div className="flex justify-end">
         <button
@@ -327,7 +326,7 @@ const InvoiceCreateForm: React.FC<{
               price: selectedPatientPlan?.plan.price!,
             },
             products:
-              selectedProducts?.map((product) => ({
+              selectedProducts?.map((product, index) => ({
                 discountPercentage: product.discountPercentage,
                 mrp: product.mRP,
                 name: product.name,
