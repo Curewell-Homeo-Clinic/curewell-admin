@@ -46,7 +46,7 @@ const PatientPlanForm: React.FC<{
           ?.map((plan) => plan as TreatmentPlan)!
       );
     }
-  }, []);
+  }, [allPlans, plans]);
 
   if (!allPlans) return null;
 

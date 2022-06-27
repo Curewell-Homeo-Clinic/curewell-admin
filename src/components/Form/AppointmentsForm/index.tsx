@@ -73,7 +73,7 @@ const AppointmentsForm: React.FC<{
 
   useEffect(() => {
     router.prefetch(patientDetailsUrl);
-  }, []);
+  });
 
   if (!appointment) return null;
 

@@ -110,6 +110,10 @@ const InvoiceCreateForm: React.FC<{
     selectedDoctorId,
     selectedPatientPlanId,
     selectedProductIds,
+    doctors,
+    patients,
+    products,
+    selectedPatient,
   ]);
 
   // for the plan

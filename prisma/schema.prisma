@@ -36,7 +36,8 @@ model PatientTreatmentPlan {
     plan        TreatmentPlan @relation(fields: [planId], references: [id])
     planId      String
     ammountPaid Float         @default(0)
-    patients    Patient[]
+    patients    Patient       @relation(fields: [patientId], references: [id])
+    patientId   String
     invoices    Invoice[]
 }
 
@@ -59,7 +60,7 @@ model Invoice {
     patientId         String
     doctor            Doctor               @relation(fields: [doctorId], references: [id])
     doctorId          String
-    products          Product[]
+    products          InvoiceProduct[]
     consultationFee   Float                @default(0)
     plan              PatientTreatmentPlan @relation(fields: [planId], references: [id])
     planId            String
@@ -67,15 +68,24 @@ model Invoice {
     totalAmmount      Float                @default(0)
 }
 
+model InvoiceProduct {
+    id                 String  @id @default(cuid())
+    product            Product @relation(fields: [productId], references: [id])
+    productId          String
+    invoice            Invoice @relation(fields: [invoiceId], references: [id])
+    invoiceId          String
+    discountPercentage Int
+}
+
 model Product {
-    id                 String    @id @default(cuid())
-    createdAt          DateTime  @default(now())
+    id                 String           @id @default(cuid())
+    createdAt          DateTime         @default(now())
     name               String
-    mRP                Float     @default(0)
-    discountPercentage Float     @default(0)
-    price              Float     @default(0)
-    quantity           Int       @default(0)
-    invoices           Invoice[]
+    mRP                Float            @default(0)
+    discountPercentage Float            @default(0)
+    price              Float            @default(0)
+    quantity           Int              @default(0)
+    invoiceProducts    InvoiceProduct[]
 }
 
 model Doctor {

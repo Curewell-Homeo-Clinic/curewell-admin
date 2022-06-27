@@ -9,7 +9,7 @@ export default function Home() {
   ]);
 
   const { isLoading: isPatientsLoading, data: patients } = trpc.useQuery([
-    "get_patients_limit_and_offset",
+    "get_all_patients",
     { limit: 10 },
   ]);
 
