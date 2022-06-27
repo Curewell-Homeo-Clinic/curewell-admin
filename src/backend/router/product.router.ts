@@ -5,8 +5,23 @@ import { prisma } from "../utils/prisma";
 export const productRouter = trpc
   .router()
   .query("get_all_products", {
-    async resolve() {
-      return await prisma.product.findMany({});
+    input: z
+      .object({
+        outOfStock: z.boolean().default(true),
+      })
+      .nullish(),
+    async resolve({ input }) {
+      return await prisma.product.findMany({
+        where: {
+          quantity: !input?.outOfStock
+            ? {
+                not: {
+                  equals: 0,
+                },
+              }
+            : undefined,
+        },
+      });
     },
   })
   .query("get_product_by_id", {

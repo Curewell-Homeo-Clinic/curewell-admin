@@ -26,6 +26,7 @@ const InvoiceCreateForm: React.FC<{
   ]);
   const { isLoading: isProductsLoading, data: products } = trpc.useQuery([
     "get_all_products",
+    { outOfStock: false },
   ]);
 
   //   patient select states
@@ -98,7 +99,6 @@ const InvoiceCreateForm: React.FC<{
           (plan) => plan.id === selectedPatientPlanId
         )
       );
-    console.log(selectedProductIds);
 
     selectedProductIds.length !== 0 &&
       setSelectedProducts(
@@ -299,6 +299,7 @@ const InvoiceCreateForm: React.FC<{
           nothingFound="Oops! nothing found."
         />
       </div>
+
       {/* Preview Button */}
       <div className="flex justify-end">
         <button
@@ -317,19 +318,26 @@ const InvoiceCreateForm: React.FC<{
             planAmmountPaying,
             patient: {
               name: `${selectedPatient?.firstName} ${selectedPatient?.lastName}`,
+              id: selectedPatientId,
             },
             doctor: {
+              id: selectedDoctorId,
               name: `${selectedDoctor?.firstName} ${selectedDoctor?.lastName}`,
             },
             plan: {
               name: selectedPatientPlan?.plan.name!,
               price: selectedPatientPlan?.plan.price!,
+              id: selectedPatientPlanId,
+              previouslyPaid: selectedPatientPlan?.ammountPaid!,
             },
             products:
-              selectedProducts?.map((product, index) => ({
+              selectedProducts?.map((product) => ({
                 discountPercentage: product.discountPercentage,
                 mrp: product.mRP,
                 name: product.name,
+                oldQuantity: product.quantity,
+                quantity: 1, // take this from user input
+                id: product.id,
               })) || [],
           }}
         />

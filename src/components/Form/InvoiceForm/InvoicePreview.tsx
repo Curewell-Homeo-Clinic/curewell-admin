@@ -1,25 +1,34 @@
 import { Modal } from "@/components/shared";
 import { getMoney } from "@/utils";
+import { trpc } from "@/utils/trpc";
 import { format } from "date-fns";
+import { useRouter } from "next/router";
 
 interface Invoice {
   patient: {
     name: string;
+    id: string;
   };
   doctor: {
     name: string;
+    id: string;
   };
   timestamp: Date;
   plan: {
+    id: string;
     name: string;
     price: number;
+    previouslyPaid: number;
   };
   consultationFee: number;
   planAmmountPaying: number;
   products: {
+    id: string;
     name: string;
     mrp: number;
     discountPercentage: number;
+    oldQuantity: number;
+    quantity: number;
   }[];
 }
 
@@ -45,6 +54,27 @@ const InvoicePreview: React.FC<{
       .reduce((x, y) => x + y, 0);
 
     return totalAmmount;
+  };
+
+  const createInvoiceMutation = trpc.useMutation(["create_invoice"]);
+  const router = useRouter();
+
+  const handleCreate = async () => {
+    (await createInvoiceMutation.mutateAsync({
+      patientId: invoice.patient.id,
+      doctorId: invoice.doctor.id,
+      consultationFee: invoice.consultationFee,
+      patientPlanId: invoice.plan.id,
+      planAmmountPaying: invoice.planAmmountPaying,
+      planPaidAmmount: invoice.plan.previouslyPaid,
+      products: invoice.products.map((product) => ({
+        oldQuantity: product.oldQuantity,
+        quantity: product.quantity,
+        id: product.id,
+      })),
+      timestamp: invoice.timestamp.toString(),
+      totalAmmount: calculateTotalAmmount(),
+    })) && router.reload();
   };
 
   return (
@@ -152,7 +182,7 @@ const InvoicePreview: React.FC<{
         </button>
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
-          onClick={() => {}}
+          onClick={() => handleCreate()}
         >
           Create
         </button>

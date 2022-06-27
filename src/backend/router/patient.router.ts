@@ -27,6 +27,7 @@ export const patientRouter = trpc
           treatmentPlans: {
             select: {
               id: true,
+              ammountPaid: true,
               plan: {
                 select: {
                   id: true,

@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { z } from "zod";
+import { string, z } from "zod";
 import { prisma } from "../utils/prisma";
 
 export const invoiceRouter = trpc
@@ -29,6 +29,9 @@ export const invoiceRouter = trpc
           },
           totalAmmount: true,
         },
+        orderBy: {
+          timestamp: "desc",
+        },
       });
     },
   })
@@ -50,5 +53,74 @@ export const invoiceRouter = trpc
           },
         },
       });
+    },
+  })
+  .mutation("create_invoice", {
+    input: z.object({
+      timestamp: z.string(),
+      patientId: z.string().cuid(),
+      doctorId: z.string().cuid(),
+      products: z.array(
+        z.object({
+          id: z.string().cuid(),
+          oldQuantity: z.number(),
+          quantity: z.number().default(1),
+        })
+      ),
+      consultationFee: z.number(),
+      patientPlanId: z.string(),
+      planAmmountPaying: z.number(),
+      planPaidAmmount: z.number(),
+      totalAmmount: z.number(),
+    }),
+    async resolve({ input }) {
+      // create the invoice
+      const invoice = await prisma.invoice.create({
+        data: {
+          timestamp: new Date(input.timestamp),
+          patient: {
+            connect: {
+              id: input.patientId,
+            },
+          },
+          doctor: {
+            connect: {
+              id: input.doctorId,
+            },
+          },
+          products: {
+            connect: input.products.map((product) => ({ id: product.id })),
+          },
+          consultationFee: input.consultationFee,
+          plan: {
+            connect: {
+              id: input.patientPlanId,
+            },
+          },
+          planAmmountPaying: input.planAmmountPaying,
+          totalAmmount: input.totalAmmount,
+        },
+      });
+
+      // lessen the product quantity
+      invoice &&
+        input.products.forEach(async (product) => {
+          await prisma.product.update({
+            where: { id: product.id },
+            data: {
+              quantity: product.oldQuantity - product.quantity,
+            },
+          });
+        });
+
+      // update plan ammount paid
+      invoice &&
+        (await prisma.patientTreatmentPlan.update({
+          where: { id: input.patientPlanId },
+          data: {
+            ammountPaid: input.planPaidAmmount + input.planAmmountPaying,
+          },
+        }));
+      return invoice.id;
     },
   });
