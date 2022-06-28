@@ -17,10 +17,10 @@ export const appRouter = trpc
   .merge(plansRouter)
   .query("get_overall_stats", {
     async resolve() {
-      const { consultationFee } = (
+      const { totalAmmount } = (
         await prisma.invoice.aggregate({
           _sum: {
-            consultationFee: true,
+            totalAmmount: true,
           },
         })
       )._sum;
@@ -29,7 +29,7 @@ export const appRouter = trpc
         patients: await prisma.patient.count({}),
         invoices: await prisma.invoice.count({}),
         appointments: await prisma.appointment.count({}),
-        sales: consultationFee || 0,
+        sales: totalAmmount || 0,
       };
     },
   });
