@@ -1,43 +1,76 @@
+import { useClerk, useUser } from "@clerk/nextjs";
+import { LogoutIcon } from "@heroicons/react/outline";
+import { Tooltip } from "@mantine/core";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 interface UserButtonProps {
   open: boolean;
 }
 
 export default function UserButton({ open }: UserButtonProps) {
-  const [user] = useState({
-    name: "Khushal Bhardwaj",
-    email: "khushalbhardwaj0111@gmail.com",
-    profileImg:
-      "https://avatars.githubusercontent.com/u/76873719?s=400&u=c54f090bce39cdc8dc941cd5b9050ecf6547c2ed&v=4",
-  });
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
 
-  const [openDropdown, setOpenDropdown] = useState(false);
+  const router = useRouter();
+  if (!isLoaded || !isSignedIn) return null;
 
   return (
     <div
-      onClick={() => setOpenDropdown(!openDropdown)}
-      className="gap-x-4 absolute bottom-0 mb-4 text-gray-300 text-sm flex items-center justify-between cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md mt-2 duration-300"
+      className={`absolute bottom-0 left-6 ${
+        open ? "w-60" : "w-10"
+      } mb-4 flex flex-col gap-2`}
     >
-      <Image
-        width={30}
-        height={30}
-        layout="fixed"
-        src={user.profileImg}
-        alt="logoutIcon"
-        className="bg-gray-100 rounded-full"
-      />
+      {/*User Button  */}
       <div
-        className={`flex flex-col ${
-          !open && "hidden"
-        } origin-left duration-200`}
+        onClick={() => router.push("/user")}
+        className="gap-x-4 text-gray-300 text-sm flex items-center cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md mt-2 duration-300"
       >
-        <span className="select-none">{user.name}</span>
-        <span className="text-gray-400 select-none">{`${user.email.substring(
-          0,
-          23
-        )}...`}</span>
+        <Image
+          width={open ? 30 : 20}
+          height={open ? 30 : 20}
+          layout="fixed"
+          src={user.profileImageUrl}
+          alt="logoutIcon"
+          className="bg-gray-100 rounded-full select-none duration-300"
+        />
+        <div
+          className={`flex flex-col ${
+            !open && "hidden"
+          } origin-left duration-200`}
+        >
+          <span className="select-none">{user.fullName || "No Name"}</span>
+          <span className="text-gray-400 select-none">
+            {user.primaryEmailAddress?.emailAddress}
+          </span>
+          <span className="text-gray-400 select-none">
+            {user.primaryPhoneNumber?.phoneNumber!}
+          </span>
+        </div>
+      </div>
+      <div
+        onClick={() => signOut()}
+        className="text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#ffffff2b] rounded-md duration-300"
+      >
+        <Tooltip
+          className="flex"
+          disabled={open}
+          gutter={26}
+          color="gray"
+          label="Logout"
+          position="right"
+          placement="center"
+          radius="md"
+        >
+          <LogoutIcon className="w-5" />
+        </Tooltip>
+        <span
+          className={`${
+            !open && "hidden"
+          } origin-left duration-200 select-none`}
+        >
+          Logout
+        </span>
       </div>
     </div>
   );

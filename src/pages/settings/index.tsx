@@ -1,7 +1,10 @@
 import { SettingsNavbar } from "@/components";
 import { SettingsNavbarProps } from "@/components/Navbar/SettingsNavbar";
+import { STATES } from "@/store";
 import { ScrollArea } from "@mantine/core";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const useSubPage = (page: SettingsNavbarProps["active"]) => {
   switch (page) {
@@ -24,12 +27,19 @@ export default function SettingsPage() {
     setActive(page);
   };
 
+  const router = useRouter();
+  const isAdmin = useRecoilValue(STATES.isAdmin);
+
+  useEffect(() => {
+    !isAdmin && router.back();
+  }, []);
+
   return (
     <div className="h-5/6">
       <div className="p-2">
         <h1>Settings</h1>
       </div>
-      <div className="mt-8 flex min-h-full items-stretch">
+      <div className="py-8 flex min-h-full items-stretch">
         <SettingsNavbar
           active={active}
           handleSettingsSubpageOpen={handleSettingsSubpageOpen}

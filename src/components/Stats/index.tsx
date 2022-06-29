@@ -1,12 +1,12 @@
 import { getMoney } from "@/utils";
-import { trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
   CreditCardIcon,
   DocumentTextIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { SimpleGrid } from "@mantine/core";
+import { useState } from "react";
 import StatsCard from "./Card";
 
 interface StatsProps {
@@ -41,11 +41,20 @@ export default function Stats({ overallStats }: StatsProps) {
       Icon: DocumentTextIcon,
     },
   ]);
+
   return (
-    <div className="flex flex-wrap p-2 gap-10">
+    <SimpleGrid
+      cols={4}
+      spacing="lg"
+      breakpoints={[
+        { maxWidth: 980, cols: 3, spacing: "md" },
+        { maxWidth: 755, cols: 2, spacing: "sm" },
+        { maxWidth: 600, cols: 1, spacing: "sm" },
+      ]}
+    >
       {stats.map((stat) => (
         <StatsCard key={stat.title} stats={stat} />
       ))}
-    </div>
+    </SimpleGrid>
   );
 }

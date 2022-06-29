@@ -1,10 +1,12 @@
 import { PlanCreateForm } from "@/components/Form";
+import { STATES } from "@/store";
 import { getMoney } from "@/utils";
 import { InferQueryOutput } from "@/utils/trpc";
 import { ChevronDoubleRightIcon, SearchIcon } from "@heroicons/react/outline";
 import { daysToWeeks, formatDuration } from "date-fns";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const PlansTable: React.FC<{
   plans: InferQueryOutput<"get_all_treatment_plans">;
@@ -13,6 +15,8 @@ const PlansTable: React.FC<{
   const [search, setSearch] = useState("");
 
   const router = useRouter();
+
+  const isAdmin = useRecoilValue(STATES.isAdmin);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -45,15 +49,17 @@ const PlansTable: React.FC<{
         )}
       </td>
       <td>{getMoney(plan.price)}</td>
-      <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <button
-          type="button"
-          onClick={() => handleViewPlan(plan.id)}
-          className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-primaryLight font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
-        >
-          <ChevronDoubleRightIcon className="w-5" />
-        </button>
-      </td>
+      {isAdmin && (
+        <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+          <button
+            type="button"
+            onClick={() => handleViewPlan(plan.id)}
+            className="text-primary border  hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-primaryLight font-medium rounded-lg text-sm p-1.5 text-center inline-flex items-center mr-2 transition-all duration-300"
+          >
+            <ChevronDoubleRightIcon className="w-5" />
+          </button>
+        </td>
+      )}
     </tr>
   ));
 
@@ -81,10 +87,17 @@ const PlansTable: React.FC<{
               <button className="sr-only" type="submit" />
             </div>
           </form>
-          <button className="btn" onClick={() => setShowCreateModal(true)}>
-            Add
-          </button>
-          <PlanCreateForm show={showCreateModal} setShow={setShowCreateModal} />
+          {isAdmin ? (
+            <>
+              <button className="btn" onClick={() => setShowCreateModal(true)}>
+                Add
+              </button>
+              <PlanCreateForm
+                show={showCreateModal}
+                setShow={setShowCreateModal}
+              />
+            </>
+          ) : null}
         </div>
 
         <div className="overflow-hidden shadow ring-1 ring-primary ring-opacity-5 md:rounded-lg">
@@ -115,12 +128,14 @@ const PlansTable: React.FC<{
                 >
                   Price
                 </th>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
-                >
-                  <span className="sr-only">Details</span>
-                </th>
+                {isAdmin && (
+                  <th
+                    scope="col"
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                  >
+                    <span className="sr-only">Details</span>
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">{tds}</tbody>

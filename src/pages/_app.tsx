@@ -5,8 +5,19 @@ import "@/styles/tailwind.css";
 import { Wrapper } from "@/components";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
+import { useRouter } from "next/router";
+import { RecoilRoot } from "recoil";
+
+const publicPages = ["/user/sign-in"];
 
 function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -19,9 +30,25 @@ function App({ Component, pageProps }: AppProps) {
           fontFamily: "'Work Sans', sans-serif",
         }}
       >
-        <Wrapper>
-          <Component {...pageProps} />
-        </Wrapper>
+        <ClerkProvider {...pageProps}>
+          <RecoilRoot>
+            {publicPages.includes(router.pathname) ? (
+              <Component {...pageProps} />
+            ) : (
+              <Wrapper>
+                <SignedIn>
+                  <Component {...pageProps} />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn
+                    redirectUrl="/user/sign-in"
+                    afterSignInUrl="/"
+                  />
+                </SignedOut>
+              </Wrapper>
+            )}
+          </RecoilRoot>
+        </ClerkProvider>
       </MantineProvider>
     </>
   );

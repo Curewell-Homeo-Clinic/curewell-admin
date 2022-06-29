@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^3.6.8",
     "@heroicons/react": "^1.0.6",
     "@mantine/core": "^4.2.10",
     "@mantine/dates": "^4.2.10",
@@ -26,6 +27,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-query": "^3.39.1",
+    "recoil": "^0.7.4",
     "zod": "^3.17.3"
   },
   "devDependencies": {

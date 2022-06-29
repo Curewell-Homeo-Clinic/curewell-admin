@@ -12,6 +12,8 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { Tooltip } from "@mantine/core";
+import { useRecoilValue } from "recoil";
+import { STATES } from "@/store";
 
 export interface NavbarProps {
   active:
@@ -24,58 +26,67 @@ export interface NavbarProps {
     | "settings";
 }
 
-const getMenu = (active: NavbarProps["active"]) => [
-  {
-    title: "Dashboard",
-    active: active === "dashboard",
-    Icon: CollectionIcon,
-    url: "/",
-  },
-  {
-    title: "Products",
-    Icon: ShoppingBagIcon,
-    active: active === "products",
-    url: "/products",
-    gap: true,
-  },
-  {
-    title: "Patients",
-    Icon: UsersIcon,
-    active: active === "patients",
-    url: "/patients",
-  },
-  {
-    title: "Appointments",
-    Icon: CalendarIcon,
-    active: active === "appointments",
-    url: "/appointments",
-  },
-  {
-    title: "Invoices",
-    Icon: DocumentTextIcon,
-    active: active === "invoices",
-    url: "/invoices",
-  },
-  {
-    title: "Treatment Plans",
-    Icon: TemplateIcon,
-    active: active === "plans",
-    url: "/plans",
-  },
-  {
-    title: "Settings",
-    Icon: CogIcon,
-    active: active == "settings",
-    url: "/settings",
-    gap: true,
-  },
-];
+const getMenu = (active: NavbarProps["active"], isAdmin: boolean) => {
+  const menus = [
+    {
+      title: "Dashboard",
+      active: active === "dashboard",
+      Icon: CollectionIcon,
+      url: "/",
+    },
+    {
+      title: "Products",
+      Icon: ShoppingBagIcon,
+      active: active === "products",
+      url: "/products",
+      gap: true,
+    },
+    {
+      title: "Patients",
+      Icon: UsersIcon,
+      active: active === "patients",
+      url: "/patients",
+    },
+    {
+      title: "Appointments",
+      Icon: CalendarIcon,
+      active: active === "appointments",
+      url: "/appointments",
+    },
+    {
+      title: "Invoices",
+      Icon: DocumentTextIcon,
+      active: active === "invoices",
+      url: "/invoices",
+    },
+    {
+      title: "Treatment Plans",
+      Icon: TemplateIcon,
+      active: active === "plans",
+      url: "/plans",
+    },
+  ];
+  if (isAdmin)
+    return [
+      ...menus,
+      {
+        title: "Settings",
+        Icon: CogIcon,
+        active: active == "settings",
+        url: "/settings",
+        gap: true,
+      },
+    ];
+
+  return menus;
+};
 
 export default function Navbar({ active }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const isAdmin = useRecoilValue(STATES.isAdmin);
   const router = useRouter();
 
-  const Menus = getMenu(active);
+  const Menus = getMenu(active, isAdmin);
 
   return (
     <div
