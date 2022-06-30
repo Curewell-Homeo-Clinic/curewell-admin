@@ -41,7 +41,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
     isLoaded &&
       isSignedIn &&
       setIsAdmin(user.username?.includes("admin") ? true : false);
-  }, []);
+  }, [isSignedIn]);
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
       <div className="flex">
         <Navbar active={getActiveMenu()} />
         <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto text-primary">
-          {isLoaded && isSignedIn ? children : <Loader />}
+          {isLoaded ? children : <Loader />}
         </div>
       </div>
     </>
