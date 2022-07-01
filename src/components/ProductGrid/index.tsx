@@ -1,15 +1,11 @@
+import { InferQueryOutput } from "@/utils/trpc";
 import { SearchIcon } from "@heroicons/react/outline";
-import { Product } from "@prisma/client";
 import { useState } from "react";
 import ProductCard from "./ProductCard";
 
-interface ProductsGridProps {
-  products: Product[];
-}
-
-export default function ProductsGrid({
-  products: allProducts,
-}: ProductsGridProps) {
+const ProductsGrid: React.FC<{
+  products: InferQueryOutput<"get_all_products">;
+}> = ({ products: allProducts }) => {
   const [products, setProducts] = useState(allProducts);
   const [search, setSearch] = useState("");
 
@@ -56,4 +52,6 @@ export default function ProductsGrid({
       </div>
     </div>
   );
-}
+};
+
+export default ProductsGrid;

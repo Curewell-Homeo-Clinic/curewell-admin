@@ -32,7 +32,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     !isAdmin && router.back();
-  }, []);
+  }, [isAdmin]);
 
   return (
     <div className="h-5/6">

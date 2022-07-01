@@ -76,7 +76,15 @@ model Product {
     discountPercentage Float     @default(0)
     price              Float     @default(0)
     quantity           Int       @default(0)
+    images             Image[]
     invoices           Invoice[]
+}
+
+model Image {
+    id       String    @id @default(cuid())
+	createdAt DateTime @default(now())
+    url      String    @default("")
+    products Product[]
 }
 
 model Doctor {

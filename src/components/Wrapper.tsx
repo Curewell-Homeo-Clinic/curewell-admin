@@ -41,7 +41,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
     isLoaded &&
       isSignedIn &&
       setIsAdmin(user.username?.includes("admin") ? true : false);
-  }, [isSignedIn]);
+  }, [isSignedIn, isLoaded, user?.username]);
 
   return (
     <>

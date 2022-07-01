@@ -3,7 +3,7 @@ import { Loader } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
 
 export default function ProductsPage() {
-  const { isLoading, data: products } = trpc.useQuery(["get_all_products"]);
+  const { isLoading, data: products } = trpc.useQuery(["get_all_products", {}]);
 
   if (isLoading || !products) return <Loader />;
 

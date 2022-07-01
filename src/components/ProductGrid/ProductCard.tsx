@@ -1,17 +1,15 @@
 import { getMoney } from "@/utils";
-import { Product } from "@prisma/client";
+import { InferQueryOutput } from "@/utils/trpc";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-interface ProductCardProps {
-  product: Product;
-}
-
-export default function ProductCard({ product }: ProductCardProps) {
+const ProductCard: React.FC<{
+  product: InferQueryOutput<"get_all_products">[number];
+}> = ({ product }) => {
   const router = useRouter();
   return (
     <div
-      className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl hover:scale-110 duration-500 ease-out cursor-pointer"
+      className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl hover:scale-105 duration-500 ease-out cursor-pointer"
       onClick={() => router.push(`/products/${product.id}`)}
     >
       <Image
@@ -20,7 +18,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         layout="fixed"
         placeholder="empty"
         alt={product.name}
-        src="https://www.functionofbeauty.com/product/shampoo-conditioner/img/carousel-4.jpg"
+        src={
+          product.images.length > 0
+            ? product.images[0].url
+            : "https://www.functionofbeauty.com/product/shampoo-conditioner/img/carousel-4.jpg"
+        }
         className="rounded-lg shadow-md"
       />
       <div className="flex flex-col items-start mt-4 w-full">
@@ -35,4 +37,6 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ProductCard;
