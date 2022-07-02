@@ -1,6 +1,7 @@
 import { InferQueryOutput } from "@/utils/trpc";
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
+import { ProductCreateForm } from "../Form";
 import ProductCard from "./ProductCard";
 
 const ProductsGrid: React.FC<{
@@ -8,6 +9,9 @@ const ProductsGrid: React.FC<{
 }> = ({ products: allProducts }) => {
   const [products, setProducts] = useState(allProducts);
   const [search, setSearch] = useState("");
+
+  // create modal
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +27,7 @@ const ProductsGrid: React.FC<{
   return (
     <div className="p-2 mt-8">
       {/* Search */}
-      <div className="mb-6 flex items-center">
+      <div className="mb-6 flex items-center justify-between">
         <form className="flex items-center" onSubmit={(e) => handleSearch(e)}>
           <label htmlFor="simple-search" className="sr-only">
             Search
@@ -44,6 +48,13 @@ const ProductsGrid: React.FC<{
             <button className="sr-only" type="submit" />
           </div>
         </form>
+        <button className="btn" onClick={() => setShowCreateModal(true)}>
+          Add
+        </button>
+        <ProductCreateForm
+          show={showCreateModal}
+          setShow={setShowCreateModal}
+        />
       </div>
       <div className="flex flex-wrap gap-10">
         {products.map((product) => (

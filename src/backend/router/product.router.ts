@@ -37,6 +37,9 @@ export const productRouter = trpc
             skip: 0,
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
     },
   })
@@ -55,6 +58,12 @@ export const productRouter = trpc
           price: true,
           quantity: true,
           createdAt: true,
+          mRP: true,
+          invoices: {
+            select: {
+              id: true,
+            },
+          },
           images: {
             select: {
               id: true,
@@ -90,5 +99,73 @@ export const productRouter = trpc
           },
         },
       });
+    },
+  })
+  .mutation("create_product", {
+    input: z.object({
+      name: z.string(),
+      mRP: z.number(),
+      quantity: z.number(),
+    }),
+    async resolve({ input }) {
+      return await prisma.product.create({
+        data: {
+          name: input.name,
+          discountPercentage: 10,
+          mRP: input.mRP,
+          price: input.mRP - (input.mRP * 10) / 100,
+          quantity: input.quantity,
+        },
+        select: {
+          id: true,
+        },
+      });
+    },
+  })
+  .mutation("update_product_by_id", {
+    input: z.object({
+      id: z.string().cuid(),
+      name: z.string(),
+      quantity: z.number(),
+      mRP: z.number(),
+    }),
+    async resolve({ input }) {
+      return await prisma.product.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          quantity: input.quantity,
+          mRP: input.mRP,
+          price: input.mRP - (input.mRP * 10) / 100,
+        },
+      });
+    },
+  })
+  .mutation("delete_product", {
+    input: z.object({
+      id: z.string().cuid(),
+    }),
+    async resolve({ input }) {
+      // delete the product
+      (await prisma.product.delete({
+        where: {
+          id: input.id,
+        },
+      })) &&
+        // TODO: delete the image stored on s3
+        // delete the images associated
+        (await prisma.image.deleteMany({
+          where: {
+            products: {
+              every: {
+                id: input.id,
+              },
+            },
+          },
+        }));
+
+      return input.id;
     },
   });

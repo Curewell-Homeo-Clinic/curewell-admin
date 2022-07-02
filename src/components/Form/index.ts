@@ -1,6 +1,8 @@
 export { default as SignInForm } from "./SignInForm";
 
 export { default as ProductForm } from "./ProductForm";
+export { default as ProductCreateForm } from "./ProductForm/ProductCreateForm";
+export { default as ProductDeleteForm } from "./ProductForm/ProductDeleteForm";
 
 export { default as PatientForm } from "./PatientForm";
 export { default as PatientCreateForm } from "./PatientForm/PatientCreateForm";

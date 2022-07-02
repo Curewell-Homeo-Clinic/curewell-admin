@@ -9,7 +9,7 @@ const ProductCard: React.FC<{
   const router = useRouter();
   return (
     <div
-      className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl hover:scale-105 duration-500 ease-out cursor-pointer"
+      className="flex items-center flex-col border-2 border-primary rounded-lg p-4 shadow-lg hover:shadow-2xl drop-shadow-xl duration-500 ease-out cursor-pointer"
       onClick={() => router.push(`/products/${product.id}`)}
     >
       <Image

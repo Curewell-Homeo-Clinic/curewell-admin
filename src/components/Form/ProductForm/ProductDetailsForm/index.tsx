@@ -1,23 +1,41 @@
-import { InferQueryOutput } from "@/utils/trpc";
+import { InferQueryOutput, trpc } from "@/utils/trpc";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const ProductDetailsForm: React.FC<{
   product: InferQueryOutput<"get_product_by_id">;
 }> = ({ product }) => {
-  const [name, setName] = useState(product?.name);
-  const [price, setPrice] = useState(product?.price);
-  const [quantity, setQuantity] = useState(product?.quantity);
+  const [name, setName] = useState(product?.name!);
+  const [mRP, setMRP] = useState(product?.mRP!);
+  const [quantity, setQuantity] = useState(product?.quantity!);
   const [isEdit, setIsEdit] = useState(false);
+
+  const trpcCtx = trpc.useContext();
+  const productUpdateMutation = trpc.useMutation(["update_product_by_id"], {
+    async onSuccess() {
+      trpcCtx.invalidateQueries(["get_product_by_id", { id: product?.id! }]);
+      trpcCtx.invalidateQueries(["get_all_products", {}]);
+    },
+  });
+
+  const handleSave = async () => {
+    await productUpdateMutation.mutateAsync({
+      id: product?.id!,
+      name,
+      mRP,
+      quantity,
+    });
+  };
 
   useEffect(() => {
     if (
       name !== product?.name ||
-      price !== product?.price ||
+      mRP !== product?.price ||
       quantity !== product?.quantity
     ) {
       setIsEdit(true);
     } else setIsEdit(false);
-  }, [name, product?.name, price, product?.price, quantity, product?.quantity]);
+  }, [name, product?.name, mRP, product?.price, quantity, product?.quantity]);
 
   if (!product) return null;
 
@@ -47,18 +65,15 @@ const ProductDetailsForm: React.FC<{
 
       {/* Price */}
       <div className="mb-6">
-        <label
-          htmlFor="productPrice"
-          className="block mb-2 text-sm font-medium"
-        >
-          Price
+        <label htmlFor="productMRP" className="block mb-2 text-sm font-medium">
+          MRP
         </label>
         <input
           type="number"
-          id="productPrice"
-          value={price}
+          id="productMRP"
+          value={mRP}
           min="0"
-          onChange={(e) => setPrice(parseInt(e.target.value))}
+          onChange={(e) => setMRP(parseInt(e.target.value))}
           className="bg-gray-50 border capitalize border-gray-300 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full p-2.5 "
         />
       </div>
@@ -86,6 +101,7 @@ const ProductDetailsForm: React.FC<{
         <button
           className="btn disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-300"
           disabled={isEdit ? false : true}
+          onClick={handleSave}
         >
           Save
         </button>
