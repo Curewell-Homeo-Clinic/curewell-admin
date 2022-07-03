@@ -5,7 +5,7 @@ import { promisify } from "util";
 const randomBytes = promisify(crypto.randomBytes);
 
 const region = "ap-south-1";
-const productBucketName = "curewell-admin-product-images";
+const productBucketName = process.env.AWS_PRODUCT_S3_BUCKET_NAME;
 const accessKeyId = process.env.AWS_PRODUCT_IMAGES_USER_ACCESS_ID;
 const secretAccessKey = process.env.AWS_PRODUCT_IMAGES_USER_SECRET_ACCESS_KEY;
 
