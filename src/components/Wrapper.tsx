@@ -1,12 +1,17 @@
 import { STATES } from "@/store";
 import { capitalizeFirst } from "@/utils";
 import { useUser } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, Suspense, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import Navbar, { NavbarProps } from "./Navbar";
+import { NavbarProps } from "./Navbar";
 import { Loader } from "./shared";
+
+const Navbar = dynamic(() => import("@/components/Navbar"), {
+  suspense: true,
+});
 
 export default function Wrapper({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -49,7 +54,9 @@ export default function Wrapper({ children }: { children: ReactNode }) {
         <title>{capitalizeFirst(getActiveMenu())} | Curewell Homeo</title>
       </Head>
       <div className="flex">
-        <Navbar active={getActiveMenu()} />
+        <Suspense fallback={<Loader />}>
+          <Navbar active={getActiveMenu()} />
+        </Suspense>
         <div className="p-5 pt-8 flex-1 h-screen overflow-y-auto text-primary">
           {isLoaded ? children : <Loader />}
         </div>

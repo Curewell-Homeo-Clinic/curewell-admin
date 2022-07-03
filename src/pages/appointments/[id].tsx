@@ -1,8 +1,13 @@
-import { GoBackButton, Loader } from "@/components/shared";
+import { GoBackButton, Loader, Suspense } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
-import { AppointmentForm } from "@/components/Form";
+import dynamic from "next/dynamic";
+
+const AppointmentForm = dynamic(
+  () => import("@/components/Form/AppointmentsForm"),
+  { suspense: true }
+);
 
 export default function AppointmentPage() {
   const router = useRouter();
@@ -40,7 +45,9 @@ export default function AppointmentPage() {
             </p>
           </div>
         </div>
-        <AppointmentForm appointment={appointment} />
+        <Suspense>
+          <AppointmentForm appointment={appointment} />
+        </Suspense>
       </div>
     </div>
   );

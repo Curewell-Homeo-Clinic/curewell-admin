@@ -1,5 +1,4 @@
 import { useState } from "react";
-import UserButton from "./UserButton";
 import {
   ChevronLeftIcon,
   CollectionIcon,
@@ -14,6 +13,11 @@ import { useRouter } from "next/router";
 import { Tooltip } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 import { STATES } from "@/store";
+import dynamic from "next/dynamic";
+
+const UserButton = dynamic(() => import("./UserButton"), {
+  suspense: false,
+});
 
 export interface NavbarProps {
   active:

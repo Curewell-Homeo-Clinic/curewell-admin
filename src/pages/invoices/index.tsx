@@ -1,6 +1,13 @@
-import { Loader } from "@/components/shared";
-import { InvoicesTable } from "@/components/Table";
+import { Loader, Suspense } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
+import dynamic from "next/dynamic";
+
+const InvoicesTable = dynamic(
+  () => import("@/components/Table/InvoicesTable"),
+  {
+    suspense: true,
+  }
+);
 
 export default function InvoicesPage() {
   const { isLoading, data: invoices } = trpc.useQuery(["get_all_invoices"]);
@@ -12,7 +19,9 @@ export default function InvoicesPage() {
       <div className="p-2">
         <h1>Invoices</h1>
       </div>
-      <InvoicesTable invoices={invoices} />
+      <Suspense>
+        <InvoicesTable invoices={invoices} />
+      </Suspense>
     </div>
   );
 }

@@ -1,8 +1,13 @@
-import { ProductDeleteForm, ProductForm } from "@/components/Form";
-import { GoBackButton, Loader } from "@/components/shared";
+import { GoBackButton, Loader, Suspense } from "@/components/shared";
+import { ProductDeleteForm } from "@/components/Form";
 import { getMoney } from "@/utils";
 import { trpc } from "@/utils/trpc";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+
+const ProductForm = dynamic(() => import("@/components/Form/ProductForm"), {
+  suspense: true,
+});
 
 export default function ProductPage() {
   const router = useRouter();
@@ -38,7 +43,9 @@ export default function ProductPage() {
             <ProductDeleteForm id={id! as string} />
           )}
         </div>
-        <ProductForm product={product} />
+        <Suspense>
+          <ProductForm product={product} />
+        </Suspense>
       </div>
     </div>
   );

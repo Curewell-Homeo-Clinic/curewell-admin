@@ -1,11 +1,27 @@
-import { Stats } from "@/components";
 import { Loader } from "@/components/shared";
-import { PatientsTable, AppointmentsTable } from "@/components/Table";
+// import { PatientsTable, AppointmentsTable } from "@/components/Table";
 import { STATES } from "@/store";
 import { trpc } from "@/utils/trpc";
-import { useUser } from "@clerk/nextjs";
-import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import dynamic from "next/dynamic";
+import { Suspense } from "@/components/shared";
+import { useRecoilValue } from "recoil";
+
+const Stats = dynamic(() => import("@/components/Stats"), {
+  suspense: true,
+});
+
+const PatientsTable = dynamic(
+  () => import("@/components/Table/PatientsTable"),
+  {
+    suspense: true,
+  }
+);
+const AppointmentsTable = dynamic(
+  () => import("@/components/Table/AppointmentsTable"),
+  {
+    suspense: true,
+  }
+);
 
 export default function Home() {
   const { isLoading: isStatsLoading, data: overallStats } = trpc.useQuery([
@@ -34,16 +50,24 @@ export default function Home() {
 
   return (
     <div>
-      {isAdmin && <Stats overallStats={overallStats} />}
+      {isAdmin && (
+        <Suspense>
+          <Stats overallStats={overallStats} />
+        </Suspense>
+      )}
       <div className="flex flex-wrap gap-10 w-full items-start mt-10">
         <div style={{ flex: 0.5 }}>
           <h1 className="px-2">Patients</h1>
-          <PatientsTable patients={patients} />
+          <Suspense>
+            <PatientsTable patients={patients} />
+          </Suspense>
         </div>
 
         <div style={{ flex: 0.5 }}>
           <h1 className="px-2">Appointments</h1>
-          <AppointmentsTable appointments={appointments} />
+          <Suspense>
+            <AppointmentsTable appointments={appointments} />
+          </Suspense>
         </div>
       </div>
     </div>

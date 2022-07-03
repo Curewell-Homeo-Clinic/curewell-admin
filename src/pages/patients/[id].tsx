@@ -1,8 +1,19 @@
-import { PatientDeleteForm, PatientForm } from "@/components/Form";
-import { Loader } from "@/components/shared";
+import { Loader, Suspense } from "@/components/shared";
 import { GoBackButton } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+
+const PatientDeleteForm = dynamic(
+  () => import("@/components/Form/PatientForm/PatientDeleteForm"),
+  {
+    suspense: true,
+  }
+);
+
+const PatientForm = dynamic(() => import("@/components/Form/PatientForm"), {
+  suspense: true,
+});
 
 export default function PatientPage() {
   const router = useRouter();
@@ -30,9 +41,13 @@ export default function PatientPage() {
               Joined at {new Date(patient.admittedAt).toLocaleDateString()}
             </p>
           </div>
-          <PatientDeleteForm id={id! as string} />
+          <Suspense>
+            <PatientDeleteForm id={id! as string} />
+          </Suspense>
         </div>
-        <PatientForm patient={patient} allPlans={allPlans} />
+        <Suspense>
+          <PatientForm patient={patient} allPlans={allPlans} />
+        </Suspense>
       </div>
     </div>
   );

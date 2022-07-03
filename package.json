@@ -16,6 +16,7 @@
     "@mantine/dates": "^4.2.10",
     "@mantine/dropzone": "^4.2.11",
     "@mantine/hooks": "^4.2.10",
+    "@mantine/next": "^4.2.11",
     "@prisma/client": "3.15.0",
     "@trpc/client": "^9.24.0",
     "@trpc/next": "^9.24.0",
