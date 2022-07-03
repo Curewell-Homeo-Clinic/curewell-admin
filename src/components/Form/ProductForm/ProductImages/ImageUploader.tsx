@@ -3,7 +3,6 @@ import { PhotographIcon, UploadIcon, XIcon } from "@heroicons/react/outline";
 import { Group, MantineTheme, Text, useMantineTheme } from "@mantine/core";
 import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import axios from "axios";
-import { useRouter } from "next/router";
 import React from "react";
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
@@ -61,17 +60,21 @@ const ImageUploader: React.FC<{
     "get_product_upload_secure_url",
   ]);
 
-  const addProductImage = trpc.useMutation(["add_product_image_by_id"]);
-
-  const router = useRouter();
+  const trpcCtx = trpc.useContext();
+  const addProductImage = trpc.useMutation(["add_product_image_by_id"], {
+    onSuccess() {
+      trpcCtx.invalidateQueries(["get_product_by_id", { id: product?.id! }]);
+      trpcCtx.invalidateQueries(["get_all_products"]);
+    },
+  });
 
   const handleUpload = async (files: File[]) => {
     // getting the secure url
-    const url = await getSecureURLMutation.mutateAsync();
+    const { imageName, uploadURL } = await getSecureURLMutation.mutateAsync();
 
     // putting the object
     const file = files[0];
-    const res = await axios.put(url, file, {
+    const res = await axios.put(uploadURL, file, {
       headers: {
         "Content-type": "multipart/form-data",
       },
@@ -80,9 +83,9 @@ const ImageUploader: React.FC<{
     res &&
       (await addProductImage.mutateAsync({
         productId: product?.id!,
-        url: url.split("?")[0],
+        url: uploadURL.split("?")[0],
+        key: imageName,
       }));
-    router.reload();
   };
 
   if (!product) return null;

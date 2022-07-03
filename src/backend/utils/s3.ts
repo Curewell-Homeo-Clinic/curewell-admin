@@ -28,5 +28,14 @@ export async function generateProductImageUploadURL() {
 
   const uploadURL = await productS3.getSignedUrlPromise("putObject", params);
 
-  return uploadURL;
+  return { imageName, uploadURL };
+}
+
+export async function deleteProductImages(objectKeys: string[]) {
+  return await productS3
+    .deleteObjects({
+      Bucket: productBucketName!,
+      Delete: { Objects: [...objectKeys.map((key) => ({ Key: key }))] },
+    })
+    .promise();
 }

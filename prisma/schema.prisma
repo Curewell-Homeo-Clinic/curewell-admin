@@ -82,7 +82,8 @@ model Product {
 model Image {
     id        String    @id @default(cuid())
     createdAt DateTime  @default(now())
-    url       String    @default("")
+    url       String
+    objectKey String
     products  Product[]
 }
 

@@ -1,7 +1,10 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
-import { generateProductImageUploadURL } from "../utils/s3";
+import {
+  deleteProductImages,
+  generateProductImageUploadURL,
+} from "../utils/s3";
 
 export const productRouter = trpc
   .router()
@@ -62,11 +65,6 @@ export const productRouter = trpc
             },
           },
           images: {
-            select: {
-              id: true,
-              url: true,
-              createdAt: true,
-            },
             orderBy: {
               createdAt: "desc",
             },
@@ -83,6 +81,7 @@ export const productRouter = trpc
   .mutation("add_product_image_by_id", {
     input: z.object({
       url: z.string(),
+      key: z.string(),
       productId: z.string().cuid(),
     }),
     async resolve({ input }) {
@@ -92,10 +91,44 @@ export const productRouter = trpc
           images: {
             create: {
               url: input.url,
+              objectKey: input.key,
             },
           },
         },
       });
+    },
+  })
+  .mutation("delete_product_images_by_id", {
+    input: z.object({
+      productId: z.string(),
+      images: z.array(
+        z.object({
+          id: z.string().cuid(),
+          key: z.string(),
+        })
+      ),
+    }),
+    async resolve({ input }) {
+      const res = await deleteProductImages([
+        ...input.images.map((image) => image.key),
+      ]);
+      if (res.Deleted) {
+        await prisma.product.update({
+          where: { id: input.productId },
+          data: {
+            images: {
+              deleteMany: res.Deleted.map((deletedObject) => ({
+                objectKey: deletedObject.Key,
+              })),
+            },
+          },
+          select: { id: true },
+        });
+
+        return true;
+      }
+
+      return false;
     },
   })
   .mutation("create_product", {
