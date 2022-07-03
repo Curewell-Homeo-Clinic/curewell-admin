@@ -4,6 +4,7 @@ import {
   CalendarIcon,
   ClockIcon,
   CurrencyRupeeIcon,
+  ReceiptTaxIcon,
   ShoppingBagIcon,
   TemplateIcon,
   UserIcon,
@@ -65,6 +66,9 @@ const InvoiceCreateForm: React.FC<{
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] =
     useState<InferQueryOutput<"get_all_products">>();
+  const [isDiscountPercentageDisabled, setIsDicountPercentageDisabled] =
+    useState(true);
+  const [discountPercentage, setDiscountPercentage] = useState<number>(0);
 
   // isEdit logic
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -129,6 +133,13 @@ const InvoiceCreateForm: React.FC<{
       setIsPlanSelectDisabled(false);
     }
   }, [selectedPatient]);
+
+  // for the discount percentage
+  useEffect(() => {
+    if (selectedProducts && selectedProducts.length > 0) {
+      setIsDicountPercentageDisabled(false);
+    } else setIsDicountPercentageDisabled(true);
+  }, [selectedProducts]);
 
   if (
     isPatientsLoading ||
@@ -300,6 +311,31 @@ const InvoiceCreateForm: React.FC<{
         />
       </div>
 
+      <div className="mb-6">
+        <label
+          htmlFor="discountPercentage"
+          className="block mb-2 text-sm font-medium"
+        >
+          Discount Percentage
+          <p className="labelDescription">Discount Percentage on Products</p>
+        </label>
+        <div className="relative">
+          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none text-primaryLight">
+            <ReceiptTaxIcon className="w-5" />
+          </div>
+          <input
+            type="number"
+            min="0"
+            id="discountPercentage"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-primary block w-full pl-10 p-2.5 disabled:text-gray-300 disabled:cursor-not-allowed"
+            placeholder="200"
+            value={discountPercentage}
+            disabled={isDiscountPercentageDisabled}
+            onChange={(e) => setDiscountPercentage(parseInt(e.target.value))}
+          />
+        </div>
+      </div>
+
       {/* Preview Button */}
       <div className="flex justify-end">
         <button
@@ -332,13 +368,14 @@ const InvoiceCreateForm: React.FC<{
             },
             products:
               selectedProducts?.map((product) => ({
-                discountPercentage: product.discountPercentage,
                 mrp: product.mRP,
                 name: product.name,
                 oldQuantity: product.quantity,
                 quantity: 1, // take this from user input
                 id: product.id,
               })) || [],
+
+            discountPercentage,
           }}
         />
       </div>

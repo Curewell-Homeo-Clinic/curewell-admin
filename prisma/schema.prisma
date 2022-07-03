@@ -52,39 +52,38 @@ model TreatmentPlan {
 }
 
 model Invoice {
-    id                String               @id @default(cuid())
-    number            Int                  @default(autoincrement())
-    createdAt         DateTime             @default(now())
-    timestamp         DateTime             @default(now())
-    patient           Patient              @relation(fields: [patientId], references: [id])
-    patientId         String
-    doctor            Doctor               @relation(fields: [doctorId], references: [id])
-    doctorId          String
-    products          Product[]
-    consultationFee   Float                @default(0)
-    plan              PatientTreatmentPlan @relation(fields: [planId], references: [id])
-    planId            String
-    planAmmountPaying Float                @default(0)
-    totalAmmount      Float                @default(0)
+    id                         String               @id @default(cuid())
+    number                     Int                  @default(autoincrement())
+    createdAt                  DateTime             @default(now())
+    timestamp                  DateTime             @default(now())
+    patient                    Patient              @relation(fields: [patientId], references: [id])
+    patientId                  String
+    doctor                     Doctor               @relation(fields: [doctorId], references: [id])
+    doctorId                   String
+    products                   Product[]
+    productsDiscountPercentage Int                  @default(0)
+    consultationFee            Float                @default(0)
+    plan                       PatientTreatmentPlan @relation(fields: [planId], references: [id])
+    planId                     String
+    planAmmountPaying          Float                @default(0)
+    totalAmmount               Float                @default(0)
 }
 
 model Product {
-    id                 String    @id @default(cuid())
-    createdAt          DateTime  @default(now())
-    name               String
-    mRP                Float     @default(0)
-    discountPercentage Float     @default(0)
-    price              Float     @default(0)
-    quantity           Int       @default(0)
-    images             Image[]
-    invoices           Invoice[]
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    name      String
+    mRP       Float     @default(0)
+    quantity  Int       @default(0)
+    images    Image[]
+    invoices  Invoice[]
 }
 
 model Image {
-    id       String    @id @default(cuid())
-	createdAt DateTime @default(now())
-    url      String    @default("")
-    products Product[]
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    url       String    @default("")
+    products  Product[]
 }
 
 model Doctor {

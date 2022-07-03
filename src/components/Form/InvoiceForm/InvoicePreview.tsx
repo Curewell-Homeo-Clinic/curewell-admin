@@ -26,10 +26,10 @@ interface Invoice {
     id: string;
     name: string;
     mrp: number;
-    discountPercentage: number;
     oldQuantity: number;
     quantity: number;
   }[];
+  discountPercentage: number;
 }
 
 const InvoicePreview: React.FC<{
@@ -41,7 +41,7 @@ const InvoicePreview: React.FC<{
     product: Invoice["products"][number]
   ) => number = (product) => {
     return Math.round(
-      product.mrp - product.mrp * (product.discountPercentage / 100)
+      product.mrp - product.mrp * (invoice.discountPercentage / 100)
     );
   };
 
@@ -74,6 +74,7 @@ const InvoicePreview: React.FC<{
       })),
       timestamp: invoice.timestamp.toString(),
       totalAmmount: calculateTotalAmmount(),
+      productDiscountPercentage: invoice.discountPercentage,
     })) && router.reload();
   };
 

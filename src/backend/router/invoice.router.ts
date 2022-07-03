@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { string, z } from "zod";
+import { z } from "zod";
 import { prisma } from "../utils/prisma";
 
 export const invoiceRouter = trpc
@@ -13,10 +13,10 @@ export const invoiceRouter = trpc
           consultationFee: true,
           products: {
             select: {
-              discountPercentage: true,
-              price: true,
+              mRP: true,
             },
           },
+          productsDiscountPercentage: true,
           planAmmountPaying: true,
           patient: {
             select: {
@@ -75,6 +75,7 @@ export const invoiceRouter = trpc
           quantity: z.number().default(1),
         })
       ),
+      productDiscountPercentage: z.number(),
       consultationFee: z.number(),
       patientPlanId: z.string(),
       planAmmountPaying: z.number(),
@@ -99,6 +100,7 @@ export const invoiceRouter = trpc
           products: {
             connect: input.products.map((product) => ({ id: product.id })),
           },
+          productsDiscountPercentage: input.productDiscountPercentage,
           consultationFee: input.consultationFee,
           plan: {
             connect: {

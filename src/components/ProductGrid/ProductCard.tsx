@@ -27,7 +27,7 @@ const ProductCard: React.FC<{
       />
       <div className="flex flex-col items-start mt-4 w-full">
         <div className="flex items-center justify-between w-full mb-2">
-          <span className="font-medium text-xl">{getMoney(product.price)}</span>
+          <span className="font-medium text-xl">{getMoney(product.mRP)}</span>
           <span className="text-sm">{product.quantity} Left</span>
         </div>
         <span className="text-lg">{product.name}</span>

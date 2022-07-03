@@ -64,8 +64,8 @@ const InvoicesTable: React.FC<{
           invoice.products
             ?.map(
               (product) =>
-                product.price -
-                (product.price * product.discountPercentage) / 100
+                product.mRP -
+                (product.mRP * invoice.productsDiscountPercentage) / 100
             )
             .reduce((x, y) => x + y, 0) || 0
         )}

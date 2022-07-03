@@ -30,12 +30,12 @@ const ProductDetailsForm: React.FC<{
   useEffect(() => {
     if (
       name !== product?.name ||
-      mRP !== product?.price ||
+      mRP !== product?.mRP ||
       quantity !== product?.quantity
     ) {
       setIsEdit(true);
     } else setIsEdit(false);
-  }, [name, product?.name, mRP, product?.price, quantity, product?.quantity]);
+  }, [name, product?.name, mRP, product?.mRP, quantity, product?.quantity]);
 
   if (!product) return null;
 

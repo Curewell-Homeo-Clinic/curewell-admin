@@ -24,11 +24,9 @@ export const productRouter = trpc
         select: {
           name: true,
           quantity: true,
-          price: true,
           id: true,
           createdAt: true,
           mRP: true,
-          discountPercentage: true,
           images: {
             select: {
               url: true,
@@ -55,7 +53,6 @@ export const productRouter = trpc
         select: {
           id: true,
           name: true,
-          price: true,
           quantity: true,
           createdAt: true,
           mRP: true,
@@ -111,9 +108,7 @@ export const productRouter = trpc
       return await prisma.product.create({
         data: {
           name: input.name,
-          discountPercentage: 10,
           mRP: input.mRP,
-          price: input.mRP - (input.mRP * 10) / 100,
           quantity: input.quantity,
         },
         select: {
@@ -138,7 +133,6 @@ export const productRouter = trpc
           name: input.name,
           quantity: input.quantity,
           mRP: input.mRP,
-          price: input.mRP - (input.mRP * 10) / 100,
         },
       });
     },

@@ -31,7 +31,7 @@ export default function ProductPage() {
               <span className="underline underline-offset-2">
                 {product.name}
               </span>{" "}
-              @ {getMoney(product.price)}
+              @ {getMoney(product.mRP)}
               <span className="secondaryText"> (10% OFF)</span>
             </h1>
             <p className="secondaryText">
