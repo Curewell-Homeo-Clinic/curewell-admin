@@ -368,7 +368,7 @@ const InvoiceCreateForm: React.FC<{
             },
             products:
               selectedProducts?.map((product) => ({
-                mrp: product.mRP,
+                mRP: product.mRP,
                 name: product.name,
                 oldQuantity: product.quantity,
                 quantity: 1, // take this from user input

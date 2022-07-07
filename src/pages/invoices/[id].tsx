@@ -1,3 +1,4 @@
+import { InvoiceForm } from "@/components/Form";
 import { GoBackButton, Loader } from "@/components/shared";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
@@ -35,7 +36,7 @@ export default function InvoicePage() {
           </div>
           {/* delete form */}
         </div>
-        {/* form */}
+        <InvoiceForm invoice={invoice} />
       </div>
     </div>
   );

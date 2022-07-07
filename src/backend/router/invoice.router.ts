@@ -1,5 +1,6 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
+import { calculatePrice } from "../utils";
 import { prisma } from "../utils/prisma";
 
 export const invoiceRouter = trpc
@@ -52,6 +53,7 @@ export const invoiceRouter = trpc
         where: { id: input.id },
         select: {
           timestamp: true,
+          id: true,
           patient: {
             select: {
               firstName: true,
@@ -59,6 +61,28 @@ export const invoiceRouter = trpc
               id: true,
             },
           },
+          doctor: {
+            select: {
+              firstName: true,
+              lastName: true,
+              id: true,
+            },
+          },
+          plan: {
+            select: {
+              plan: {
+                select: {
+                  id: true,
+                  price: true,
+                  name: true,
+                },
+              },
+              ammountPaid: true,
+            },
+          },
+          consultationFee: true,
+          products: true,
+          productsDiscountPercentage: true,
         },
       });
     },
@@ -132,5 +156,122 @@ export const invoiceRouter = trpc
           },
         }));
       return invoice.id;
+    },
+  })
+  .mutation("add_invoice_products", {
+    input: z.object({
+      id: z.string().cuid(),
+      products: z
+        .object({
+          id: z.string().cuid(),
+          mRP: z.number(),
+        })
+        .array(),
+      productDiscountPercentage: z.number(),
+    }),
+    async resolve({ input }) {
+      const totalProductAmmount = input.products
+        .map((product) => product.mRP)
+        .reduce((x, y) => x + y);
+      const updatedInvoice = await prisma.invoice.update({
+        where: { id: input.id },
+        data: {
+          products: {
+            connect: input.products.map((product) => ({ id: product.id })),
+          },
+          totalAmmount: {
+            increment: calculatePrice(
+              totalProductAmmount,
+              input.productDiscountPercentage
+            ),
+          },
+        },
+      });
+
+      if (updatedInvoice) {
+        // decrease quantity
+        const updateProduct = await prisma.product.updateMany({
+          where: {
+            id: {
+              in: input.products.map((product) => product.id),
+            },
+          },
+          data: {
+            quantity: {
+              decrement: 1,
+            },
+          },
+        });
+
+        if (updateProduct) return true;
+
+        return false;
+      }
+
+      return false;
+    },
+  })
+  .mutation("remove_invoice_product", {
+    input: z.object({
+      id: z.string().cuid(),
+      product: z.object({
+        id: z.string().cuid(),
+        mRP: z.number(),
+      }),
+      productDiscountPercentage: z.number(),
+    }),
+    async resolve({ input }) {
+      const updatedInvoice = await prisma.invoice.update({
+        where: { id: input.id },
+        data: {
+          products: {
+            disconnect: [
+              {
+                id: input.product.id,
+              },
+            ],
+          },
+          totalAmmount: {
+            decrement: calculatePrice(
+              input.product.mRP,
+              input.productDiscountPercentage
+            ),
+          },
+        },
+      });
+
+      if (updatedInvoice) {
+        // increase quantity
+        const updatedProduct = await prisma.product.update({
+          where: {
+            id: input.product.id,
+          },
+          data: {
+            quantity: {
+              increment: 1,
+            },
+          },
+        });
+
+        if (updatedProduct) return true;
+
+        return false;
+      }
+
+      return false;
+    },
+  })
+  .mutation("update_invoice_productDiscountPercentage", {
+    input: z.object({
+      productDiscountPercentage: z.number(),
+      id: z.string().cuid(),
+    }),
+    async resolve({ input }) {
+      return await prisma.invoice.update({
+        where: { id: input.id },
+        data: {
+          productsDiscountPercentage: input.productDiscountPercentage,
+        },
+      });
     },
   });

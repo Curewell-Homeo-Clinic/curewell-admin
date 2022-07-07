@@ -20,7 +20,7 @@ class AppDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body>
+        <body className="overflow-y-hidden">
           <Main />
           <NextScript />
         </body>

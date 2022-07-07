@@ -25,7 +25,7 @@ interface Invoice {
   products: {
     id: string;
     name: string;
-    mrp: number;
+    mRP: number;
     oldQuantity: number;
     quantity: number;
   }[];
@@ -41,7 +41,7 @@ const InvoicePreview: React.FC<{
     product: Invoice["products"][number]
   ) => number = (product) => {
     return Math.round(
-      product.mrp - product.mrp * (invoice.discountPercentage / 100)
+      product.mRP - product.mRP * (invoice.discountPercentage / 100)
     );
   };
 
