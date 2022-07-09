@@ -1,10 +1,7 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
-import {
-  deleteProductImages,
-  generateProductImageUploadURL,
-} from "../utils/s3";
+import { deleteImages, generateImageUploadURL } from "../utils/s3";
 
 export const productRouter = trpc
   .router()
@@ -75,7 +72,7 @@ export const productRouter = trpc
   })
   .mutation("get_product_upload_secure_url", {
     async resolve() {
-      return await generateProductImageUploadURL();
+      return await generateImageUploadURL("products");
     },
   })
   .mutation("add_product_image_by_id", {
@@ -109,7 +106,7 @@ export const productRouter = trpc
       ),
     }),
     async resolve({ input }) {
-      const res = await deleteProductImages([
+      const res = await deleteImages("products", [
         ...input.images.map((image) => image.key),
       ]);
       if (res.Deleted) {

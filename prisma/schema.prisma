@@ -11,24 +11,27 @@ datasource db {
 }
 
 model Patient {
-    id               String                 @id @default(cuid())
-    createdAt        DateTime               @default(now())
-    admittedAt       DateTime               @default(now())
-    firstName        String
-    lastName         String
-    age              Int                    @default(0)
-    email            String
-    phone            String                 @db.VarChar(10)
-    address          String
-    occupation       String
-    caseStudy        String                 @default("") @db.VarChar(10000)
-    prescription     String                 @default("") @db.VarChar(1000)
-    appointments     Appointment[]
-    invoices         Invoice[]
-    treatmentPlans   PatientTreatmentPlan[]
-    totalAmmountPaid Float                  @default(0)
-    ailments         String                 @default("")
-    isDeleted        Boolean                @default(false)
+    id                    String                 @id @default(cuid())
+    createdAt             DateTime               @default(now())
+    admittedAt            DateTime               @default(now())
+    firstName             String
+    lastName              String
+    age                   Int                    @default(0)
+    email                 String
+    phone                 String                 @db.VarChar(10)
+    address               String
+    occupation            String
+    caseStudy             String                 @default("") @db.VarChar(10000)
+    prescription          String                 @default("") @db.VarChar(1000)
+    appointments          Appointment[]
+    invoices              Invoice[]
+    treatmentPlans        PatientTreatmentPlan[]
+    beforeTreatmentImages Image[]                @relation("beforeTreatmentImages")
+    afterTreatmentImages  Image[]                @relation("afterTreatmentImages")
+    testReportsImages     Image[]                @relation("testReportsImages")
+    totalAmmountPaid      Float                  @default(0)
+    ailments              String                 @default("")
+    isDeleted             Boolean                @default(false)
 }
 
 model PatientTreatmentPlan {
@@ -80,11 +83,14 @@ model Product {
 }
 
 model Image {
-    id        String    @id @default(cuid())
-    createdAt DateTime  @default(now())
-    url       String
-    objectKey String
-    products  Product[]
+    id                  String    @id @default(cuid())
+    createdAt           DateTime  @default(now())
+    url                 String
+    objectKey           String
+    products            Product[]
+    patientsBefore      Patient[] @relation("beforeTreatmentImages")
+    patientsAfter       Patient[] @relation("afterTreatmentImages")
+    patientsTestReports Patient[] @relation("testReportsImages")
 }
 
 model Doctor {
