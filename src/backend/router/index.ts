@@ -26,10 +26,12 @@ export const appRouter = trpc
       )._sum;
 
       return {
-        patients: await prisma.patient.count({}),
+        patients: await prisma.patient.count({
+          where: { isDeleted: { not: true } },
+        }),
         invoices: await prisma.invoice.count({}),
         appointments: await prisma.appointment.count({}),
-        sales: totalAmmount || 0,
+        sales: Math.round(totalAmmount!) || 0,
       };
     },
   });
