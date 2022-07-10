@@ -8,7 +8,7 @@ const ModalWrapper: React.FC<{
   children: React.ReactNode;
   maxWidth?: "xl" | "2xl";
 }> = ({ show, setShow, title, children, maxWidth = "xl" }) => {
-  return createPortal(
+  return (
     <div
       tabIndex={-1}
       className={`${
@@ -35,8 +35,7 @@ const ModalWrapper: React.FC<{
           </div>
         </div>
       </div>
-    </div>,
-    document.querySelector("#modal-root") as Element
+    </div>
   );
 };
 
