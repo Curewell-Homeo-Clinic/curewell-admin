@@ -1,6 +1,7 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
+import { deleteImages, generateImageUploadURL } from "../utils/s3";
 
 export const patientRouter = trpc
   .router()
@@ -97,6 +98,9 @@ export const patientRouter = trpc
               visited: true,
             },
           },
+          beforeTreatmentImages: true,
+          afterTreatmentImages: true,
+          testReportsImages: true,
         },
       });
     },
@@ -241,5 +245,75 @@ export const patientRouter = trpc
           },
         },
       });
+    },
+  })
+  // using a mutation to mutate whenever we want and multiple times
+  .mutation("get_patient_upload_secure_url", {
+    input: z.object({
+      fileExt: z.string(),
+    }),
+    async resolve({ input }) {
+      return await generateImageUploadURL("patients", input.fileExt);
+    },
+  })
+  .mutation("add_patient_image_by_id", {
+    input: z.object({
+      url: z.string(),
+      key: z.string(),
+      patientId: z.string().cuid(),
+      category: z.enum(["before", "after", "report"]),
+    }),
+    async resolve({ input }) {
+      const imageCreateField =
+        input.category === "before"
+          ? "beforeTreatmentImages"
+          : input.category === "after"
+          ? "afterTreatmentImages"
+          : "testReportsImages";
+      return await prisma.patient.update({
+        where: { id: input.patientId },
+        data: {
+          [imageCreateField]: {
+            create: {
+              url: input.url,
+              objectKey: input.key,
+            },
+          },
+        },
+      });
+    },
+  })
+  .mutation("delete_patient_image_by_id", {
+    input: z.object({
+      patientId: z.string(),
+      image: z.object({
+        id: z.string().cuid(),
+        objectKey: z.string(),
+      }),
+      category: z.enum(["before", "after", "report"]),
+    }),
+    async resolve({ input }) {
+      const res = await deleteImages("patients", [input.image.objectKey]);
+
+      if (res.Deleted) {
+        await prisma.patient.update({
+          where: { id: input.patientId },
+          data: {
+            [input.category === "before"
+              ? "beforeTreatmentImages"
+              : input.category === "after"
+              ? "afterTreatmentImages"
+              : "testReportsImages"]: {
+              deleteMany: res.Deleted.map((deletedObject) => ({
+                objectKey: deletedObject.Key,
+              })),
+            },
+          },
+        });
+
+        return true;
+      }
+
+      return false;
     },
   });

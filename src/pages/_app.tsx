@@ -38,6 +38,7 @@ function App({ Component, pageProps }: AppProps) {
               <Wrapper>
                 <SignedIn>
                   <Component {...pageProps} />
+                  <div id="modal-root" />
                 </SignedIn>
                 <SignedOut>
                   <RedirectToSignIn

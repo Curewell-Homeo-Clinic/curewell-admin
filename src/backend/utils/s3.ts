@@ -20,9 +20,12 @@ const s3 = new aws.S3({
   signatureVersion: "v4",
 });
 
-export async function generateImageUploadURL(entity: keyof typeof BUCKETS) {
+export async function generateImageUploadURL(
+  entity: keyof typeof BUCKETS,
+  fileExt: string
+) {
   const rawBytes = await randomBytes(16);
-  const imageName = `${entity}-image_${rawBytes.toString("hex")}`;
+  const imageName = `${entity}-image_${rawBytes.toString("hex")}.${fileExt}`;
 
   const params = {
     Bucket: BUCKETS[entity],

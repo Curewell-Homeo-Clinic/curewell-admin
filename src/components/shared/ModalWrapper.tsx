@@ -1,4 +1,5 @@
 import { XIcon } from "@heroicons/react/outline";
+import { createPortal } from "react-dom";
 
 const ModalWrapper: React.FC<{
   show: boolean;
@@ -7,7 +8,7 @@ const ModalWrapper: React.FC<{
   children: React.ReactNode;
   maxWidth?: "xl" | "2xl";
 }> = ({ show, setShow, title, children, maxWidth = "xl" }) => {
-  return (
+  return createPortal(
     <div
       tabIndex={-1}
       className={`${
@@ -34,7 +35,8 @@ const ModalWrapper: React.FC<{
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.querySelector("#modal-root") as Element
   );
 };
 

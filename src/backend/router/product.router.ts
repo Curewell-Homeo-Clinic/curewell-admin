@@ -71,8 +71,11 @@ export const productRouter = trpc
     },
   })
   .mutation("get_product_upload_secure_url", {
-    async resolve() {
-      return await generateImageUploadURL("products");
+    input: z.object({
+      fileExt: z.string(),
+    }),
+    async resolve({ input }) {
+      return await generateImageUploadURL("products", input.fileExt);
     },
   })
   .mutation("add_product_image_by_id", {

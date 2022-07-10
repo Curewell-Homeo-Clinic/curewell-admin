@@ -59,11 +59,7 @@ const InvoiceProductAddForm: React.FC<{
         allProducts.filter((product) => !optedProductIds.includes(product.id))
       );
     }
-  }, [allProducts, isLoading]);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+  }, [allProducts, isLoading, optedProductIds]);
 
   useEffect(() => {
     selectedProductIds.length !== 0 &&

@@ -4,7 +4,7 @@ import { Image as IImage } from "@prisma/client";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import ImageUploader from "./ImageUploader";
+import ProductImageUploader from "./ImageUploader";
 import ProductImagesDeleteModal from "./ProductImagesDeleteModal";
 
 const ProductImages: React.FC<{
@@ -30,13 +30,13 @@ const ProductImages: React.FC<{
   useEffect(() => {
     // ERROR: ifIsAllSelected is false from selecting images one by one the previously selected ones also getDeleted
     isAllSelected ? setSelectedImages(product?.images!) : setSelectedImages([]);
-  }, [isAllSelected]);
+  }, [isAllSelected, product?.images]);
 
   useEffect(() => {
     selectedImages.length === product?.images.length
       ? setIsAllSelected(true)
       : setIsAllSelected(false);
-  }, [selectedImages]);
+  }, [selectedImages, product?.images]);
 
   if (!product) return null;
 
@@ -48,7 +48,7 @@ const ProductImages: React.FC<{
       <h1>Images</h1>
       <p className="secondaryText">Product&apos;s Images</p>
 
-      <ImageUploader product={product} />
+      <ProductImageUploader product={product} />
 
       {/* Images Grid */}
       <div className="flex items-center justify-between w-full mb-6 gap-2">
