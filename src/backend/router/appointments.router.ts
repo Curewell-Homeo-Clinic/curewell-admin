@@ -131,4 +131,10 @@ export const appointmentRouter = trpc
         },
       });
     },
+  })
+  .mutation("delete_appointment", {
+    input: z.object({ id: z.string().cuid() }),
+    async resolve({ input }) {
+      return await prisma.appointment.delete({ where: { id: input.id } });
+    },
   });

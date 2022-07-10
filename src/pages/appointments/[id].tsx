@@ -3,6 +3,7 @@ import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
+import { AppointmentDeleteForm } from "@/components/Form";
 
 const AppointmentForm = dynamic(
   () => import("@/components/Form/AppointmentsForm"),
@@ -44,6 +45,7 @@ export default function AppointmentPage() {
               On {format(new Date(appointment.timeStamp), "dd/MM/yy hh:mm aaa")}
             </p>
           </div>
+          <AppointmentDeleteForm id={appointment.id} />
         </div>
         <Suspense>
           <AppointmentForm appointment={appointment} />
