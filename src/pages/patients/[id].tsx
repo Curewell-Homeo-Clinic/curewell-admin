@@ -19,12 +19,12 @@ export default function PatientPage() {
   const router = useRouter();
   const { id } = router.query;
   const { isLoading, data: patient } = trpc.useQuery([
-    "get_patient_by_id",
+    "patients.get",
     { id: id! as string },
   ]);
 
   const { isLoading: isPlansLoading, data: allPlans } = trpc.useQuery([
-    "get_all_treatment_plans",
+    "plans.getAll",
   ]);
 
   if (isLoading || !patient || isPlansLoading || !allPlans) return <Loader />;

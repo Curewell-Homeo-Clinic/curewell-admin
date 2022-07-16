@@ -3,7 +3,6 @@ import { InferQueryOutput } from "@/utils/trpc";
 import {
   CurrencyRupeeIcon,
   TemplateIcon,
-  TrashIcon,
   UserCircleIcon,
   UserIcon,
 } from "@heroicons/react/outline";
@@ -11,7 +10,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const InvoiceDetailsForm: React.FC<{
-  invoice: InferQueryOutput<"get_invoice_by_id">;
+  invoice: InferQueryOutput<"invoices.get">;
 }> = ({ invoice }) => {
   const [planAmmountPaying, setPlanAmmountPaying] = useState(
     invoice?.plan.ammountPaid!

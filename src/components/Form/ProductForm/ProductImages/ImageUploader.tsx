@@ -7,19 +7,19 @@ import axios from "axios";
 import React from "react";
 
 const ProductImageUploader: React.FC<{
-  product: InferQueryOutput<"get_product_by_id">;
+  product: InferQueryOutput<"products.get">;
 }> = ({ product }) => {
   const theme = useMantineTheme();
 
   const getSecureURLMutation = trpc.useMutation([
-    "get_product_upload_secure_url",
+    "products.getUploadSecureURL",
   ]);
 
   const trpcCtx = trpc.useContext();
-  const addProductImage = trpc.useMutation(["add_product_image_by_id"], {
+  const addProductImage = trpc.useMutation(["products.addImage"], {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_product_by_id", { id: product?.id! }]);
-      trpcCtx.invalidateQueries(["get_all_products"]);
+      trpcCtx.invalidateQueries(["products.get", { id: product?.id! }]);
+      trpcCtx.invalidateQueries(["products.getAll"]);
     },
   });
 

@@ -25,17 +25,17 @@ const ImageCategorySelect: React.FC<{
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   image: File;
-  patient: InferQueryOutput<"get_patient_by_id">;
+  patient: InferQueryOutput<"patients.get">;
 }> = ({ show, setShow, image, patient }) => {
   const [category, setCategory] = useState<string | null>();
 
-  const getSecureUploadURL = trpc.useMutation("get_patient_upload_secure_url");
+  const getSecureUploadURL = trpc.useMutation("patients.getUploadSecureURL");
 
   const trpcCtx = trpc.useContext();
-  const uploadMutation = trpc.useMutation("add_patient_image_by_id", {
+  const uploadMutation = trpc.useMutation("patients.addImage", {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_patient_by_id", { id: patient?.id! }]);
-      trpcCtx.invalidateQueries(["get_all_patients"]);
+      trpcCtx.invalidateQueries(["patients.get", { id: patient?.id! }]);
+      trpcCtx.invalidateQueries(["patients.getAll"]);
       setShow(false);
     },
   });

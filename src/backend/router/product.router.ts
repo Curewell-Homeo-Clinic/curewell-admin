@@ -1,15 +1,13 @@
-import * as trpc from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../utils/prisma";
 import { deleteImages, generateImageUploadURL } from "../utils/s3";
+import { createRouter } from "./context";
 
-export const productRouter = trpc
-  .router()
-  .query("get_all_products", {
+export const productRouter =createRouter()
+  .query("getAll", {
     input: z.object({
       outOfStock: z.boolean().default(true),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const removeOutOfStock = !input.outOfStock
         ? {
             not: {
@@ -17,7 +15,8 @@ export const productRouter = trpc
             },
           }
         : {};
-      return await prisma.product.findMany({
+
+      return await ctx.prisma.product.findMany({
         where: {
           quantity: removeOutOfStock,
         },
@@ -41,12 +40,12 @@ export const productRouter = trpc
       });
     },
   })
-  .query("get_product_by_id", {
+  .query("get", {
     input: z.object({
       id: z.string(),
     }),
-    async resolve({ input }) {
-      return await prisma.product.findUnique({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.product.findUnique({
         where: {
           id: input.id,
         },
@@ -70,7 +69,7 @@ export const productRouter = trpc
       });
     },
   })
-  .mutation("get_product_upload_secure_url", {
+  .mutation("getUploadSecureURL", {
     input: z.object({
       fileExt: z.string(),
     }),
@@ -78,14 +77,14 @@ export const productRouter = trpc
       return await generateImageUploadURL("products", input.fileExt);
     },
   })
-  .mutation("add_product_image_by_id", {
+  .mutation("addImage", {
     input: z.object({
       url: z.string(),
       key: z.string(),
       productId: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.product.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.product.update({
         where: { id: input.productId },
         data: {
           images: {
@@ -98,7 +97,7 @@ export const productRouter = trpc
       });
     },
   })
-  .mutation("delete_product_images_by_id", {
+  .mutation("deleteImages", {
     input: z.object({
       productId: z.string(),
       images: z.array(
@@ -108,12 +107,12 @@ export const productRouter = trpc
         })
       ),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const res = await deleteImages("products", [
         ...input.images.map((image) => image.key),
       ]);
       if (res.Deleted) {
-        await prisma.product.update({
+        await ctx.prisma.product.update({
           where: { id: input.productId },
           data: {
             images: {
@@ -131,14 +130,14 @@ export const productRouter = trpc
       return false;
     },
   })
-  .mutation("create_product", {
+  .mutation("create", {
     input: z.object({
       name: z.string(),
       mRP: z.number(),
       quantity: z.number(),
     }),
-    async resolve({ input }) {
-      return await prisma.product.create({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.product.create({
         data: {
           name: input.name,
           mRP: input.mRP,
@@ -150,15 +149,15 @@ export const productRouter = trpc
       });
     },
   })
-  .mutation("update_product_by_id", {
+  .mutation("update", {
     input: z.object({
       id: z.string().cuid(),
       name: z.string(),
       quantity: z.number(),
       mRP: z.number(),
     }),
-    async resolve({ input }) {
-      return await prisma.product.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.product.update({
         where: {
           id: input.id,
         },
@@ -170,20 +169,20 @@ export const productRouter = trpc
       });
     },
   })
-  .mutation("delete_product", {
+  .mutation("delete", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       // delete the product
-      (await prisma.product.delete({
+      (await ctx.prisma.product.delete({
         where: {
           id: input.id,
         },
       })) &&
         // TODO: delete the image stored on s3
         // delete the images associated
-        (await prisma.image.deleteMany({
+        (await ctx.prisma.image.deleteMany({
           where: {
             products: {
               every: {

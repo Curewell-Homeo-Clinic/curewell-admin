@@ -5,7 +5,7 @@ import { ProductCreateForm } from "../Form";
 import ProductCard from "./ProductCard";
 
 const ProductsGrid: React.FC<{
-  products: InferQueryOutput<"get_all_products">;
+  products: InferQueryOutput<"products.getAll">;
 }> = ({ products: allProducts }) => {
   const [products, setProducts] = useState(allProducts);
   const [search, setSearch] = useState("");

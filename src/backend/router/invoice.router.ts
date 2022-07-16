@@ -1,13 +1,11 @@
-import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { calculatePrice } from "../utils";
-import { prisma } from "../utils/prisma";
+import { createRouter } from "./context";
 
-export const invoiceRouter = trpc
-  .router()
-  .query("get_all_invoices", {
-    async resolve() {
-      return prisma.invoice.findMany({
+export const invoiceRouter = createRouter()
+  .query("getAll", {
+    async resolve({ctx}) {
+      return ctx.prisma.invoice.findMany({
         select: {
           id: true,
           timestamp: true,
@@ -44,12 +42,12 @@ export const invoiceRouter = trpc
       });
     },
   })
-  .query("get_invoice_by_id", {
+  .query("get", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.invoice.findUnique({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.invoice.findUnique({
         where: { id: input.id },
         select: {
           timestamp: true,
@@ -87,7 +85,7 @@ export const invoiceRouter = trpc
       });
     },
   })
-  .mutation("create_invoice", {
+  .mutation("create", {
     input: z.object({
       timestamp: z.string(),
       patientId: z.string().cuid(),
@@ -106,9 +104,9 @@ export const invoiceRouter = trpc
       planPaidAmmount: z.number(),
       totalAmmount: z.number(),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       // create the invoice
-      const invoice = await prisma.invoice.create({
+      const invoice = await ctx.prisma.invoice.create({
         data: {
           timestamp: new Date(input.timestamp),
           patient: {
@@ -139,7 +137,7 @@ export const invoiceRouter = trpc
       // lessen the product quantity
       invoice &&
         input.products.forEach(async (product) => {
-          await prisma.product.update({
+          await ctx.prisma.product.update({
             where: { id: product.id },
             data: {
               quantity: product.oldQuantity - product.quantity,
@@ -149,7 +147,7 @@ export const invoiceRouter = trpc
 
       // update plan ammount paid
       invoice &&
-        (await prisma.patientTreatmentPlan.update({
+        (await ctx.prisma.patientTreatmentPlan.update({
           where: { id: input.patientPlanId },
           data: {
             ammountPaid: input.planPaidAmmount + input.planAmmountPaying,
@@ -158,7 +156,7 @@ export const invoiceRouter = trpc
       return invoice.id;
     },
   })
-  .mutation("add_invoice_products", {
+  .mutation("addProducts", {
     input: z.object({
       id: z.string().cuid(),
       products: z
@@ -169,11 +167,11 @@ export const invoiceRouter = trpc
         .array(),
       productDiscountPercentage: z.number(),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const totalProductAmmount = input.products
         .map((product) => product.mRP)
         .reduce((x, y) => x + y);
-      const updatedInvoice = await prisma.invoice.update({
+      const updatedInvoice = await ctx.prisma.invoice.update({
         where: { id: input.id },
         data: {
           products: {
@@ -190,7 +188,7 @@ export const invoiceRouter = trpc
 
       if (updatedInvoice) {
         // decrease quantity
-        const updateProduct = await prisma.product.updateMany({
+        const updateProduct = await ctx.prisma.product.updateMany({
           where: {
             id: {
               in: input.products.map((product) => product.id),
@@ -211,7 +209,7 @@ export const invoiceRouter = trpc
       return false;
     },
   })
-  .mutation("remove_invoice_product", {
+  .mutation("removeProduct", {
     input: z.object({
       id: z.string().cuid(),
       product: z.object({
@@ -220,8 +218,8 @@ export const invoiceRouter = trpc
       }),
       productDiscountPercentage: z.number(),
     }),
-    async resolve({ input }) {
-      const updatedInvoice = await prisma.invoice.update({
+    async resolve({ input, ctx }) {
+      const updatedInvoice = await ctx.prisma.invoice.update({
         where: { id: input.id },
         data: {
           products: {
@@ -242,7 +240,7 @@ export const invoiceRouter = trpc
 
       if (updatedInvoice) {
         // increase quantity
-        const updatedProduct = await prisma.product.update({
+        const updatedProduct = await ctx.prisma.product.update({
           where: {
             id: input.product.id,
           },
@@ -261,13 +259,13 @@ export const invoiceRouter = trpc
       return false;
     },
   })
-  .mutation("update_invoice_productDiscountPercentage", {
+  .mutation("updateProductDiscountPercentage", {
     input: z.object({
       productDiscountPercentage: z.number(),
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.invoice.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.invoice.update({
         where: { id: input.id },
         data: {
           productsDiscountPercentage: input.productDiscountPercentage,

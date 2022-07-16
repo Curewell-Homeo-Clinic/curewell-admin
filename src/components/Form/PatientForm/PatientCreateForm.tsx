@@ -27,7 +27,7 @@ const PatientCreateForm: React.FC<{
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const createMutation = trpc.useMutation(["create_patient"]);
+  const createMutation = trpc.useMutation(["patients.create"]);
 
   const handleSave = async () => {
     (await createMutation.mutateAsync({

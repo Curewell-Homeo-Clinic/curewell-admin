@@ -16,7 +16,7 @@ const PlanCreateForm: React.FC<{
 
   const router = useRouter();
 
-  const planCreateMutation = trpc.useMutation(["create_treatment_plan"]);
+  const planCreateMutation = trpc.useMutation(["plans.create"]);
 
   const handleSave = async () => {
     (await planCreateMutation.mutateAsync({

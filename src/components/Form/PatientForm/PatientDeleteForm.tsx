@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const PatientDeleteForm: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
-  const deleteMutation = trpc.useMutation(["delete_patient"]);
+  const deleteMutation = trpc.useMutation(["patients.delete"]);
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 

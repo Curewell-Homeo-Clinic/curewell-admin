@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 const ProductCard: React.FC<{
-  product: InferQueryOutput<"get_all_products">[number];
+  product: InferQueryOutput<"products.getAll">[number];
 }> = ({ product }) => {
   const router = useRouter();
   return (

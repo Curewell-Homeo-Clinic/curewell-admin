@@ -14,7 +14,7 @@ const ProductCreateForm: React.FC<{
   const [isEdit, setIsEdit] = useState(false);
 
   const router = useRouter();
-  const productCreateMutation = trpc.useMutation(["create_product"]);
+  const productCreateMutation = trpc.useMutation(["products.create"]);
 
   const handleSave = async () => {
     (await productCreateMutation.mutateAsync({

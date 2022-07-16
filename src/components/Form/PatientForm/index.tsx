@@ -8,8 +8,8 @@ import PatientPlanForm from "./PatientPlanForm";
 import PatientStatusTimeline from "./PatientStatusTimeline";
 
 interface PatientFormProps {
-  patient: InferQueryOutput<"get_patient_by_id">;
-  allPlans: InferQueryOutput<"get_all_treatment_plans">;
+  patient: InferQueryOutput<"patients.get">;
+  allPlans: InferQueryOutput<"plans.getAll">;
 }
 
 export default function PatientForm({ patient, allPlans }: PatientFormProps) {

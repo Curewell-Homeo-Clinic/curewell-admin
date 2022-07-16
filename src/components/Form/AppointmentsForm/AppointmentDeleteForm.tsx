@@ -8,9 +8,9 @@ const AppointmentDeleteForm: React.FC<{ id: string }> = ({ id }) => {
 
   const router = useRouter();
   const trpcCtx = trpc.useContext();
-  const deleteMutation = trpc.useMutation("delete_appointment", {
+  const deleteMutation = trpc.useMutation("appointments.delete", {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_all_appointments"]);
+      trpcCtx.invalidateQueries(["appointments.getAll"]);
     },
   });
 

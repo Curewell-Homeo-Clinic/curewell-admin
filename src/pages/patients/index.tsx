@@ -10,7 +10,7 @@ const PatientsTable = dynamic(
 );
 
 export default function Patients() {
-  const { isLoading, data: patients } = trpc.useQuery(["get_all_patients"]);
+  const { isLoading, data: patients } = trpc.useQuery(["patients.getAll"]);
 
   if (isLoading || !patients) return <Loader />;
 

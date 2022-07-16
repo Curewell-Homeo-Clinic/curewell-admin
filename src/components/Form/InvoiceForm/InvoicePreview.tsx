@@ -56,7 +56,7 @@ const InvoicePreview: React.FC<{
     return totalAmmount;
   };
 
-  const createInvoiceMutation = trpc.useMutation(["create_invoice"]);
+  const createInvoiceMutation = trpc.useMutation(["invoices.create"]);
   const router = useRouter();
 
   const handleCreate = async () => {

@@ -8,7 +8,7 @@ import InvoiceProductAddForm from "./ProductAddForm";
 import ProductRemoveForm from "./ProductRemoveForm";
 
 const InvoiceProductsForm: React.FC<{
-  invoice: InferQueryOutput<"get_invoice_by_id">;
+  invoice: InferQueryOutput<"invoices.get">;
 }> = ({ invoice }) => {
   const [discountPercentage, setDiscountPercentage] = useState(
     invoice?.productsDiscountPercentage!
@@ -22,11 +22,12 @@ const InvoiceProductsForm: React.FC<{
 
   const trpcCtx = trpc.useContext();
   const updateProductDiscountPercentage = trpc.useMutation(
-    "update_invoice_productDiscountPercentage",
+    "invoices.updateProductDiscountPercentage",
     {
       onSuccess() {
-        trpcCtx.invalidateQueries(["get_invoice_by_id", { id: invoice?.id! }]);
-        trpcCtx.invalidateQueries("get_all_products");
+        trpcCtx.invalidateQueries(["invoices.get", { id: invoice?.id! }]);
+        trpcCtx.invalidateQueries("products.getAll");
+        trpcCtx.invalidateQueries("invoices.getAll");
       },
     }
   );

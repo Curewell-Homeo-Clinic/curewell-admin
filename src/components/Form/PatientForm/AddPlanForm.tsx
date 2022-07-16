@@ -18,7 +18,7 @@ const AddPlanForm: React.FC<{
   const [showAlert, setShowAlert] = useState<boolean>(true);
 
   const router = useRouter();
-  const addPlanMutation = trpc.useMutation(["add_treatment_plan"]);
+  const addPlanMutation = trpc.useMutation(["patients.addTreatmentPlan"]);
 
   const handleSave = async () => {
     selectedPlanId !== "" &&

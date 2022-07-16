@@ -6,9 +6,9 @@ import { useState } from "react";
 const ProductDeleteForm: React.FC<{ id: string }> = ({ id }) => {
   const router = useRouter();
   const trpcCtx = trpc.useContext();
-  const deleteMutation = trpc.useMutation(["delete_product"], {
+  const deleteMutation = trpc.useMutation(["products.delete"], {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_all_products", {}]);
+      trpcCtx.invalidateQueries(["products.getAll", {}]);
     },
   });
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);

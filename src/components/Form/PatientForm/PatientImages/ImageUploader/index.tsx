@@ -6,7 +6,7 @@ import ImageCategorySelect from "./ImageCategorySelect";
 import { useState } from "react";
 
 const PatientImageUploader: React.FC<{
-  patient: InferQueryOutput<"get_patient_by_id">;
+  patient: InferQueryOutput<"patients.get">;
 }> = ({ patient }) => {
   const theme = useMantineTheme();
   const [showCategorySelect, setShowCategorySelect] = useState(false);

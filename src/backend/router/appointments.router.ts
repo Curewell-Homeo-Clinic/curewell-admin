@@ -1,16 +1,14 @@
-import * as trpc from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../utils/prisma";
+import { createRouter } from "./context";
 
-export const appointmentRouter = trpc
-  .router()
-  .query("get_all_appointments", {
+export const appointmentRouter = createRouter()
+  .query("getAll", {
     input: z.object({
       limit: z.number().optional(),
       offset: z.number().optional().default(0),
     }),
-    async resolve({ input }) {
-      return await prisma.appointment.findMany({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.appointment.findMany({
         skip: input.offset,
         take: input.limit,
         orderBy: {
@@ -37,12 +35,12 @@ export const appointmentRouter = trpc
       });
     },
   })
-  .query("get_appointment_by_id", {
+  .query("get", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.appointment.findUnique({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.appointment.findUnique({
         where: {
           id: input.id,
         },
@@ -68,7 +66,7 @@ export const appointmentRouter = trpc
       });
     },
   })
-  .mutation("update_appointment", {
+  .mutation("update", {
     input: z.object({
       id: z.string().cuid(),
       visited: z.boolean(),
@@ -77,14 +75,14 @@ export const appointmentRouter = trpc
       time: z.string(),
       progress: z.string(),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const timeStamp = new Date(
         new Date(new Date(input.date).getDate()).setTime(
           new Date(input.time).getTime()
         )
       );
 
-      return await prisma.appointment.update({
+      return await ctx.prisma.appointment.update({
         where: {
           id: input.id,
         },
@@ -99,7 +97,7 @@ export const appointmentRouter = trpc
       });
     },
   })
-  .mutation("create_appointment", {
+  .mutation("create", {
     input: z.object({
       patientId: z.string().cuid(),
       doctorId: z.string().cuid(),
@@ -107,14 +105,14 @@ export const appointmentRouter = trpc
       time: z.string(),
       visited: z.boolean().optional().default(false),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const timeStamp = new Date(
         new Date(new Date(input.date).getDate()).setTime(
           new Date(input.time).getTime()
         )
       );
 
-      return await prisma.appointment.create({
+      return await ctx.prisma.appointment.create({
         data: {
           patient: {
             connect: {
@@ -132,9 +130,9 @@ export const appointmentRouter = trpc
       });
     },
   })
-  .mutation("delete_appointment", {
+  .mutation("delete", {
     input: z.object({ id: z.string().cuid() }),
-    async resolve({ input }) {
-      return await prisma.appointment.delete({ where: { id: input.id } });
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.appointment.delete({ where: { id: input.id } });
     },
   });

@@ -20,19 +20,19 @@ const InvoiceCreateForm: React.FC<{
 }> = ({ show, setShow }) => {
   // data fetching
   const { isLoading: isPatientsLoading, data: patients } = trpc.useQuery([
-    "get_all_patients",
+    "patients.getAll",
   ]);
   const { isLoading: isDoctorsLoading, data: doctors } = trpc.useQuery([
-    "get_all_doctors",
+    "doctor.getAll",
   ]);
   const { isLoading: isProductsLoading, data: products } = trpc.useQuery([
-    "get_all_products",
+    "products.getAll",
     { outOfStock: false },
   ]);
 
   //   patient select states
   const [selectedPatient, setSelectedPatient] =
-    useState<InferQueryOutput<"get_all_patients">[number]>();
+    useState<InferQueryOutput<"patients.getAll">[number]>();
   const [selectedPatientId, setSelectedPatientId] = useState<string>("");
 
   //   patient's plan select states
@@ -40,7 +40,7 @@ const InvoiceCreateForm: React.FC<{
     useState<string>("");
   const [selectedPatientPlan, setSelectedPatientPlan] =
     useState<
-      InferQueryOutput<"get_all_patients">[number]["treatmentPlans"][number]
+      InferQueryOutput<"patients.getAll">[number]["treatmentPlans"][number]
     >();
 
   // select component states
@@ -51,7 +51,7 @@ const InvoiceCreateForm: React.FC<{
   // doctor select state
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
   const [selectedDoctor, setSelectedDoctor] =
-    useState<InferQueryOutput<"get_all_doctors">[number]>();
+    useState<InferQueryOutput<"doctor.getAll">[number]>();
 
   //   timestamp state
   const [timestamp, setTimestamp] = useState(new Date());
@@ -65,7 +65,7 @@ const InvoiceCreateForm: React.FC<{
   // product select states
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] =
-    useState<InferQueryOutput<"get_all_products">>();
+    useState<InferQueryOutput<"products.getAll">>();
   const [isDiscountPercentageDisabled, setIsDicountPercentageDisabled] =
     useState(true);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);

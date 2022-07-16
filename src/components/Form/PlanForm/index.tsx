@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const PlanForm: React.FC<{
-  plan: InferQueryOutput<"get_plan_by_id">;
+  plan: InferQueryOutput<"plans.get">;
 }> = ({ plan }) => {
   const [name, setName] = useState(plan?.name!);
   const [description, setDescription] = useState(plan?.description!);
@@ -24,7 +24,7 @@ const PlanForm: React.FC<{
 
   const router = useRouter();
 
-  const updatePlanMutation = trpc.useMutation(["update_treatment_plan"]);
+  const updatePlanMutation = trpc.useMutation(["plans.update"]);
 
   const handleSave = async () => {
     (await updatePlanMutation.mutateAsync({

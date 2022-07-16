@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface PatientsTableProps {
-  patients: InferQueryOutput<"get_all_patients">;
+  patients: InferQueryOutput<"patients.getAll">;
 }
 
 export default function PatientsTable({

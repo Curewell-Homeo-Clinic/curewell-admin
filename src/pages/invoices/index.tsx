@@ -10,7 +10,7 @@ const InvoicesTable = dynamic(
 );
 
 export default function InvoicesPage() {
-  const { isLoading, data: invoices } = trpc.useQuery(["get_all_invoices"]);
+  const { isLoading, data: invoices } = trpc.useQuery(["invoices.getAll"]);
 
   if (isLoading || !invoices) return <Loader />;
 

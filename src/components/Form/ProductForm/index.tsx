@@ -1,10 +1,9 @@
 import { InferQueryOutput } from "@/utils/trpc";
-import { Product } from "@prisma/client";
 import ProductDetailsForm from "./ProductDetailsForm";
 import ProductImages from "./ProductImages";
 
 const ProductForm: React.FC<{
-  product: InferQueryOutput<"get_product_by_id">;
+  product: InferQueryOutput<"products.get">;
 }> = ({ product }) => {
   if (!product) return null;
 

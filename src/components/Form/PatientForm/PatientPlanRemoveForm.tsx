@@ -14,7 +14,7 @@ const PatientPlanRemoveForm: React.FC<{
   patientPlanId,
 }) => {
   const router = useRouter();
-  const removePlanMutation = trpc.useMutation(["remove_treatment_plan"]);
+  const removePlanMutation = trpc.useMutation(["patients.removeTreatmentPlan"]);
   const handleDelete = async () => {
     (await removePlanMutation.mutateAsync({
       patientId,

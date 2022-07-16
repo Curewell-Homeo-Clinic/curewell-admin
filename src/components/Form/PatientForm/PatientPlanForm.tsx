@@ -9,7 +9,7 @@ import PatientPlanRemoveForm from "./PatientPlanRemoveForm";
 
 const PatientPlanForm: React.FC<{
   plans: PatientTreatmentPlan[];
-  allPlans: InferQueryOutput<"get_all_treatment_plans">;
+  allPlans: InferQueryOutput<"plans.getAll">;
   patientId: string;
 }> = ({ plans, allPlans, patientId }) => {
   const router = useRouter();

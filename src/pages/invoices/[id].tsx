@@ -8,7 +8,7 @@ export default function InvoicePage() {
   const id = router.query.id! as string;
 
   const { isLoading, data: invoice } = trpc.useQuery([
-    "get_invoice_by_id",
+    "invoices.get",
     { id },
   ]);
 

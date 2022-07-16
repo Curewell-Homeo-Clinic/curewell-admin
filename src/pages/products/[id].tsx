@@ -14,7 +14,7 @@ export default function ProductPage() {
   const { id } = router.query;
 
   const { isLoading, data: product } = trpc.useQuery([
-    "get_product_by_id",
+    "products.get",
     { id: id! as string },
   ]);
 

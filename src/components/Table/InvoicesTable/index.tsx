@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { InvoiceCreateForm } from "@/components/Form";
 
 const InvoicesTable: React.FC<{
-  invoices: InferQueryOutput<"get_all_invoices">;
+  invoices: InferQueryOutput<"invoices.getAll">;
 }> = ({ invoices: allInvoices }) => {
   const router = useRouter();
 

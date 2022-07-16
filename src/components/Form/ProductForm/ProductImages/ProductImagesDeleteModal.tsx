@@ -11,11 +11,11 @@ const ProductImagesDeleteModal: React.FC<{
 }> = ({ productId, selectedImages, show, setShow }) => {
   const trpcCtx = trpc.useContext();
   const deleteSelectedImages = trpc.useMutation(
-    ["delete_product_images_by_id"],
+    ["products.deleteImages"],
     {
       onSuccess() {
-        trpcCtx.invalidateQueries(["get_product_by_id", { id: productId }]);
-        trpcCtx.invalidateQueries(["get_all_products"]);
+        trpcCtx.invalidateQueries(["products.get", { id: productId }]);
+        trpcCtx.invalidateQueries(["products.getAll"]);
         setShow(false);
       },
     }

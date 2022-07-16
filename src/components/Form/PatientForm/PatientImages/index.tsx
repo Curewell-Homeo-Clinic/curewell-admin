@@ -3,7 +3,7 @@ import ImageCard from "./ImageCard";
 import PatientImageUploader from "./ImageUploader";
 
 const PatientImageForm: React.FC<{
-  patient: InferQueryOutput<"get_patient_by_id">;
+  patient: InferQueryOutput<"patients.get">;
 }> = ({ patient }) => {
   if (!patient) return null;
 

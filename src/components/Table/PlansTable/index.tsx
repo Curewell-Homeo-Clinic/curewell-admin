@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 const PlansTable: React.FC<{
-  plans: InferQueryOutput<"get_all_treatment_plans">;
+  plans: InferQueryOutput<"plans.getAll">;
 }> = ({ plans: allPlans }) => {
   const [plans, setPlans] = useState(allPlans);
   const [search, setSearch] = useState("");

@@ -1,19 +1,17 @@
-import * as trpc from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../utils/prisma";
 import { deleteImages, generateImageUploadURL } from "../utils/s3";
+import {createRouter} from "./context";
 
-export const patientRouter = trpc
-  .router()
-  .query("get_all_patients", {
+export const patientRouter = createRouter()
+  .query("getAll", {
     input: z
       .object({
         limit: z.number().optional(),
         offset: z.number().optional().default(0),
       })
       .nullish(),
-    async resolve({ input }) {
-      return await prisma.patient.findMany({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.patient.findMany({
         skip: input?.offset,
         take: input?.limit,
         orderBy: { createdAt: "desc" },
@@ -44,12 +42,12 @@ export const patientRouter = trpc
     },
   })
   // unused
-  .query("get_patients_by_name", {
+  .query("getByName", {
     input: z.object({
       name: z.string(),
     }),
-    async resolve({ input }) {
-      return await prisma.patient.findMany({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.patient.findMany({
         where: {
           OR: [
             { firstName: { contains: input.name } },
@@ -69,12 +67,12 @@ export const patientRouter = trpc
       });
     },
   })
-  .query("get_patient_by_id", {
+  .query("get", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    resolve({ input }) {
-      return prisma.patient.findUnique({
+    resolve({ input, ctx }) {
+      return ctx.prisma.patient.findUnique({
         where: { id: input.id },
         select: {
           firstName: true,
@@ -105,14 +103,14 @@ export const patientRouter = trpc
       });
     },
   })
-  .mutation("update_case_study_and_prescription", {
+  .mutation("updateCaseStudyAndPrescription", {
     input: z.object({
       id: z.string(),
       caseStudy: z.string().optional(),
       prescription: z.string().optional(),
     }),
-    async resolve({ input }) {
-      const res = await prisma.patient.update({
+    async resolve({ input, ctx }) {
+      const res = await ctx.prisma.patient.update({
         where: { id: input.id },
         data: {
           caseStudy: input.caseStudy,
@@ -125,7 +123,7 @@ export const patientRouter = trpc
       return false;
     },
   })
-  .mutation("update_patient_personal_info", {
+  .mutation("updatePersonalInfo", {
     input: z.object({
       id: z.string().cuid(),
       firstName: z.string().optional(),
@@ -137,8 +135,8 @@ export const patientRouter = trpc
       ailments: z.string().optional(),
       age: z.number().optional(),
     }),
-    async resolve({ input: patient }) {
-      return (await prisma.patient.update({
+    async resolve({ input: patient, ctx }) {
+      return (await ctx.prisma.patient.update({
         where: { id: patient.id },
         data: {
           firstName: patient.firstName,
@@ -155,12 +153,12 @@ export const patientRouter = trpc
         : false;
     },
   })
-  .mutation("delete_patient", {
+  .mutation("delete", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return (await prisma.patient.update({
+    async resolve({ input, ctx }) {
+      return (await ctx.prisma.patient.update({
         where: { id: input.id },
         data: { isDeleted: true },
       }))
@@ -168,7 +166,7 @@ export const patientRouter = trpc
         : false;
     },
   })
-  .mutation("create_patient", {
+  .mutation("create", {
     input: z.object({
       admittedAt: z.date().optional(),
       firstName: z.string(),
@@ -188,8 +186,8 @@ export const patientRouter = trpc
       // pass id for already created ailment and name for new ones
       ailments: z.string(),
     }),
-    async resolve({ input: patient }) {
-      return await prisma.patient.create({
+    async resolve({ input: patient, ctx }) {
+      return await ctx.prisma.patient.create({
         data: {
           admittedAt: patient.admittedAt,
           firstName: patient.firstName,
@@ -207,13 +205,13 @@ export const patientRouter = trpc
       });
     },
   })
-  .mutation("add_treatment_plan", {
+  .mutation("addTreatmentPlan", {
     input: z.object({
       planId: z.string().cuid(),
       patientId: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.patient.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.patient.update({
         where: { id: input.patientId },
         data: {
           treatmentPlans: {
@@ -229,13 +227,13 @@ export const patientRouter = trpc
       });
     },
   })
-  .mutation("remove_treatment_plan", {
+  .mutation("removeTreatmentPlan", {
     input: z.object({
       patientPlanId: z.string().cuid(),
       patientId: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.patient.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.patient.update({
         where: { id: input.patientId },
         data: {
           treatmentPlans: {
@@ -248,7 +246,7 @@ export const patientRouter = trpc
     },
   })
   // using a mutation to mutate whenever we want and multiple times
-  .mutation("get_patient_upload_secure_url", {
+  .mutation("getUploadSecureURL", {
     input: z.object({
       fileExt: z.string(),
     }),
@@ -256,21 +254,21 @@ export const patientRouter = trpc
       return await generateImageUploadURL("patients", input.fileExt);
     },
   })
-  .mutation("add_patient_image_by_id", {
+  .mutation("addImage", {
     input: z.object({
       url: z.string(),
       key: z.string(),
       patientId: z.string().cuid(),
       category: z.enum(["before", "after", "report"]),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const imageCreateField =
         input.category === "before"
           ? "beforeTreatmentImages"
           : input.category === "after"
           ? "afterTreatmentImages"
           : "testReportsImages";
-      return await prisma.patient.update({
+      return await ctx.prisma.patient.update({
         where: { id: input.patientId },
         data: {
           [imageCreateField]: {
@@ -283,7 +281,7 @@ export const patientRouter = trpc
       });
     },
   })
-  .mutation("delete_patient_image_by_id", {
+  .mutation("deleteImage", {
     input: z.object({
       patientId: z.string(),
       image: z.object({
@@ -292,11 +290,11 @@ export const patientRouter = trpc
       }),
       category: z.enum(["before", "after", "report"]),
     }),
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
       const res = await deleteImages("patients", [input.image.objectKey]);
 
       if (res.Deleted) {
-        await prisma.patient.update({
+        await ctx.prisma.patient.update({
           where: { id: input.patientId },
           data: {
             [input.category === "before"

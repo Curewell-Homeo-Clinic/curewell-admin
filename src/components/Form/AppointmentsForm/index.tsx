@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const AppointmentsForm: React.FC<{
-  appointment: InferQueryOutput<"get_appointment_by_id">;
+  appointment: InferQueryOutput<"appointments.get">;
 }> = ({ appointment }) => {
   const router = useRouter();
   const patientDetailsUrl = `/patients/${appointment?.patient.id}`;
@@ -26,7 +26,7 @@ const AppointmentsForm: React.FC<{
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const updateMutation = trpc.useMutation(["update_appointment"]);
+  const updateMutation = trpc.useMutation(["appointments.update"]);
 
   const handleViewPatient = () => {
     router.push(patientDetailsUrl);

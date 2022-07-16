@@ -8,7 +8,7 @@ const PlansTable = dynamic(() => import("@/components/Table/PlansTable"), {
 
 export default function PlansPage() {
   const { isLoading, data: treatmentPlans } = trpc.useQuery([
-    "get_all_treatment_plans",
+    "plans.getAll",
   ]);
 
   if (isLoading || !treatmentPlans) return <Loader />;

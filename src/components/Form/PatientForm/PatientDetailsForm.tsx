@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { FormOptions } from "@/components/shared";
 
 export const PatientFormDetails: React.FC<{
-  patient: InferQueryOutput<"get_patient_by_id">;
+  patient: InferQueryOutput<"patients.get">;
 }> = ({ patient }) => {
   const [firstName, setFirstName] = useState(patient?.firstName);
   const [lastName, setLastName] = useState(patient?.lastName);
@@ -26,7 +26,7 @@ export const PatientFormDetails: React.FC<{
 
   const router = useRouter();
 
-  const updateMutation = trpc.useMutation(["update_patient_personal_info"]);
+  const updateMutation = trpc.useMutation(["patients.updatePersonalInfo"]);
 
   const handleSave = async () => {
     (await updateMutation.mutateAsync({

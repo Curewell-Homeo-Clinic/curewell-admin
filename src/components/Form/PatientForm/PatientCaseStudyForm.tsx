@@ -24,7 +24,7 @@ export default function PatientFormCaseStudy({
   const router = useRouter();
 
   const updateMutation = trpc.useMutation([
-    "update_case_study_and_prescription",
+    "patients.updateCaseStudyAndPrescription",
   ]);
 
   const handleReset = () => {

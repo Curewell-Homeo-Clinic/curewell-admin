@@ -16,7 +16,7 @@ export default function AppointmentPage() {
   id = id! as string;
 
   const { isLoading, data: appointment } = trpc.useQuery([
-    "get_appointment_by_id",
+    "appointments.get",
     { id },
   ]);
 

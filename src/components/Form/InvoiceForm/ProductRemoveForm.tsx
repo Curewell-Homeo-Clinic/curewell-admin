@@ -17,10 +17,11 @@ const ProductRemoveForm: React.FC<{
   product,
 }) => {
   const trpcCtx = trpc.useContext();
-  const removeProduct = trpc.useMutation("remove_invoice_product", {
+  const removeProduct = trpc.useMutation("invoices.removeProduct", {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_invoice_by_id", { id: invoiceId }]);
-      trpcCtx.invalidateQueries("get_all_products");
+      trpcCtx.invalidateQueries(["invoices.get", { id: invoiceId }]);
+      trpcCtx.invalidateQueries("products.getAll");
+      trpcCtx.invalidateQueries("invoices.getAll");
       setShowDeleteConfirmation(false);
     },
   });

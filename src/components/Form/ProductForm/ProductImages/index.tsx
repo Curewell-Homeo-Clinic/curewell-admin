@@ -1,4 +1,4 @@
-import { InferQueryOutput, trpc } from "@/utils/trpc";
+import { InferQueryOutput } from "@/utils/trpc";
 import { Checkbox } from "@mantine/core";
 import { Image as IImage } from "@prisma/client";
 import { format } from "date-fns";
@@ -8,7 +8,7 @@ import ProductImageUploader from "./ImageUploader";
 import ProductImagesDeleteModal from "./ProductImagesDeleteModal";
 
 const ProductImages: React.FC<{
-  product: InferQueryOutput<"get_product_by_id">;
+  product: InferQueryOutput<"products.get">;
 }> = ({ product }) => {
   const [selectedImages, setSelectedImages] = useState<IImage[]>([]);
   const [isAllSelected, setIsAllSelected] = useState(false);

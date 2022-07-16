@@ -1,9 +1,8 @@
-import * as trpc from "@trpc/server";
-import { prisma } from "../utils/prisma";
+import {createRouter} from "./context";
 
-export const doctorRouter = trpc.router().query("get_all_doctors", {
-  async resolve() {
-    return await prisma.doctor.findMany({
+export const doctorRouter = createRouter().query("getAll", {
+  async resolve({ctx}) {
+    return await ctx.prisma.doctor.findMany({
       select: { id: true, firstName: true, lastName: true },
     });
   },

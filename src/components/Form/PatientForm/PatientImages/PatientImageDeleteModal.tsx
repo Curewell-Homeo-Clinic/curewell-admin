@@ -11,10 +11,10 @@ const PatientImageDeleteModal: React.FC<{
   category: "before" | "after" | "report";
 }> = ({ show, setShow, patientId, image, category }) => {
   const trpcCtx = trpc.useContext();
-  const deleteImage = trpc.useMutation("delete_patient_image_by_id", {
+  const deleteImage = trpc.useMutation("patients.deleteImage", {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_patient_by_id", { id: patientId }]);
-      trpcCtx.invalidateQueries(["get_all_patients"]);
+      trpcCtx.invalidateQueries(["patients.get", { id: patientId }]);
+      trpcCtx.invalidateQueries(["patients.getAll"]);
       setShow(false);
     },
   });

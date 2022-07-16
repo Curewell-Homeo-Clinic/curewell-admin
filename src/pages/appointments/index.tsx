@@ -11,7 +11,7 @@ const AppointmentsTable = dynamic(
 
 export default function AppointmentsPage() {
   const { isLoading, data: appointments } = trpc.useQuery([
-    "get_all_appointments",
+    "appointments.getAll",
     {},
   ]);
 

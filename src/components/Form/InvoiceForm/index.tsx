@@ -8,7 +8,7 @@ const InvoiceDetailsForm = dynamic(() => import("./InvoiceDetailsForm"), {
 });
 
 const InvoiceForm: React.FC<{
-  invoice: InferQueryOutput<"get_invoice_by_id">;
+  invoice: InferQueryOutput<"invoices.get">;
 }> = ({ invoice }) => {
   if (!invoice) return null;
 

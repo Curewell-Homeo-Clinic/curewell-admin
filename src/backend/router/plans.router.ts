@@ -1,12 +1,10 @@
-import * as trpc from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../utils/prisma";
+import { createRouter } from "./context";
 
-export const plansRouter = trpc
-  .router()
-  .query("get_all_treatment_plans", {
-    async resolve() {
-      return await prisma.treatmentPlan.findMany({
+export const plansRouter = createRouter()
+  .query("getAll", {
+    async resolve({ctx}) {
+      return await ctx.prisma.treatmentPlan.findMany({
         orderBy: {
           createdAt: "desc",
         },
@@ -21,9 +19,9 @@ export const plansRouter = trpc
       });
     },
   })
-  .query("get_all_treatment_plans_skin", {
-    async resolve() {
-      return await prisma.treatmentPlan.findMany({
+  .query("getAllSkinned", {
+    async resolve({ctx}) {
+      return await ctx.prisma.treatmentPlan.findMany({
         select: {
           id: true,
           name: true,
@@ -31,19 +29,19 @@ export const plansRouter = trpc
       });
     },
   })
-  .query("get_plan_by_id", {
+  .query("get", {
     input: z.object({
       id: z.string().cuid(),
     }),
-    async resolve({ input }) {
-      return await prisma.treatmentPlan.findUnique({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.treatmentPlan.findUnique({
         where: {
           id: input.id,
         },
       });
     },
   })
-  .mutation("update_treatment_plan", {
+  .mutation("update", {
     input: z.object({
       id: z.string().cuid(),
       name: z.string(),
@@ -51,8 +49,8 @@ export const plansRouter = trpc
       duration: z.number().positive(),
       price: z.number().positive(),
     }),
-    async resolve({ input }) {
-      return await prisma.treatmentPlan.update({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.treatmentPlan.update({
         where: { id: input.id },
         data: {
           name: input.name,
@@ -66,15 +64,15 @@ export const plansRouter = trpc
       });
     },
   })
-  .mutation("create_treatment_plan", {
+  .mutation("create", {
     input: z.object({
       name: z.string(),
       description: z.string(),
       duration: z.number().positive(),
       price: z.number().positive(),
     }),
-    async resolve({ input }) {
-      return await prisma.treatmentPlan.create({
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.treatmentPlan.create({
         data: {
           name: input.name,
           description: input.description,

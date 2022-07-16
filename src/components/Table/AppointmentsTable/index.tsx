@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AppointmentCreateForm } from "@/components/Form";
 
 const AppointmentsTable: React.FC<{
-  appointments: InferQueryOutput<"get_all_appointments">;
+  appointments: InferQueryOutput<"appointments.getAll">;
 }> = ({ appointments: allAppointments }) => {
   const router = useRouter();
 

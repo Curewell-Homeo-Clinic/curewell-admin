@@ -7,7 +7,7 @@ const ProductGrid = dynamic(() => import("@/components/ProductGrid"), {
 });
 
 export default function ProductsPage() {
-  const { isLoading, data: products } = trpc.useQuery(["get_all_products", {}]);
+  const { isLoading, data: products } = trpc.useQuery(["products.getAll", {}]);
 
   if (isLoading || !products) return <Loader />;
 

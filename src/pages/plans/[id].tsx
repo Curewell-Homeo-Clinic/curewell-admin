@@ -8,7 +8,7 @@ export default function PlanPage() {
   let { id } = router.query;
   id = id as string;
 
-  const { isLoading, data: plan } = trpc.useQuery(["get_plan_by_id", { id }]);
+  const { isLoading, data: plan } = trpc.useQuery(["plans.get", { id }]);
 
   if (isLoading || !plan) return <Loader />;
 

@@ -1,24 +1,22 @@
-import * as trpc from "@trpc/server";
-import { prisma } from "../utils/prisma";
 import { appointmentRouter } from "./appointments.router";
+import { createRouter } from "./context";
 import { doctorRouter } from "./doctor.router";
 import { invoiceRouter } from "./invoice.router";
 import { patientRouter } from "./patient.router";
 import { plansRouter } from "./plans.router";
 import { productRouter } from "./product.router";
 
-export const appRouter = trpc
-  .router()
-  .merge(patientRouter)
-  .merge(productRouter)
-  .merge(appointmentRouter)
-  .merge(doctorRouter)
-  .merge(invoiceRouter)
-  .merge(plansRouter)
-  .query("get_overall_stats", {
-    async resolve() {
+export const appRouter = createRouter()
+  .merge("appointments.", appointmentRouter)
+  .merge("doctor.",doctorRouter)
+  .merge("patients.",patientRouter)
+  .merge("plans.", plansRouter)
+  .merge("products.",productRouter)
+  .merge("invoices.",invoiceRouter)
+  .query("getOverallStats", {
+    async resolve({ctx}) {
       const { totalAmmount } = (
-        await prisma.invoice.aggregate({
+        await ctx.prisma.invoice.aggregate({
           _sum: {
             totalAmmount: true,
           },
@@ -26,11 +24,11 @@ export const appRouter = trpc
       )._sum;
 
       return {
-        patients: await prisma.patient.count({
+        patients: await ctx.prisma.patient.count({
           where: { isDeleted: { not: true } },
         }),
-        invoices: await prisma.invoice.count({}),
-        appointments: await prisma.appointment.count({}),
+        invoices: await ctx.prisma.invoice.count({}),
+        appointments: await ctx.prisma.appointment.count({}),
         sales: Math.round(totalAmmount!) || 0,
       };
     },

@@ -22,7 +22,7 @@ const AppointmentCreateForm: React.FC<{
 
   // getting all patients
   const { isLoading: isPatientLoading, data: allPatients } = trpc.useQuery([
-    "get_all_patients",
+    "patients.getAll",
   ]);
 
   const patientsSelectData = allPatients?.map((patient) => ({
@@ -32,7 +32,7 @@ const AppointmentCreateForm: React.FC<{
 
   // getting all doctors
   const { isLoading: isDoctorLoading, data: allDoctors } = trpc.useQuery([
-    "get_all_doctors",
+	  "doctor.getAll",
   ]);
 
   const doctorsSelectData = allDoctors?.map((doctor) => ({
@@ -40,7 +40,7 @@ const AppointmentCreateForm: React.FC<{
     label: capitalizeFirst(`${doctor.firstName} ${doctor.lastName}`),
   }))!;
 
-  const createAppointmentMutation = trpc.useMutation(["create_appointment"]);
+  const createAppointmentMutation = trpc.useMutation(["appointments.create"]);
 
   const router = useRouter();
 

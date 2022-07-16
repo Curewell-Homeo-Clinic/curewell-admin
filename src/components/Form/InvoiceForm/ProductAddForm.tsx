@@ -19,24 +19,24 @@ const InvoiceProductAddForm: React.FC<{
   productDiscountPercentage,
 }) => {
   const { isLoading, data: allProducts } = trpc.useQuery([
-    "get_all_products",
+    "products.getAll",
     { outOfStock: false },
   ]);
 
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] =
-    useState<InferQueryOutput<"get_all_products">>();
+    useState<InferQueryOutput<"products.getAll">>();
 
   const [products, setProducts] =
-    useState<InferQueryOutput<"get_all_products">>();
+    useState<InferQueryOutput<"products.getAll">>();
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const trpcCtx = trpc.useContext();
-  const addProductsToInvoice = trpc.useMutation("add_invoice_products", {
+  const addProductsToInvoice = trpc.useMutation("invoices.addProducts", {
     onSuccess() {
-      trpcCtx.invalidateQueries(["get_invoice_by_id", { id: invoiceId }]);
-      trpcCtx.invalidateQueries("get_all_invoices");
+      trpcCtx.invalidateQueries(["invoices.get", { id: invoiceId }]);
+      trpcCtx.invalidateQueries("invoices.getAll");
       setShow(false);
     },
   });

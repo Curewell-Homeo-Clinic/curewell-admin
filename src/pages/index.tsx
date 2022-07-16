@@ -25,16 +25,16 @@ const AppointmentsTable = dynamic(
 
 export default function Home() {
   const { isLoading: isStatsLoading, data: overallStats } = trpc.useQuery([
-    "get_overall_stats",
+    "getOverallStats",
   ]);
 
   const { isLoading: isPatientsLoading, data: patients } = trpc.useQuery([
-    "get_all_patients",
+    "patients.getAll",
     { limit: 10 },
   ]);
 
   const { isLoading: isAppointmentsLoading, data: appointments } =
-    trpc.useQuery(["get_all_appointments", { limit: 10 }]);
+    trpc.useQuery(["appointments.getAll", { limit: 10 }]);
 
   const isAdmin = useRecoilValue(STATES.isAdmin);
 

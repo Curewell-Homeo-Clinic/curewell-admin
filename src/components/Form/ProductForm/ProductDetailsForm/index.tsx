@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const ProductDetailsForm: React.FC<{
-  product: InferQueryOutput<"get_product_by_id">;
+  product: InferQueryOutput<"products.get">;
 }> = ({ product }) => {
   const [name, setName] = useState(product?.name!);
   const [mRP, setMRP] = useState(product?.mRP!);
@@ -11,10 +11,10 @@ const ProductDetailsForm: React.FC<{
   const [isEdit, setIsEdit] = useState(false);
 
   const trpcCtx = trpc.useContext();
-  const productUpdateMutation = trpc.useMutation(["update_product_by_id"], {
+  const productUpdateMutation = trpc.useMutation(["products.update"], {
     async onSuccess() {
-      trpcCtx.invalidateQueries(["get_product_by_id", { id: product?.id! }]);
-      trpcCtx.invalidateQueries(["get_all_products", {}]);
+      trpcCtx.invalidateQueries(["products.get", { id: product?.id! }]);
+      trpcCtx.invalidateQueries(["products.getAll", {}]);
     },
   });
 
