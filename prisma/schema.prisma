@@ -54,6 +54,14 @@ model TreatmentPlan {
     PatientTreatmentPlan PatientTreatmentPlan[]
 }
 
+model Clinic {
+    id       String    @id @default(cuid())
+    number   Int       @default(autoincrement())
+    name     String
+    address  String    @db.VarChar(255)
+    invoices Invoice[]
+}
+
 model Invoice {
     id                         String               @id @default(cuid())
     number                     Int                  @default(autoincrement())
@@ -70,6 +78,8 @@ model Invoice {
     planId                     String
     planAmmountPaying          Float                @default(0)
     totalAmmount               Float                @default(0)
+    clinic                     Clinic?              @relation(fields: [clinicId], references: [id])
+    clinicId                   String?
 }
 
 model Product {
