@@ -28,6 +28,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
       "invoices",
       "plans",
       "settings",
+      "clinics",
     ];
 
     for (const menu of menus) {
@@ -46,7 +47,7 @@ export default function Wrapper({ children }: { children: ReactNode }) {
     isLoaded &&
       isSignedIn &&
       setIsAdmin(user.username?.includes("admin") ? true : false);
-  }, [isSignedIn, isLoaded, user?.username]);
+  }, [isSignedIn, isLoaded, user?.username, setIsAdmin]);
 
   return (
     <>

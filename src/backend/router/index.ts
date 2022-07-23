@@ -1,6 +1,6 @@
 import { appointmentRouter } from "./appointments.router";
 import { clinicRouter } from "./clinic.router";
-import { createRouter } from "./context";
+import { createRouter, createContext } from "./context";
 import { doctorRouter } from "./doctor.router";
 import { invoiceRouter } from "./invoice.router";
 import { patientRouter } from "./patient.router";
@@ -37,3 +37,5 @@ export const appRouter = createRouter()
   });
 
 export type AppRouter = typeof appRouter;
+
+export { createContext };

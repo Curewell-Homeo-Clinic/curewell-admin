@@ -3,9 +3,16 @@ export function capitalizeFirst(s: string): string {
 }
 
 export function getMoney(ammount: number): string {
-  return `₹ ${new String(ammount).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+  return `₹ ${new String(Math.round(ammount)).replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ","
+  )}`;
 }
 
 export function getExtension(fname: string) {
   return fname.slice((Math.max(0, fname.lastIndexOf(".")) || Infinity) + 1);
+}
+
+export function truncateString(s: string, length: number = 5) {
+  return s.split(" ").slice(0, length).join(" ");
 }

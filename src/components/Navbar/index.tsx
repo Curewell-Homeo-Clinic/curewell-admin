@@ -8,6 +8,7 @@ import {
   ShoppingBagIcon,
   CogIcon,
   TemplateIcon,
+  OfficeBuildingIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { Tooltip } from "@mantine/core";
@@ -27,7 +28,8 @@ export interface NavbarProps {
     | "appointments"
     | "invoices"
     | "plans"
-    | "settings";
+    | "settings"
+    | "clinics";
 }
 
 const getMenu = (active: NavbarProps["active"], isAdmin: boolean) => {
@@ -39,17 +41,11 @@ const getMenu = (active: NavbarProps["active"], isAdmin: boolean) => {
       url: "/",
     },
     {
-      title: "Products",
-      Icon: ShoppingBagIcon,
-      active: active === "products",
-      url: "/products",
-      gap: true,
-    },
-    {
       title: "Patients",
       Icon: UsersIcon,
       active: active === "patients",
       url: "/patients",
+      gap: true,
     },
     {
       title: "Appointments",
@@ -64,6 +60,12 @@ const getMenu = (active: NavbarProps["active"], isAdmin: boolean) => {
       url: "/invoices",
     },
     {
+      title: "Products",
+      Icon: ShoppingBagIcon,
+      active: active === "products",
+      url: "/products",
+    },
+    {
       title: "Treatment Plans",
       Icon: TemplateIcon,
       active: active === "plans",
@@ -74,11 +76,17 @@ const getMenu = (active: NavbarProps["active"], isAdmin: boolean) => {
     return [
       ...menus,
       {
+        title: "Clinics",
+        Icon: OfficeBuildingIcon,
+        active: active == "clinics",
+        url: "/clinics",
+        gap: true,
+      },
+      {
         title: "Settings",
         Icon: CogIcon,
         active: active == "settings",
         url: "/settings",
-        gap: true,
       },
     ];
 

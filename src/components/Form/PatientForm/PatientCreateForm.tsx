@@ -1,4 +1,3 @@
-import { XIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import {
   BriefcaseIcon,
