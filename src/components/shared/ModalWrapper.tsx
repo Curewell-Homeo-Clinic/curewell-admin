@@ -1,5 +1,4 @@
 import { XIcon } from "@heroicons/react/outline";
-import { createPortal } from "react-dom";
 
 const ModalWrapper: React.FC<{
   show: boolean;
@@ -13,9 +12,10 @@ const ModalWrapper: React.FC<{
       tabIndex={-1}
       className={`${
         !show && "hidden"
-      } overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 md:inset-0 h-modal md:h-full flex items-center justify-center`}
+      } overflow-y-auto overflow-x-hidden fixed top-0 left-0 z-50 md:inset-0 h-modal md:h-full flex justify-center`}
       style={{ background: "rgb(26 27 30 / 0.4)" }}
     >
+      {/* The modal */}
       <div
         className={`relative p-4 w-full ${
           maxWidth === "xl" ? "max-w-xl" : "max-w-2xl"

@@ -4,7 +4,7 @@ import { createRouter } from "./context";
 
 export const invoiceRouter = createRouter()
   .query("getAll", {
-    async resolve({ctx}) {
+    async resolve({ ctx }) {
       return ctx.prisma.invoice.findMany({
         select: {
           id: true,
@@ -35,6 +35,13 @@ export const invoiceRouter = createRouter()
             },
           },
           totalAmmount: true,
+          clinic: {
+            select: {
+              number: true,
+              id: true,
+              name: true,
+            },
+          },
         },
         orderBy: {
           timestamp: "desc",
@@ -103,6 +110,7 @@ export const invoiceRouter = createRouter()
       planAmmountPaying: z.number(),
       planPaidAmmount: z.number(),
       totalAmmount: z.number(),
+      clinicId: z.string(),
     }),
     async resolve({ input, ctx }) {
       // create the invoice
@@ -131,6 +139,11 @@ export const invoiceRouter = createRouter()
           },
           planAmmountPaying: input.planAmmountPaying,
           totalAmmount: input.totalAmmount,
+          clinic: {
+            connect: {
+              id: input.clinicId,
+            },
+          },
         },
       });
 

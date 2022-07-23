@@ -1,4 +1,5 @@
 import { appointmentRouter } from "./appointments.router";
+import { clinicRouter } from "./clinic.router";
 import { createRouter } from "./context";
 import { doctorRouter } from "./doctor.router";
 import { invoiceRouter } from "./invoice.router";
@@ -8,13 +9,14 @@ import { productRouter } from "./product.router";
 
 export const appRouter = createRouter()
   .merge("appointments.", appointmentRouter)
-  .merge("doctor.",doctorRouter)
-  .merge("patients.",patientRouter)
+  .merge("doctor.", doctorRouter)
+  .merge("patients.", patientRouter)
   .merge("plans.", plansRouter)
-  .merge("products.",productRouter)
-  .merge("invoices.",invoiceRouter)
+  .merge("products.", productRouter)
+  .merge("invoices.", invoiceRouter)
+  .merge("clinic.", clinicRouter)
   .query("getOverallStats", {
-    async resolve({ctx}) {
+    async resolve({ ctx }) {
       const { totalAmmount } = (
         await ctx.prisma.invoice.aggregate({
           _sum: {

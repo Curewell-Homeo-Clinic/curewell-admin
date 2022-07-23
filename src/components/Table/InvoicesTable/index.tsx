@@ -48,6 +48,13 @@ const InvoicesTable: React.FC<{
       </td>
       <td>{format(new Date(invoice.timestamp), "dd/MM/yy - EEE")}</td>
       <td>{format(new Date(invoice.timestamp), "hh:mm aaa")}</td>
+      {invoice.clinic ? (
+        <td className="capitalize">
+          #{invoice.clinic?.number} {invoice.clinic?.name}
+        </td>
+      ) : (
+        <td className="capitalize">Not specified</td>
+      )}
       <td
         className="capitalize cursor-pointer hover:underline"
         onClick={() =>
@@ -70,7 +77,7 @@ const InvoicesTable: React.FC<{
             .reduce((x, y) => x + y, 0) || 0
         )}
       </td>
-      <td>{getMoney(invoice.totalAmmount)}</td>
+      <td>{getMoney(Math.round(invoice.totalAmmount))}</td>
       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         <button
           type="button"
@@ -142,6 +149,12 @@ const InvoicesTable: React.FC<{
                   className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
                 >
                   Time
+                </th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white select-none sm:pl-6"
+                >
+                  Clinic
                 </th>
                 <th
                   scope="col"

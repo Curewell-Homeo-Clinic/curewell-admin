@@ -1,6 +1,6 @@
 import { Modal } from "@/components/shared";
 import { getMoney } from "@/utils";
-import { trpc } from "@/utils/trpc";
+import { InferQueryOutput, trpc } from "@/utils/trpc";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 
@@ -30,6 +30,7 @@ interface Invoice {
     quantity: number;
   }[];
   discountPercentage: number;
+  clinic: InferQueryOutput<"clinic.getAll">[number];
 }
 
 const InvoicePreview: React.FC<{
@@ -75,6 +76,7 @@ const InvoicePreview: React.FC<{
       timestamp: invoice.timestamp.toString(),
       totalAmmount: calculateTotalAmmount(),
       productDiscountPercentage: invoice.discountPercentage,
+      clinicId: invoice.clinic.id,
     })) && router.reload();
   };
 
@@ -127,6 +129,15 @@ const InvoicePreview: React.FC<{
                   <td>3</td>
                   <td>Doctor</td>
                   <td>{invoice.doctor.name}</td>
+                </tr>
+
+                {/* doctor */}
+                <tr>
+                  <td>4</td>
+                  <td>Clinic</td>
+                  <td>
+                    #{invoice.clinic.number} {invoice.clinic.name}
+                  </td>
                 </tr>
 
                 {/* plan */}

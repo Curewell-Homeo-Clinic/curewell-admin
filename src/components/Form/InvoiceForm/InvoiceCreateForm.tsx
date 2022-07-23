@@ -30,10 +30,18 @@ const InvoiceCreateForm: React.FC<{
     { outOfStock: false },
   ]);
 
+  const { isLoading: isClinicLoading, data: clinics } = trpc.useQuery([
+    "clinic.getAll",
+  ]);
+
   //   patient select states
   const [selectedPatient, setSelectedPatient] =
     useState<InferQueryOutput<"patients.getAll">[number]>();
   const [selectedPatientId, setSelectedPatientId] = useState<string>("");
+
+  const [selectedClinicId, setSelectedClinicId] = useState<string>("");
+  const [selectedClinic, setSelectedClinic] =
+    useState<InferQueryOutput<"clinic.getAll">[number]>();
 
   //   patient's plan select states
   const [selectedPatientPlanId, setSelectedPatientPlanId] =
@@ -76,10 +84,16 @@ const InvoiceCreateForm: React.FC<{
   useEffect(() => {
     selectedDoctorId !== "" &&
     selectedPatientId !== "" &&
-    selectedPatientPlanId !== ""
+    selectedPatientPlanId !== "" &&
+    selectedClinicId !== ""
       ? setIsEdit(true)
       : setIsEdit(false);
-  }, [selectedDoctorId, selectedPatientId, selectedPatientPlanId]); // required fields only!
+  }, [
+    selectedDoctorId,
+    selectedPatientId,
+    selectedPatientPlanId,
+    selectedClinicId,
+  ]); // required fields only!
 
   // preview logic
   const [showPreview, setShowPreview] = useState(false);
@@ -104,6 +118,11 @@ const InvoiceCreateForm: React.FC<{
         )
       );
 
+    selectedClinicId !== "" &&
+      setSelectedClinic(
+        clinics?.find((clinic) => clinic.id === selectedClinicId)
+      );
+
     selectedProductIds.length !== 0 &&
       setSelectedProducts(
         products?.filter((product) => selectedProductIds.includes(product.id))
@@ -118,6 +137,9 @@ const InvoiceCreateForm: React.FC<{
     patients,
     products,
     selectedPatient,
+    selectedClinicId,
+    selectedClinic,
+    clinics,
   ]);
 
   // for the plan
@@ -147,7 +169,9 @@ const InvoiceCreateForm: React.FC<{
     isDoctorsLoading ||
     !doctors ||
     isProductsLoading ||
-    !products
+    !products ||
+    !clinics ||
+    isClinicLoading
   )
     return null;
 
@@ -188,6 +212,24 @@ const InvoiceCreateForm: React.FC<{
           }))}
           value={selectedDoctorId}
           onChange={(val) => val && setSelectedDoctorId(val)}
+          required
+        />
+      </div>
+
+      {/* clinic */}
+      <div className="mb-6">
+        <Select
+          label="Clinic"
+          description="Clinic in which the invoice is being created."
+          placeholder="Pick a clinic"
+          radius="md"
+          variant="filled"
+          data={clinics.map((clinic) => ({
+            label: clinic.name,
+            value: clinic.id,
+          }))}
+          value={selectedClinicId}
+          onChange={(val) => val && setSelectedClinicId(val)}
           required
         />
       </div>
@@ -349,6 +391,9 @@ const InvoiceCreateForm: React.FC<{
           show={showPreview}
           setShow={setShowPreview}
           invoice={{
+            clinic: selectedClinic
+              ? selectedClinic!
+              : clinics.find((clinic) => clinic.number == 1)!,
             consultationFee,
             timestamp,
             planAmmountPaying,
