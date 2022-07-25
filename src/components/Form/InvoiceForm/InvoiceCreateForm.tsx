@@ -1,4 +1,5 @@
 import { Modal } from "@/components/shared";
+import { getMoney } from "@/utils";
 import { InferQueryOutput, trpc } from "@/utils/trpc";
 import {
   CalendarIcon,
@@ -147,7 +148,7 @@ const InvoiceCreateForm: React.FC<{
     if (selectedPatient) {
       setPlansSelectData(
         selectedPatient.treatmentPlans.map((plan) => ({
-          label: plan.plan.name,
+          label: `${plan.plan.name} ~ ${getMoney(plan.plan.price)}`,
           value: plan.id,
         }))
       );

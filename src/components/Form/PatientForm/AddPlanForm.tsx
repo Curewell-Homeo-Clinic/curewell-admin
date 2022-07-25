@@ -1,4 +1,5 @@
 import { Modal } from "@/components/shared";
+import { getMoney } from "@/utils";
 import { trpc } from "@/utils/trpc";
 import { ExclamationIcon } from "@heroicons/react/outline";
 import { Alert, Select } from "@mantine/core";
@@ -54,7 +55,7 @@ const AddPlanForm: React.FC<{
             placeholder="Pick a treatment plan"
             data={notOptedPlans.map((plan) => ({
               value: plan.id,
-              label: plan.name,
+              label: `${plan.name} ~ ${getMoney(plan.price)}`,
             }))}
             value={selectedPlanId}
             clearable
