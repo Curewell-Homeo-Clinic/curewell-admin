@@ -11,19 +11,18 @@ export type ClinicInvoiceTimelineProps = {
     ammount: number;
     patient: { name: string; id: string };
   }[];
+  totalAmmountSum: number;
 };
 
 const ClinicInvoiceTimeline: React.FC<ClinicInvoiceTimelineProps> = ({
   data,
+  totalAmmountSum,
 }) => {
   return (
     <div className="mt-4 border-2 border-primary shadow-lg rounded-lg p-6 px-10 items-center">
       <h1>Invoices</h1>
       <p className="secondaryText">Clinic&apos;s Invoice Timeline</p>
-      <h1 className="text-xl mt-6">
-        Grand Total:{" "}
-        {getMoney(data.map((d) => d.ammount).reduce((a, b) => a + b))}
-      </h1>
+      <h1 className="text-xl mt-6">Grand Total: {getMoney(totalAmmountSum)}</h1>
       <Timeline className="mt-6" color="dark">
         {data.map((d) => (
           <Timeline.Item

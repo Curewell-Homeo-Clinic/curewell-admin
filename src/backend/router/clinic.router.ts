@@ -45,9 +45,27 @@ export const clinicRouter = createRouter()
                 },
               },
             },
+            take: 10,
+            skip: 0,
           },
         },
       });
+    },
+  })
+  .query("getGT", {
+    input: z.object({ id: z.string().cuid() }),
+    output: z.number(),
+    async resolve({ ctx, input }) {
+      const gt = (
+        await ctx.prisma.clinic.findUnique({
+          where: { id: input.id },
+          select: { invoices: { select: { totalAmmount: true } } },
+        })
+      )?.invoices
+        .map((invoice) => invoice.totalAmmount)
+        .reduce((a, b) => a + b, 0);
+
+      return gt ? gt : 0;
     },
   })
   .mutation("create", {

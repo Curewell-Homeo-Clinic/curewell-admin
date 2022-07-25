@@ -19,6 +19,7 @@ export async function getServerSideProps(
   });
 
   ssg.fetchQuery("clinic.get", { id });
+  ssg.fetchQuery("clinic.getGT", { id });
 
   return {
     props: {
@@ -33,8 +34,11 @@ export default function ClinicPage(
 ) {
   const { id } = props;
   const { isLoading, data: clinic } = trpc.useQuery(["clinic.get", { id }]);
-
-  if (isLoading || !clinic) return <Loader />;
+  const { isLoading: isGTLoading, data: gt } = trpc.useQuery([
+    "clinic.getGT",
+    { id },
+  ]);
+  if (isLoading || !clinic || isGTLoading || !gt) return <Loader />;
 
   return (
     <div>
@@ -47,7 +51,7 @@ export default function ClinicPage(
           </div>
           {clinic.invoices.length <= 0 && <ClinicDeleteForm id={clinic.id} />}
         </div>
-        <ClinicForm clinic={clinic} />
+        <ClinicForm clinic={clinic} gt={gt} />
       </div>
     </div>
   );

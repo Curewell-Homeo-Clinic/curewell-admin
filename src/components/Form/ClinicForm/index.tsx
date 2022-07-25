@@ -4,9 +4,10 @@ import ClinicInvoiceTimeline, {
   ClinicInvoiceTimelineProps,
 } from "./ClinicInvoiceTimeline";
 
-const ClinicForm: React.FC<{ clinic: InferQueryOutput<"clinic.get"> }> = ({
-  clinic,
-}) => {
+const ClinicForm: React.FC<{
+  clinic: InferQueryOutput<"clinic.get">;
+  gt: InferQueryOutput<"clinic.getGT">;
+}> = ({ clinic, gt }) => {
   if (!clinic) return null;
   const timeLineData: ClinicInvoiceTimelineProps["data"] = clinic.invoices.map(
     (invoice) => ({
@@ -26,7 +27,7 @@ const ClinicForm: React.FC<{ clinic: InferQueryOutput<"clinic.get"> }> = ({
       </div>
       {clinic.invoices.length > 0 && (
         <div style={{ flex: 0.5 }}>
-          <ClinicInvoiceTimeline data={timeLineData} />
+          <ClinicInvoiceTimeline data={timeLineData} totalAmmountSum={gt} />
         </div>
       )}
     </div>
