@@ -345,7 +345,7 @@ const InvoiceCreateForm: React.FC<{
           placeholder="Pick product(s)"
           data={products.map((product) => ({
             value: product.id,
-            label: product.name,
+            label: `${product.name} ~ ${getMoney(product.mRP)}`,
           }))}
           value={selectedProductIds}
           onChange={(vals) => setSelectedProductIds(vals)}
@@ -354,6 +354,7 @@ const InvoiceCreateForm: React.FC<{
         />
       </div>
 
+      {/* Discount percentage */}
       <div className="mb-6">
         <label
           htmlFor="discountPercentage"
@@ -410,13 +411,11 @@ const InvoiceCreateForm: React.FC<{
               name: selectedPatientPlan?.plan.name!,
               price: selectedPatientPlan?.plan.price!,
               id: selectedPatientPlanId,
-              previouslyPaid: selectedPatientPlan?.ammountPaid!,
             },
             products:
               selectedProducts?.map((product) => ({
                 mRP: product.mRP,
                 name: product.name,
-                oldQuantity: product.quantity,
                 quantity: 1, // take this from user input
                 id: product.id,
               })) || [],

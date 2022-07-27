@@ -1,30 +1,83 @@
+import { FormOptions } from "@/components/shared";
 import { getMoney } from "@/utils";
-import { InferQueryOutput } from "@/utils/trpc";
+import { InferQueryOutput, trpc } from "@/utils/trpc";
 import {
   CurrencyRupeeIcon,
   TemplateIcon,
   UserCircleIcon,
   UserIcon,
 } from "@heroicons/react/outline";
+import { Select } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const InvoiceDetailsForm: React.FC<{
   invoice: InferQueryOutput<"invoices.get">;
 }> = ({ invoice }) => {
   const [planAmmountPaying, setPlanAmmountPaying] = useState(
-    invoice?.plan.ammountPaid!
+    invoice?.planAmmountPaying!
   );
   const [consultationFee, setConsultationFee] = useState(
     invoice?.consultationFee!
   );
+
+  const { data: clinics, isLoading: isClinicsLoading } = trpc.useQuery([
+    "clinic.getAll",
+  ]);
+  const [clinicId, setClinicId] = useState(invoice?.clinic?.id!);
+
+  const [isEdit, setIsEdit] = useState(false);
 
   const router = useRouter();
   const handleView = (entity: "patient" | "plan", id: string) => {
     router.push(`/${entity}s/${id}`);
   };
 
-  if (!invoice) return null;
+  const trpcCtx = trpc.useContext();
+  const updateMutation = trpc.useMutation("invoices.updateDetails", {
+    onSuccess() {
+      trpcCtx.invalidateQueries(["invoices.get", { id: invoice?.id! }]);
+      trpcCtx.invalidateQueries("invoices.getAll");
+    },
+  });
+
+  const handleSave = async () => {
+    await updateMutation.mutateAsync({
+      consultationFee,
+      planAmmountPaying,
+      previousConsultationFee: invoice?.consultationFee!,
+      previousPlanAmmountPaying: invoice?.planAmmountPaying!,
+      id: invoice?.id!,
+      clinicId,
+    });
+  };
+
+  const handleReset = () => {
+    setPlanAmmountPaying(invoice?.planAmmountPaying!);
+    setConsultationFee(invoice?.consultationFee!);
+    setClinicId(invoice?.clinic?.id!);
+    setIsEdit(false);
+  };
+
+  useEffect(() => {
+    if (
+      planAmmountPaying !== invoice?.planAmmountPaying! ||
+      consultationFee !== invoice?.consultationFee! ||
+      clinicId !== invoice?.clinic?.id
+    ) {
+      setIsEdit(true);
+    } else setIsEdit(false);
+  }, [
+    planAmmountPaying,
+    consultationFee,
+    invoice?.planAmmountPaying,
+    invoice?.consultationFee,
+    clinicId,
+    invoice?.clinic?.id,
+    isEdit,
+  ]);
+
+  if (!invoice || !clinics || isClinicsLoading) return null;
 
   return (
     <form
@@ -103,6 +156,23 @@ const InvoiceDetailsForm: React.FC<{
         </div>
       </div>
 
+      {/* Clinic */}
+      <div className="mb-6">
+        <Select
+          label="Clinic"
+          description="Clinic in which the invoice was created."
+          placeholder="Pick a clinic"
+          radius="md"
+          variant="filled"
+          data={clinics.map((clinic) => ({
+            label: clinic.name,
+            value: clinic.id,
+          }))}
+          value={clinicId}
+          onChange={(val) => val && setClinicId(val)}
+        />
+      </div>
+
       {/* Consultation Fee */}
       <div className="mb-6">
         <label
@@ -156,6 +226,12 @@ const InvoiceDetailsForm: React.FC<{
           />
         </div>
       </div>
+
+      <FormOptions
+        handleReset={handleReset}
+        handleSave={handleSave}
+        isEdit={isEdit}
+      />
     </form>
   );
 };

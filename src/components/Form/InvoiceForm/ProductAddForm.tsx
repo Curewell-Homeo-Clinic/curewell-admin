@@ -1,4 +1,5 @@
 import { Loader, Modal } from "@/components/shared";
+import { getMoney } from "@/utils";
 import { InferQueryOutput, trpc } from "@/utils/trpc";
 import { ShoppingBagIcon } from "@heroicons/react/outline";
 import { MultiSelect } from "@mantine/core";
@@ -95,7 +96,7 @@ const InvoiceProductAddForm: React.FC<{
               placeholder="Pick product(s)"
               data={products.map((product) => ({
                 value: product.id,
-                label: product.name,
+                label: `${product.name} ~ ${getMoney(product.mRP)}`,
               }))}
               value={selectedProductIds}
               onChange={(vals) => setSelectedProductIds(vals)}

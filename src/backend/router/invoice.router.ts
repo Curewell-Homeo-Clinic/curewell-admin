@@ -44,7 +44,7 @@ export const invoiceRouter = createRouter()
           },
         },
         orderBy: {
-          timestamp: "desc",
+          createdAt: "desc",
         },
       });
     },
@@ -57,8 +57,10 @@ export const invoiceRouter = createRouter()
       return await ctx.prisma.invoice.findUnique({
         where: { id: input.id },
         select: {
-          timestamp: true,
           id: true,
+          clinic: true,
+          timestamp: true,
+          totalAmmount: true,
           patient: {
             select: {
               firstName: true,
@@ -85,6 +87,8 @@ export const invoiceRouter = createRouter()
               ammountPaid: true,
             },
           },
+          planId: true,
+          planAmmountPaying: true,
           consultationFee: true,
           products: true,
           productsDiscountPercentage: true,
@@ -100,7 +104,6 @@ export const invoiceRouter = createRouter()
       products: z.array(
         z.object({
           id: z.string().cuid(),
-          oldQuantity: z.number(),
           quantity: z.number().default(1),
         })
       ),
@@ -108,7 +111,6 @@ export const invoiceRouter = createRouter()
       consultationFee: z.number(),
       patientPlanId: z.string(),
       planAmmountPaying: z.number(),
-      planPaidAmmount: z.number(),
       totalAmmount: z.number(),
       clinicId: z.string(),
     }),
@@ -153,7 +155,9 @@ export const invoiceRouter = createRouter()
           await ctx.prisma.product.update({
             where: { id: product.id },
             data: {
-              quantity: product.oldQuantity - product.quantity,
+              quantity: {
+                decrement: product.quantity,
+              },
             },
           });
         });
@@ -163,7 +167,9 @@ export const invoiceRouter = createRouter()
         (await ctx.prisma.patientTreatmentPlan.update({
           where: { id: input.patientPlanId },
           data: {
-            ammountPaid: input.planPaidAmmount + input.planAmmountPaying,
+            ammountPaid: {
+              increment: input.planAmmountPaying,
+            },
           },
         }));
       return invoice.id;
@@ -171,6 +177,7 @@ export const invoiceRouter = createRouter()
   })
   .mutation("addProducts", {
     input: z.object({
+      // invoice id
       id: z.string().cuid(),
       products: z
         .object({
@@ -276,13 +283,127 @@ export const invoiceRouter = createRouter()
     input: z.object({
       productDiscountPercentage: z.number(),
       id: z.string().cuid(),
+      previousDiscountPercentage: z.number(),
+      products: z
+        .object({
+          mRP: z.number(),
+        })
+        .array()
+        .nullable(),
     }),
     async resolve({ input, ctx }) {
+      let totalAmmount;
+
+      if (input.products) {
+        const totalProductAmmountMRP = input.products
+          .map((product) => product.mRP)
+          .reduce((x, y) => x + y);
+
+        // before the change
+        const previousProductAmmount = calculatePrice(
+          totalProductAmmountMRP,
+          input.previousDiscountPercentage
+        );
+
+        // after the change
+        const newProductAmmount = calculatePrice(
+          totalProductAmmountMRP,
+          input.productDiscountPercentage
+        );
+
+        totalAmmount = {
+          // increase by the difference (which can be either positive or negative)
+          increment: newProductAmmount - previousProductAmmount,
+        };
+      }
       return await ctx.prisma.invoice.update({
         where: { id: input.id },
         data: {
           productsDiscountPercentage: input.productDiscountPercentage,
+          totalAmmount,
         },
       });
+    },
+  })
+  .mutation("updateDetails", {
+    input: z.object({
+      id: z.string().cuid(),
+      consultationFee: z.number(),
+      previousConsultationFee: z.number(),
+      planAmmountPaying: z.number(),
+      previousPlanAmmountPaying: z.number(),
+      clinicId: z.string().cuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const planAmmountPayingDiff =
+        input.planAmmountPaying - input.previousPlanAmmountPaying;
+      const consultationFeeDiff =
+        input.consultationFee - input.previousConsultationFee;
+
+      return await ctx.prisma.invoice.update({
+        where: { id: input.id },
+        data: {
+          consultationFee: input.consultationFee,
+          planAmmountPaying: input.planAmmountPaying,
+          clinic: { connect: { id: input.clinicId } },
+          plan: {
+            update: {
+              ammountPaid: {
+                increment: planAmmountPayingDiff,
+              },
+            },
+          },
+          totalAmmount: {
+            increment: consultationFeeDiff + planAmmountPayingDiff,
+          },
+        },
+      });
+    },
+  })
+  .mutation("delete", {
+    input: z.object({
+      id: z.string().cuid(),
+      planId: z.string().cuid(),
+      planAmmountPaying: z.number(),
+      products: z
+        .object({
+          id: z.string().cuid(),
+        })
+        .array()
+        .nullable(),
+    }),
+    async resolve({ ctx, input }) {
+      // remove the invoice
+      const deletedInvoice = await ctx.prisma.invoice.delete({
+        where: { id: input.id },
+      });
+
+      if (deletedInvoice) {
+        // reduce the plan ammount paid
+        await ctx.prisma.patientTreatmentPlan.update({
+          where: { id: input.planId },
+          data: {
+            ammountPaid: {
+              decrement: input.planAmmountPaying,
+            },
+          },
+        });
+        // increase the quantity of the products
+        if (input.products)
+          await ctx.prisma.product.updateMany({
+            where: {
+              id: {
+                in: input.products.map((product) => product.id),
+              },
+            },
+            data: {
+              quantity: {
+                increment: 1,
+              },
+            },
+          });
+      }
+
+      return false;
     },
   });

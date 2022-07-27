@@ -15,6 +15,7 @@ export { default as PlanForm } from "./PlanForm";
 
 export { default as InvoiceCreateForm } from "./InvoiceForm/InvoiceCreateForm";
 export { default as InvoiceForm } from "./InvoiceForm";
+export { default as InvoiceDeleteForm } from "./InvoiceForm/InvoiceDeleteForm";
 
 export { default as ClinicForm } from "./ClinicForm";
 export { default as ClinicDeleteForm } from "./ClinicForm/ClinicDeleteForm";

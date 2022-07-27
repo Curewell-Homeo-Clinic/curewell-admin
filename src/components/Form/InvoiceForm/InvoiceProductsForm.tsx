@@ -36,6 +36,9 @@ const InvoiceProductsForm: React.FC<{
     await updateProductDiscountPercentage.mutateAsync({
       id: invoice?.id!,
       productDiscountPercentage: discountPercentage,
+      previousDiscountPercentage: invoice?.productsDiscountPercentage!,
+      products:
+        invoice?.products.map((product) => ({ mRP: product.mRP })) || null,
     });
   };
 

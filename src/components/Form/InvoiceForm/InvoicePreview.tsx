@@ -18,7 +18,6 @@ interface Invoice {
     id: string;
     name: string;
     price: number;
-    previouslyPaid: number;
   };
   consultationFee: number;
   planAmmountPaying: number;
@@ -26,7 +25,6 @@ interface Invoice {
     id: string;
     name: string;
     mRP: number;
-    oldQuantity: number;
     quantity: number;
   }[];
   discountPercentage: number;
@@ -67,9 +65,7 @@ const InvoicePreview: React.FC<{
       consultationFee: invoice.consultationFee,
       patientPlanId: invoice.plan.id,
       planAmmountPaying: invoice.planAmmountPaying,
-      planPaidAmmount: invoice.plan.previouslyPaid,
       products: invoice.products.map((product) => ({
-        oldQuantity: product.oldQuantity,
         quantity: product.quantity,
         id: product.id,
       })),
