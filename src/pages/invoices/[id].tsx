@@ -1,12 +1,16 @@
 import { InvoiceDeleteForm, InvoiceForm } from "@/components/Form";
 import { GoBackButton, Loader } from "@/components/shared";
+import { STATES } from "@/store";
 import { getMoney } from "@/utils";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
+import { useRecoilValue } from "recoil";
 
 export default function InvoicePage() {
   const router = useRouter();
   const id = router.query.id! as string;
+
+  const isAdmin = useRecoilValue(STATES.isAdmin);
 
   const { isLoading, data: invoice } = trpc.useQuery(["invoices.get", { id }]);
 
@@ -33,7 +37,7 @@ export default function InvoicePage() {
             </p>
           </div>
           {/* delete form */}
-          <InvoiceDeleteForm invoice={invoice} />
+          {isAdmin && <InvoiceDeleteForm invoice={invoice} />}
         </div>
         <InvoiceForm invoice={invoice} />
       </div>
