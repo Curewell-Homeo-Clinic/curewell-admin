@@ -4,3 +4,4 @@ export { default as FormOptions } from "./FormOptions";
 export { default as Modal } from "./ModalWrapper";
 export { default as Suspense } from "./Suspense";
 export { default as DropzoneChildren } from "./DropzoneChildren";
+export { default as CurewellLogo } from "./CurewellLogo";

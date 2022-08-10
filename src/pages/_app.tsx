@@ -35,7 +35,7 @@ function App({ Component, pageProps }: AppProps) {
             {publicPages.includes(router.pathname) ? (
               <Component {...pageProps} />
             ) : (
-              <Wrapper>
+              <Wrapper hide={pageProps.noLayout as boolean}>
                 <SignedIn>
                   <Component {...pageProps} />
                 </SignedIn>

@@ -3,6 +3,8 @@ import { GoBackButton, Loader } from "@/components/shared";
 import { STATES } from "@/store";
 import { getMoney } from "@/utils";
 import { trpc } from "@/utils/trpc";
+import { PrinterIcon } from "@heroicons/react/outline";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
@@ -36,8 +38,22 @@ export default function InvoicePage() {
               Added on {new Date(invoice.timestamp).toLocaleDateString()}
             </p>
           </div>
-          {/* delete form */}
-          {isAdmin && <InvoiceDeleteForm invoice={invoice} />}
+          <div className="flex items-center justify-center gap-2">
+            <div className="btn">
+              <Link href={`/invoices/${id}/download`} passHref>
+                <a
+                  target="_blank"
+                  rel="noopener noreferer"
+                  className="flex items-center gap-1"
+                >
+                  <PrinterIcon className="w-5" />
+                  Print
+                </a>
+              </Link>
+            </div>
+            {/* delete form */}
+            {isAdmin && <InvoiceDeleteForm invoice={invoice} />}
+          </div>
         </div>
         <InvoiceForm invoice={invoice} />
       </div>

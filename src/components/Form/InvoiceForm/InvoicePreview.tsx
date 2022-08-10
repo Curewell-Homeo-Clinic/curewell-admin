@@ -1,7 +1,6 @@
 import { Modal } from "@/components/shared";
-import { getMoney } from "@/utils";
+import { getProductPrice } from "@/utils/product";
 import { InferQueryOutput, trpc } from "@/utils/trpc";
-import { format } from "date-fns";
 import { useRouter } from "next/router";
 import { InvoicePreviewTable } from "./InvoicePreviewTable";
 
@@ -36,9 +35,7 @@ export const calculateProductPrice = (
   product: Invoice["products"][number],
   invoice: Invoice
 ) => {
-  return Math.round(
-    product.mRP - product.mRP * (invoice.discountPercentage / 100)
-  );
+  return getProductPrice(product.mRP, invoice.discountPercentage);
 };
 
 export const calculateTotalAmmount = (invoice: Invoice) => {

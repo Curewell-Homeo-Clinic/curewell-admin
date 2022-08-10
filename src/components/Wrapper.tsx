@@ -13,7 +13,13 @@ const Navbar = dynamic(() => import("@/components/Navbar"), {
   suspense: true,
 });
 
-export default function Wrapper({ children }: { children: ReactNode }) {
+export default function Wrapper({
+  children,
+  hide = false,
+}: {
+  children: ReactNode;
+  hide: boolean;
+}) {
   const router = useRouter();
 
   const getActiveMenu = (): NavbarProps["active"] => {
@@ -48,6 +54,8 @@ export default function Wrapper({ children }: { children: ReactNode }) {
       isSignedIn &&
       setIsAdmin(user.username?.includes("admin") ? true : false);
   }, [isSignedIn, isLoaded, user?.username, setIsAdmin]);
+
+  if (hide) return <>{children}</>;
 
   return (
     <>

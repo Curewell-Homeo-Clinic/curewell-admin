@@ -58,6 +58,7 @@ export const invoiceRouter = createRouter()
         where: { id: input.id },
         select: {
           id: true,
+          number: true,
           clinic: true,
           timestamp: true,
           totalAmmount: true,
