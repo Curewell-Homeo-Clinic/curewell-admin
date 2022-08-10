@@ -237,7 +237,7 @@ export default function InvoiceDownloadPage(
                               invoice.productsDiscountPercentage
                             )
                           )
-                          .reduce((x, y) => x + y)
+                          .reduce((x, y) => x + y) || 0
                       )}
                     </td>
                   </tr>
