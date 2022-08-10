@@ -162,7 +162,7 @@ export default function InvoiceDownloadPage(
             </div>
 
             {/* the products list */}
-            {invoice.products && (
+            {invoice.products && invoice.products.length > 0 && (
               <table className="mt-2 w-full border-y-[1px] border-primary border-collapse">
                 <thead>
                   <tr>
@@ -237,7 +237,7 @@ export default function InvoiceDownloadPage(
                               invoice.productsDiscountPercentage
                             )
                           )
-                          .reduce((x, y) => x + y) || 0
+                          .reduce((x, y) => x + y)
                       )}
                     </td>
                   </tr>
