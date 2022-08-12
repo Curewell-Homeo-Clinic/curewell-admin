@@ -153,10 +153,7 @@ export default function InvoiceDownloadPage(
                 </div>
                 {/* due */}
                 <div style={{ flex: 0.25 }} className="pl-2">
-                  {getMoney(
-                    invoice.plan.plan.price -
-                      (invoice.plan.ammountPaid + invoice.planAmmountPaying)
-                  )}
+                  {getMoney(invoice.plan.plan.price - invoice.plan.ammountPaid)}
                 </div>
               </div>
             </div>
