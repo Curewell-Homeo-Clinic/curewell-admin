@@ -1,7 +1,7 @@
 # Curewell Admin System
 
 ### Secreenshots
-![image](https://user-images.githubusercontent.com/94972074/235605868-b7771831-b28a-46e9-a8c0-c524c242a517.png)
+![image](https://user-images.githubusercontent.com/94972074/235607517-631c529e-231e-4de2-a224-908fc66a0488.png)
 ![image](https://user-images.githubusercontent.com/94972074/235606054-60097a58-451d-4f4f-891a-77c1c89ccbb9.png)
 ![image](https://user-images.githubusercontent.com/94972074/235606138-9c8cdbf7-4726-4b05-ae0e-6fd127968ea5.png)
 ![image](https://user-images.githubusercontent.com/94972074/235606224-fcbd091f-ba3a-42b7-8f9e-37966a99827f.png)
